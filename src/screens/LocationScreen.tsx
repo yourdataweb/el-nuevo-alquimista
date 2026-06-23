@@ -240,7 +240,7 @@ export default function LocationScreen({
                     className={`relative p-3 rounded-xl text-left transition-all ${
                       done
                         ? 'bg-[#16213e]/40 border border-gray-800/50 opacity-50 cursor-not-allowed'
-                        : 'bg-[#16213e] border border-gray-700 hover:border-[#e94560] hover:bg-[#0f3460]/80 cursor-pointer'
+                        : 'bg-[#e94560]/15 border border-[#e94560]/40 hover:bg-[#e94560]/25 hover:border-[#e94560] cursor-pointer'
                     }`}
                   >
                     {/* Gradient accent */}
@@ -304,18 +304,7 @@ export default function LocationScreen({
             </button>
           )}
 
-          {!isCorrect && (
-            <button
-              onClick={() => addVisitedLocation(location.id)}
-              className="w-full py-3 bg-gray-700 hover:bg-gray-600 text-white font-semibold rounded-lg transition-all text-sm"
-            >
-              {i18n.language === 'ca'
-                ? 'Explorar el lloc'
-                : i18n.language === 'es'
-                ? 'Explorar el lugar'
-                : 'Explore the area'}
-            </button>
-          )}
+
 
           <button
             onClick={onBackToMap}
