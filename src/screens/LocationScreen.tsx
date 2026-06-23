@@ -39,12 +39,12 @@ const MG_META: Record<MiniGameKind, { icon: string; color: string }> = {
 
 /** Stat labels (short) for display. */
 const STAT_LABELS: Record<string, string> = {
-  vitality: '❤️',
+  vitality: '💪',
   resources: '💰',
-  knowledge: '📖',
-  social: '🤝',
+  knowledge: '🧠',
+  social: '👥',
   career: '💼',
-  fulfillment: '✨',
+  fulfillment: '❤️',
 };
 
 export default function LocationScreen({
@@ -143,6 +143,7 @@ export default function LocationScreen({
             ? {
                 success: gameResult.won,
                 message: resultMsg ?? '',
+                effects: activity.effects,
               }
             : null
         }
@@ -240,7 +241,7 @@ export default function LocationScreen({
                     className={`relative p-3 rounded-xl text-left transition-all ${
                       done
                         ? 'bg-[#16213e]/40 border border-gray-800/50 opacity-50 cursor-not-allowed'
-                        : 'bg-[#e94560]/15 border border-[#e94560]/40 hover:bg-[#e94560]/25 hover:border-[#e94560] cursor-pointer'
+                        : 'bg-[#2563eb]/40 border border-[#2563eb]/60 hover:bg-[#2563eb]/60 hover:border-[#3b82f6] cursor-pointer'
                     }`}
                   >
                     {/* Gradient accent */}

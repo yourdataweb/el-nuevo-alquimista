@@ -1,12 +1,26 @@
 import { useRef, useEffect } from 'react';
+import type { Stats } from '../../store/types';
+
+const STAT_ICONS: Record<keyof Stats, string> = {
+  vitality: '💪',
+  resources: '💰',
+  knowledge: '🧠',
+  social: '👥',
+  career: '💼',
+  fulfillment: '❤️',
+};
 
 interface MiniGameModalProps {
   title: string;
   subtitle: string;
   children: React.ReactNode;
   onClose: () => void;
-  /** Set to true when a result banner should show */
-  resultBanner?: { success: boolean; message: string } | null;
+  /** Result summary with stat breakdown */
+  resultBanner?: {
+    success: boolean;
+    message: string;
+    effects: Partial<Stats>;
+  } | null;
 }
 
 /**
@@ -58,26 +72,45 @@ export default function MiniGameModal({
         <div className="relative flex-1 flex items-center justify-center p-4 min-h-[400px]">
           {children}
 
-          {/* Result banner overlay */}
+          {/* Result summary panel */}
           {resultBanner && (
             <div
               className={`absolute inset-0 flex flex-col items-center justify-center 
-                bg-black/60 backdrop-blur-sm animate-fadeIn z-10`}
+                bg-black/60 backdrop-blur-sm animate-fadeIn z-10 p-6`}
             >
               <div
-                className={`text-center px-8 py-6 rounded-xl ${
+                className={`text-center w-full max-w-sm px-6 py-5 rounded-xl ${
                   resultBanner.success
                     ? 'bg-[#22c55e]/20 border border-[#22c55e]/40'
                     : 'bg-[#e94560]/20 border border-[#e94560]/40'
                 }`}
               >
-                <div className="text-5xl mb-3">
+                <div className="text-5xl mb-2">
                   {resultBanner.success ? '🎉' : '😔'}
                 </div>
-                <p className="text-white font-bold text-lg mb-4">{resultBanner.message}</p>
+                <p className="text-white font-bold text-base mb-1">{resultBanner.message}</p>
+
+                {/* Stat breakdown */}
+                {resultBanner.success && (
+                  <div className="flex flex-wrap justify-center gap-x-3 gap-y-1.5 my-3">
+                    {Object.entries(resultBanner.effects).map(([key, val]) => (
+                      val != null && val > 0 && (
+                        <span key={key} className="text-green-400 text-sm font-semibold whitespace-nowrap">
+                          {STAT_ICONS[key as keyof Stats] ?? key} +{val}
+                        </span>
+                      )
+                    ))}
+                  </div>
+                )}
+                {!resultBanner.success && (
+                  <p className="text-gray-400 text-xs mt-2 mb-1">
+                    {resultBanner.message === 'ca' ? 'Sense punts guanyats' : 'No points earned'}
+                  </p>
+                )}
+
                 <button
                   onClick={onClose}
-                  className="px-6 py-2 rounded-lg bg-[#e94560] hover:bg-[#c73a50] text-white font-semibold transition-all text-sm"
+                  className="mt-2 px-6 py-2 rounded-lg bg-[#e94560] hover:bg-[#c73a50] text-white font-semibold transition-all text-sm"
                 >
                   Continue
                 </button>
