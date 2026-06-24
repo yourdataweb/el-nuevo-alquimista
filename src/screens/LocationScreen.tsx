@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useGameStore } from '../store/gameStore';
 import GameLayout from '../components/GameLayout';
@@ -88,26 +88,23 @@ export default function LocationScreen({
   const [gameResult, setGameResult] = useState<{ won: boolean; effects: Partial<Stats> } | null>(null);
 
   /** Called when a mini‑game finishes. */
-  const handleGameResult = useCallback(
-    (activity: ActivityDef) => (won: boolean) => {
-      // Always consume time
-      advanceTime(activity.durationHours);
+  const handleGameResult = (activity: ActivityDef) => (won: boolean) => {
+    // Always consume time
+    advanceTime(activity.durationHours);
 
-      if (won) {
-        // Apply stat effects
-        updateStats(activity.effects);
-      }
+    if (won) {
+      // Apply stat effects
+      updateStats(activity.effects);
+    }
 
-      // Mark as completed (consumed regardless of win/loss)
-      markLocationActivityComplete(location.id, activity.id);
+    // Mark as completed (consumed regardless of win/loss)
+    markLocationActivityComplete(location.id, activity.id);
 
-      // Transition: close game modal → show result summary
-      setGameResult({ won, effects: activity.effects });
-      setShowGame(false);
-      setShowResult(true);
-    },
-    [advanceTime, markLocationActivityComplete, location.id, updateStats]
-  );
+    // Close game modal and show result summary
+    setGameResult({ won, effects: activity.effects });
+    setShowGame(false);
+    setShowResult(true);
+  };
 
   const closeResult = () => {
     setShowResult(false);
