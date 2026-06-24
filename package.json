@@ -5,9 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "bash scripts/gen-version.sh && tsc -b && vite build",
+    "build": "bash scripts/gen-version.sh && tsc -b && vite build && rsync -a dist/ docs/ && touch docs/.nojekyll",
     "lint": "eslint .",
-    "dev": "bash scripts/gen-version.sh && vite",
     "preview": "vite preview",
     "test:e2e": "start-server-and-test dev http://localhost:5173 'cypress run --e2e --config baseUrl=http://localhost:5173'",
     "deploy": "npm run build && rsync -a dist/ docs/ && touch docs/.nojekyll && git add docs/ && git commit -m \"Deploy to GH Pages\" && git push"
