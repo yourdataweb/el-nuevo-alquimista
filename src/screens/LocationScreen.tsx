@@ -87,19 +87,14 @@ export default function LocationScreen({
 
   /** Called when a mini‑game finishes. */
   const handleGameResult = (activity: ActivityDef) => (won: boolean) => {
-    // Always consume time
-    advanceTime(activity.durationHours);
-
-    if (won) {
-      // Apply stat effects
-      updateStats(activity.effects);
-    }
-
-    // Mark as completed (consumed regardless of win/loss)
-    markLocationActivityComplete(location.id, activity.id);
-
-    // Transition: close game → show result
-    setView({ kind: 'result', act: activity, won, effects: activity.effects });
+    // Defer EVERYTHING to the next macro task so React finishes the current
+    // render cycle (including StrictMode double-mount shenanigans) first.
+    setTimeout(() => {
+      setView({ kind: 'result', act: activity, won, effects: activity.effects });
+      advanceTime(activity.durationHours);
+      if (won) updateStats(activity.effects);
+      markLocationActivityComplete(location.id, activity.id);
+    });
   };
 
   const activities = getActivitiesForType(location.type);
@@ -289,13 +284,29 @@ export default function LocationScreen({
       )}
 
       {/* ── Result summary (shown after game finishes, before returning to location) ── */}
-      {view.kind === 'result' && (
-        <ResultSummary
-          won={view.won}
-          effects={view.effects}
-          onClose={() => setView({ kind: 'idle' })}
-        />
-      )}
+      <div data-result-view={view.kind}>
+        {/* DEBUG: visible label showing view state */}
+        <div id="debug-view-state" style={{
+          position: 'fixed',
+          bottom: 4, right: 4,
+          background: 'rgba(0,0,0,0.7)',
+          color: '#fff',
+          padding: '2px 6px',
+          borderRadius: 4,
+          fontSize: 11,
+          zIndex: 99999,
+          pointerEvents: 'none',
+        }}>
+          view: {view.kind}{view.kind === 'result' ? ` won=${String(view.won)}` : ''}
+        </div>
+        {view.kind === 'result' && (
+          <ResultSummary
+            won={view.won}
+            effects={view.effects}
+            onClose={() => setView({ kind: 'idle' })}
+          />
+        )}
+      </div>
     </GameLayout>
   );
 }

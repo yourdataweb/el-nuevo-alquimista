@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, type ReactNode } from 'react';
 import { useGameStore } from './store/gameStore';
 import { elAlquimista } from './data/story/el-alquimista';
 import { flyToMap } from './components/MapBackground';
@@ -135,17 +135,8 @@ export default function App() {
   }, [setCurrentLocation, setPhase]);
 
   // ── Render helpers ──
-  const Overlay = ({ children }: { children: React.ReactNode }) => (
-    <div className="fixed inset-0 z-10 flex flex-col bg-[#1a1a2e]/20 backdrop-blur-[1px] overflow-y-auto">
-      {children}
-    </div>
-  );
-
-  const Cover = ({ children }: { children: React.ReactNode }) => (
-    <div className="fixed inset-0 z-10 flex flex-col bg-[#1a1a2e] overflow-y-auto">
-      {children}
-    </div>
-  );
+  // Hoisted OUTSIDE App to prevent React from treating them as new types
+  // on every render (which causes children to unmount/remount, losing state).
 
   const renderPhase = () => {
     switch (phase) {

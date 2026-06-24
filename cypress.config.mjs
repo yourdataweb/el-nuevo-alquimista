@@ -7,6 +7,7 @@ export default defineConfig({
     viewportHeight: 844,
     video: false,
     screenshotOnRunFailure: true,
+    screenshotsFolder: 'screenshots',
     supportFile: false,
   },
 });
