@@ -201,21 +201,14 @@ export default function TimingBar({ onResult }: TimingBarProps) {
     roundRef.current += 1;
 
     if (roundRef.current >= ROUNDS_TOTAL) {
+      // Game over — call onResult immediately, no setTimeout.
       const won = scoreRef.current >= ROUNDS_TO_WIN;
-      setGameState(won ? 'won' : 'lost');
+      onResult(won);
     } else {
       // Next round
       startRound();
     }
-  }, [gameState, startRound, newTarget]);
-
-  /* ── Game result ── */
-  useEffect(() => {
-    if (gameState === 'won' || gameState === 'lost') {
-      const t = setTimeout(() => onResult(gameState === 'won'), 1000);
-      return () => clearTimeout(t);
-    }
-  }, [gameState, onResult]);
+  }, [gameState, startRound, newTarget, onResult]);
 
   /* ── Resize ── */
   useEffect(() => {

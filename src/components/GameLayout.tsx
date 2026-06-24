@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { useGameStore } from '../store/gameStore';
 import { formatTime } from '../engine/timeEngine';
+import { APP_VERSION } from '../generated-version';
 import StatsBar from './StatsBar';
 import LanguageSwitcher from './LanguageSwitcher';
 
@@ -33,6 +34,10 @@ export default function GameLayout({ children, showStats = true, showMapButton =
         <div className="flex items-center gap-2 shrink-0">
           <LanguageSwitcher />
         </div>
+        {/* Version badge */}
+        <span className="hidden sm:inline text-[10px] text-gray-600 ml-2 select-none" title={APP_VERSION.build}>
+          v{APP_VERSION.build}
+        </span>
       </header>
 
       {/* Time display */}

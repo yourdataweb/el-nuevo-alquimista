@@ -12,8 +12,11 @@ dist
 dist-ssr
 *.local
 
-# GitHub Actions workflow (no workflow scope token)
-.github/workflows/
+# Vite dev cache
+node_modules/.vite/
+
+# Generated version file (CI generates this)
+/src/generated-version.ts
 
 # Editor directories and files
 .vscode/*

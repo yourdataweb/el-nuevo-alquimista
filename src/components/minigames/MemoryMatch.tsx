@@ -195,12 +195,10 @@ export default function MemoryMatch({ onResult, symbolSet = SYMBOLS }: MemoryMat
   /* ── Game result ── */
   useEffect(() => {
     if (gameState === 'won') {
-      const t = setTimeout(() => onResult(true), 800);
-      return () => clearTimeout(t);
+      onResult(true);
     }
     if (gameState === 'lost') {
-      const t = setTimeout(() => onResult(false), 800);
-      return () => clearTimeout(t);
+      onResult(false);
     }
   }, [gameState, onResult]);
 
