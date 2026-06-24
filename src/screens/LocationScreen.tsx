@@ -81,11 +81,9 @@ export default function LocationScreen({
       ? location.descriptionEs
       : location.description) ?? location.description;
 
-  /* ── UI state ── */
-  const [activeActivity, setActiveActivity] = useState<ActivityDef | null>(null);
-  const [showGame, setShowGame] = useState(false);
-  const [showResult, setShowResult] = useState(false);
-  const [gameResult, setGameResult] = useState<{ won: boolean; effects: Partial<Stats> } | null>(null);
+  /* ── Activity / mini‑game view state ── */
+  type ActivityView = { kind: 'idle' } | { kind: 'game'; act: ActivityDef } | { kind: 'result'; act: ActivityDef; won: boolean; effects: Partial<Stats> };
+  const [view, setView] = useState<ActivityView>({ kind: 'idle' });
 
   /** Called when a mini‑game finishes. */
   const handleGameResult = (activity: ActivityDef) => (won: boolean) => {
@@ -100,16 +98,8 @@ export default function LocationScreen({
     // Mark as completed (consumed regardless of win/loss)
     markLocationActivityComplete(location.id, activity.id);
 
-    // Close game modal and show result summary
-    setGameResult({ won, effects: activity.effects });
-    setShowGame(false);
-    setShowResult(true);
-  };
-
-  const closeResult = () => {
-    setShowResult(false);
-    setGameResult(null);
-    setActiveActivity(null);
+    // Transition: close game → show result
+    setView({ kind: 'result', act: activity, won, effects: activity.effects });
   };
 
   const activities = getActivitiesForType(location.type);
@@ -190,10 +180,7 @@ export default function LocationScreen({
                     key={act.id}
                     onClick={() => {
                       if (done) return;
-                      setActiveActivity(act);
-                      setShowGame(true);
-                      setShowResult(false);
-                      setGameResult(null);
+                      setView({ kind: 'game', act });
                     }}
                     disabled={done}
                     className={`relative p-3 rounded-xl text-left transition-all ${
@@ -279,38 +266,34 @@ export default function LocationScreen({
       </div>
 
       {/* ── Mini‑game modal (only while game is active) ── */}
-      {activeActivity && showGame && (
+      {view.kind === 'game' && (
         <MiniGameModal
           title={
             (i18n.language === 'ca'
-              ? (t as any)(`activitiesSide.${activeActivity.i18nKey}`, { defaultValue: activeActivity.i18nKey })
+              ? (t as any)(`activitiesSide.${view.act.i18nKey}`, { defaultValue: view.act.i18nKey })
               : i18n.language === 'es'
-              ? (t as any)(`activitiesSide.${activeActivity.i18nKey}`, { defaultValue: activeActivity.i18nKey })
-              : (t as any)(`activitiesSide.${activeActivity.i18nKey}`, { defaultValue: activeActivity.i18nKey })) ??
-            activeActivity.i18nKey
+              ? (t as any)(`activitiesSide.${view.act.i18nKey}`, { defaultValue: view.act.i18nKey })
+              : (t as any)(`activitiesSide.${view.act.i18nKey}`, { defaultValue: view.act.i18nKey })) ??
+            view.act.i18nKey
           }
-          subtitle={`${MG_META[activeActivity.miniGame]?.icon ?? '🎮'} ${activeActivity.fluff}`}
-          onClose={() => {
-            setShowGame(false);
-            setActiveActivity(null);
-            setGameResult(null);
-          }}
+          subtitle={`${MG_META[view.act.miniGame]?.icon ?? '🎮'} ${view.act.fluff}`}
+          onClose={() => setView({ kind: 'idle' })}
         >
-          {activeActivity.miniGame === 'memory_match' && (
-            <MemoryMatch onResult={handleGameResult(activeActivity)} />
+          {view.act.miniGame === 'memory_match' && (
+            <MemoryMatch onResult={handleGameResult(view.act)} />
           )}
-          {activeActivity.miniGame === 'timing_bar' && (
-            <TimingBar onResult={handleGameResult(activeActivity)} />
+          {view.act.miniGame === 'timing_bar' && (
+            <TimingBar onResult={handleGameResult(view.act)} />
           )}
         </MiniGameModal>
       )}
 
       {/* ── Result summary (shown after game finishes, before returning to location) ── */}
-      {showResult && gameResult && (
+      {view.kind === 'result' && (
         <ResultSummary
-          won={gameResult.won}
-          effects={gameResult.effects}
-          onClose={closeResult}
+          won={view.won}
+          effects={view.effects}
+          onClose={() => setView({ kind: 'idle' })}
         />
       )}
     </GameLayout>
