@@ -1,13 +1,14 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useGameStore } from '../store/gameStore';
 import GameLayout from '../components/GameLayout';
 import LocationImage from '../components/LocationImage';
 import MiniGameModal from '../components/minigames/MiniGameModal';
+import ResultSummary from '../components/minigames/ResultSummary';
 import MemoryMatch from '../components/minigames/MemoryMatch';
 import TimingBar from '../components/minigames/TimingBar';
 import { getActivitiesForType, type ActivityDef, type MiniGameKind } from '../data/locationActivities';
-import type { LocationPOI } from '../store/types';
+import type { LocationPOI, Stats } from '../store/types';
 
 interface LocationScreenProps {
   location: LocationPOI;
@@ -80,83 +81,41 @@ export default function LocationScreen({
       ? location.descriptionEs
       : location.description) ?? location.description;
 
-  /* ── Mini‑game modal state ── */
+  /* ── UI state ── */
   const [activeActivity, setActiveActivity] = useState<ActivityDef | null>(null);
-  const [gameResult, setGameResult] = useState<{ won: boolean; act: ActivityDef } | null>(null);
+  const [showGame, setShowGame] = useState(false);
+  const [showResult, setShowResult] = useState(false);
+  const [gameResult, setGameResult] = useState<{ won: boolean; effects: Partial<Stats> } | null>(null);
 
   /** Called when a mini‑game finishes. */
-  const handleGameResult = (activity: ActivityDef) => (won: boolean) => {
-    // Always consume time
-    advanceTime(activity.durationHours);
+  const handleGameResult = useCallback(
+    (activity: ActivityDef) => (won: boolean) => {
+      // Always consume time
+      advanceTime(activity.durationHours);
 
-    if (won) {
-      // Apply stat effects
-      updateStats(activity.effects);
-    }
+      if (won) {
+        // Apply stat effects
+        updateStats(activity.effects);
+      }
 
-    // Mark as completed (consumed regardless of win/loss)
-    markLocationActivityComplete(location.id, activity.id);
-    setGameResult({ won, act: activity });
-  };
+      // Mark as completed (consumed regardless of win/loss)
+      markLocationActivityComplete(location.id, activity.id);
 
-  const closeModal = () => {
-    setActiveActivity(null);
+      // Transition: close game modal → show result summary
+      setGameResult({ won, effects: activity.effects });
+      setShowGame(false);
+      setShowResult(true);
+    },
+    [advanceTime, markLocationActivityComplete, location.id, updateStats]
+  );
+
+  const closeResult = () => {
+    setShowResult(false);
     setGameResult(null);
+    setActiveActivity(null);
   };
 
   const activities = getActivitiesForType(location.type);
-
-  /* ── Render mini‑game engine inside modal ── */
-  const renderGame = (activity: ActivityDef) => {
-    const icon = MG_META[activity.miniGame]?.icon ?? '🎮';
-    const title =
-      (i18n.language === 'ca'
-        ? (t as any)(`activitiesSide.${activity.i18nKey}`, { defaultValue: activity.i18nKey })
-        : i18n.language === 'es'
-        ? (t as any)(`activitiesSide.${activity.i18nKey}`, { defaultValue: activity.i18nKey })
-        : (t as any)(`activitiesSide.${activity.i18nKey}`, { defaultValue: activity.i18nKey })) ??
-      activity.i18nKey;
-
-    const subtitle = `${icon} ${activity.fluff}`;
-    const resultMsg =
-      gameResult?.act.id === activity.id
-        ? gameResult.won
-          ? i18n.language === 'ca'
-            ? 'Completat! Stats augmentats.'
-            : i18n.language === 'es'
-            ? '¡Completado! Estadísticas aumentadas.'
-            : 'Completed! Stats increased.'
-          : i18n.language === 'ca'
-          ? 'No ha sigut suficient. Prova una altra activitat.'
-          : i18n.language === 'es'
-          ? 'No ha sido suficiente. Prueba otra actividad.'
-          : 'Not quite. Try another activity.'
-        : undefined;
-
-    return (
-      <MiniGameModal
-        title={title}
-        subtitle={subtitle}
-        onClose={closeModal}
-        resultBanner={
-          gameResult?.act.id === activity.id
-            ? {
-                success: gameResult.won,
-                message: resultMsg ?? '',
-                effects: activity.effects,
-              }
-            : null
-        }
-      >
-        {activity.miniGame === 'memory_match' && (
-          <MemoryMatch onResult={handleGameResult(activity)} />
-        )}
-        {activity.miniGame === 'timing_bar' && (
-          <TimingBar onResult={handleGameResult(activity)} />
-        )}
-      </MiniGameModal>
-    );
-  };
 
   return (
     <GameLayout>
@@ -235,6 +194,8 @@ export default function LocationScreen({
                     onClick={() => {
                       if (done) return;
                       setActiveActivity(act);
+                      setShowGame(true);
+                      setShowResult(false);
                       setGameResult(null);
                     }}
                     disabled={done}
@@ -320,8 +281,41 @@ export default function LocationScreen({
         </div>
       </div>
 
-      {/* ── Mini‑game modal ── */}
-      {activeActivity && renderGame(activeActivity)}
+      {/* ── Mini‑game modal (only while game is active) ── */}
+      {activeActivity && showGame && (
+        <MiniGameModal
+          title={
+            (i18n.language === 'ca'
+              ? (t as any)(`activitiesSide.${activeActivity.i18nKey}`, { defaultValue: activeActivity.i18nKey })
+              : i18n.language === 'es'
+              ? (t as any)(`activitiesSide.${activeActivity.i18nKey}`, { defaultValue: activeActivity.i18nKey })
+              : (t as any)(`activitiesSide.${activeActivity.i18nKey}`, { defaultValue: activeActivity.i18nKey })) ??
+            activeActivity.i18nKey
+          }
+          subtitle={`${MG_META[activeActivity.miniGame]?.icon ?? '🎮'} ${activeActivity.fluff}`}
+          onClose={() => {
+            setShowGame(false);
+            setActiveActivity(null);
+            setGameResult(null);
+          }}
+        >
+          {activeActivity.miniGame === 'memory_match' && (
+            <MemoryMatch onResult={handleGameResult(activeActivity)} />
+          )}
+          {activeActivity.miniGame === 'timing_bar' && (
+            <TimingBar onResult={handleGameResult(activeActivity)} />
+          )}
+        </MiniGameModal>
+      )}
+
+      {/* ── Result summary (shown after game finishes, before returning to location) ── */}
+      {showResult && gameResult && (
+        <ResultSummary
+          won={gameResult.won}
+          effects={gameResult.effects}
+          onClose={closeResult}
+        />
+      )}
     </GameLayout>
   );
 }
