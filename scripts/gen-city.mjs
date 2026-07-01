@@ -195,7 +195,11 @@ function buildAddress(tags, name) {
     parts.push(tags['addr:street']);
   }
   if (!parts.length) parts.push(name);
-  if (tags['addr:city'] || cityName) parts.push(tags['addr:city'] || cityName);
+  // Non-Latin-script addr:city (e.g. a Tokyo ward name in kanji) reads worse
+  // than the city name, and there's rarely an addr:city:en to fall back to.
+  const addrCity = tags['addr:city'];
+  const useAddrCity = addrCity && /^[\x00-\x7F]*$/.test(addrCity);
+  parts.push(useAddrCity ? addrCity : cityName);
   return parts.join(', ');
 }
 
@@ -215,16 +219,26 @@ function slugify(str) {
     .normalize('NFD').replace(/[̀-ͯ]/g, '')
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/^-|-$/g, '')
-    .substring(0, 28);
+    .substring(0, 28)
+    .replace(/-+$/g, '');
 }
 
 function makeId(type, name, used) {
-  const base = `${prefix}-${type}-${slugify(name)}`;
+  const slug = slugify(name);
+  const base = slug ? `${prefix}-${type}-${slug}` : `${prefix}-${type}`;
   let id = base;
   let n = 2;
   while (used.has(id)) { id = `${base}-${n++}`; }
   used.add(id);
   return id;
+}
+
+// Prefer the English name tag (common on OSM for landmarks in non-Latin-script
+// cities) so ids/slugs and display text stay readable — falls back to the
+// native name when no translation is tagged.
+function pickDisplayName(tags) {
+  const en = tags['name:en']?.trim();
+  return en || tags.name.trim();
 }
 
 function ts(val) {
@@ -295,7 +309,7 @@ async function main() {
     console.log(`  ${type}: ${picks.length} locations`);
     for (const { el, pos } of picks) {
       const tags = el.tags || {};
-      const name = tags.name.trim();
+      const name = pickDisplayName(tags);
       const id = makeId(type, name, usedIds);
       const address = buildAddress(tags, name);
       const description = tags.description || TYPE_DESC[type]?.(name) || `${name}.`;

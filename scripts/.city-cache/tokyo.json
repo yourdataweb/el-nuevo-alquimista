@@ -1,0 +1,207 @@
+[
+  {
+    "id": "tky-home",
+    "name": "Your apartment",
+    "type": "home"
+  },
+  {
+    "id": "tky-airport-narita-international-airport",
+    "name": "Narita International Airport",
+    "type": "airport"
+  },
+  {
+    "id": "tky-airport-tokyo-international-airport",
+    "name": "Tokyo International Airport",
+    "type": "airport"
+  },
+  {
+    "id": "tky-airport-yokota-air-base",
+    "name": "Yokota Air Base",
+    "type": "airport"
+  },
+  {
+    "id": "tky-airport-iruma-air-base",
+    "name": "Iruma Air Base",
+    "type": "airport"
+  },
+  {
+    "id": "tky-market-tsukiji-outer-market",
+    "name": "Tsukiji Outer Market",
+    "type": "market"
+  },
+  {
+    "id": "tky-market-ameya-yokocho",
+    "name": "Ameya-Yokochō",
+    "type": "market"
+  },
+  {
+    "id": "tky-market-tsukishima-second-children-s",
+    "name": "Tsukishima Second Children's Park Farmers Market",
+    "type": "market"
+  },
+  {
+    "id": "tky-market-aomori-antenna-shop",
+    "name": "Aomori Antenna Shop",
+    "type": "market"
+  },
+  {
+    "id": "tky-plaza-silver-bell-square-b1",
+    "name": "Silver Bell Square B1",
+    "type": "plaza"
+  },
+  {
+    "id": "tky-plaza-iidabashi-3-chrome-square",
+    "name": "Iidabashi 3-chrome Square",
+    "type": "plaza"
+  },
+  {
+    "id": "tky-plaza-dorin-square-b1-c62-steam-lo",
+    "name": "Dōrin Square B1 (C62 Steam Locomotive)",
+    "type": "plaza"
+  },
+  {
+    "id": "tky-plaza-group-meeting-point-for-stud",
+    "name": "Group Meeting Point (for Students)",
+    "type": "plaza"
+  },
+  {
+    "id": "tky-library-national-archives-of-japan",
+    "name": "National Archives of Japan",
+    "type": "library"
+  },
+  {
+    "id": "tky-library-national-diet-library-tokyo",
+    "name": "National Diet Library - Tokyo Main",
+    "type": "library"
+  },
+  {
+    "id": "tky-library-university-of-tokyo-general",
+    "name": "University of Tokyo General Library",
+    "type": "library"
+  },
+  {
+    "id": "tky-library-yoshihiro-yonezawa-memorial",
+    "name": "Yoshihiro Yonezawa Memorial Library of Manga and Subculture",
+    "type": "library"
+  },
+  {
+    "id": "tky-church-ichigaya-kamegaoka-hachiman",
+    "name": "Ichigaya-Kamegaoka-Hachiman-gū",
+    "type": "church"
+  },
+  {
+    "id": "tky-church-fukagawa-shimmei-shrine",
+    "name": "Fukagawa Shimmei Shrine",
+    "type": "church"
+  },
+  {
+    "id": "tky-church-shofukuin",
+    "name": "Shōfukuin",
+    "type": "church"
+  },
+  {
+    "id": "tky-church-genkakuji-temple",
+    "name": "Genkakuji Temple",
+    "type": "church"
+  },
+  {
+    "id": "tky-monument-tokyo-ramen-street",
+    "name": "Tokyo Ramen Street",
+    "type": "monument"
+  },
+  {
+    "id": "tky-monument-akasaka-sacas",
+    "name": "Akasaka Sacas",
+    "type": "monument"
+  },
+  {
+    "id": "tky-monument-kaminarimon",
+    "name": "Kaminarimon",
+    "type": "monument"
+  },
+  {
+    "id": "tky-monument-kanda-book-town",
+    "name": "Kanda Book Town",
+    "type": "monument"
+  },
+  {
+    "id": "tky-park-hongo-water-station-park",
+    "name": "Hongo Water Station Park",
+    "type": "park"
+  },
+  {
+    "id": "tky-park-hama-rikyu-gardens",
+    "name": "Hama-rikyū Gardens",
+    "type": "park"
+  },
+  {
+    "id": "tky-park-koishikawa-korakuen-gardens",
+    "name": "Koishikawa Kōrakuen Gardens",
+    "type": "park"
+  },
+  {
+    "id": "tky-park-kiyosumi-gardens",
+    "name": "Kiyosumi Gardens",
+    "type": "park"
+  },
+  {
+    "id": "tky-theatre-tokyo-takarazuka-theater",
+    "name": "Tokyo Takarazuka Theater",
+    "type": "theatre"
+  },
+  {
+    "id": "tky-theatre-suzumoto-entertainment-hall",
+    "name": "Suzumoto Entertainment Hall",
+    "type": "theatre"
+  },
+  {
+    "id": "tky-theatre-meijiza",
+    "name": "Meijiza",
+    "type": "theatre"
+  },
+  {
+    "id": "tky-theatre-mitsukoshi-theater",
+    "name": "Mitsukoshi Theater",
+    "type": "theatre"
+  },
+  {
+    "id": "tky-cafe-tully-s-coffee",
+    "name": "Tully's Coffee",
+    "type": "cafe"
+  },
+  {
+    "id": "tky-cafe-ryogoku-terrace",
+    "name": "Ryogoku Terrace",
+    "type": "cafe"
+  },
+  {
+    "id": "tky-cafe-home-cafe",
+    "name": "@home cafe",
+    "type": "cafe"
+  },
+  {
+    "id": "tky-cafe-r25-cafe",
+    "name": "R25 café",
+    "type": "cafe"
+  },
+  {
+    "id": "tky-office-new-otani-garden-court",
+    "name": "New Otani Garden Court",
+    "type": "office"
+  },
+  {
+    "id": "tky-office-grantokyo-south-tower",
+    "name": "GranTokyo South Tower",
+    "type": "office"
+  },
+  {
+    "id": "tky-office-midtown-tower",
+    "name": "Midtown Tower",
+    "type": "office"
+  },
+  {
+    "id": "tky-office-sanno-park-tower",
+    "name": "Sanno Park Tower",
+    "type": "office"
+  }
+]

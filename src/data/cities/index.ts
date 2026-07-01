@@ -2,6 +2,7 @@ import { barcelona } from './barcelona';
 import { newYork } from './new-york';
 import { paris } from './paris';
 import { seville } from './seville';
+import { tokyo } from './tokyo';
 import type { City, LocationPOI } from '../../store/types';
 
 const registry = new Map<string, City>([
@@ -9,6 +10,7 @@ const registry = new Map<string, City>([
   ['new-york', newYork],
   ['paris', paris],
   ['seville', seville],
+  ['tokyo', tokyo],
 ]);
 
 export function getCityById(id: string): City {
