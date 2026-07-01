@@ -19,7 +19,7 @@ export default function MapBottomSheet({ onPlay }: MapBottomSheetProps) {
       <div className="bg-gradient-to-t from-[#1a1a2e]/95 via-[#1a1a2e]/90 to-transparent pt-10 pb-4 px-3">
         <div className="flex items-center justify-between">
           <div>
-            <span className="text-[10px] text-gray-400 uppercase tracking-wider">
+            <span className="text-xs text-gray-200 font-semibold uppercase tracking-wider">
               {chapter?.title ?? 'Explore'}
             </span>
             <p className="text-gray-300 text-xs mt-0.5">{chapter?.description}</p>

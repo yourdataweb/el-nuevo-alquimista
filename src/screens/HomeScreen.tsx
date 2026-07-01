@@ -52,14 +52,6 @@ export default function HomeScreen({ onGoToMap }: HomeScreenProps) {
       effects: { resources: 30, career: 2, vitality: -3 },
       time: 4,
     },
-    {
-      id: 'phone',
-      icon: '📱',
-      label: t('home.phone'),
-      desc: t('home.phoneDesc'),
-      effects: { social: 1 },
-      time: 0.25,
-    },
   ];
 
   const handleInteraction = (effect: StatEffect, hours: number, actionId: string) => {
@@ -74,54 +66,67 @@ export default function HomeScreen({ onGoToMap }: HomeScreenProps) {
 
   return (
     <GameLayout showMapButton={false}>
-      <div className="p-4 max-w-2xl mx-auto">
-        {/* Location header */}
-        <div className="fade-in mb-4">
-          <div className="text-4xl mb-2">🏠</div>
-          <h2 className="text-white font-bold text-lg">{homeName}</h2>
-          <p className="text-gray-400 text-sm">{homeDesc}</p>
+      <div className="flex flex-col h-full">
+
+        {/* ── Scrollable content ── */}
+        <div className="flex-1 overflow-y-auto min-h-0">
+          <div className="p-4 max-w-2xl mx-auto">
+            {/* Location header */}
+            <div className="fade-in mb-4">
+              <div className="text-4xl mb-2">🏠</div>
+              <h2 className="text-white font-bold text-lg">{homeName}</h2>
+              <p className="text-gray-400 text-sm">{homeDesc}</p>
+            </div>
+
+            {/* Morning feeling */}
+            <div className="dialogue-box p-3 mb-4 text-sm text-gray-300">
+              {i18n.language === 'ca'
+                ? "El sol entra per la finestra. El ventilador de sosté gira. El somni d'aquesta nit encara és fresc a la teva ment. Què fas?"
+                : i18n.language === 'es'
+                ? 'El sol entra por la ventana. El ventilador de techo gira. El sueño de esta noche aún está fresco en tu mente. ¿Qué haces?'
+                : "Sunlight streams through the window. The ceiling fan turns. Last night's dream is still fresh in your mind. What do you do?"}
+            </div>
+
+            {/* Morning activities grid */}
+            <div className="grid grid-cols-2 gap-3">
+              {interactions.filter((a) => a.id !== 'goout').map((action) => (
+                <button
+                  key={action.id}
+                  onClick={() => handleInteraction(action.effects, action.time, action.id)}
+                  disabled={isUsed(action.id)}
+                  className={`p-3 rounded-xl transition-all text-left active:scale-[0.98] ${
+                    isUsed(action.id)
+                      ? 'bg-[#16213e]/40 border border-gray-800/50 opacity-40 cursor-not-allowed'
+                      : 'bg-[#16213e] border border-gray-600 hover:border-[#e94560]/70 hover:bg-[#1e2d50] cursor-pointer'
+                  }`}
+                >
+                  <div className="text-2xl mb-1">{action.icon}</div>
+                  <div className="text-white font-semibold text-sm">{action.label}</div>
+                  <div className="text-gray-300 text-xs mt-0.5">{action.desc}</div>
+                  {action.time > 0 && (
+                    <div className="text-xs text-gray-400 mt-1">⏳ {action.time}h</div>
+                  )}
+                  {isUsed(action.id) && (
+                    <div className="text-xs text-green-400 mt-1">✓ Done</div>
+                  )}
+                </button>
+              ))}
+            </div>
+          </div>
         </div>
 
-        {/* Morning feeling */}
-        <div className="dialogue-box p-3 mb-4 text-sm text-gray-300">
-          {i18n.language === 'ca'
-            ? 'El sol entra per la finestra. El ventilador de sosté gira. El somni d\'aquesta nit encara és fresc a la teva ment. Què fas?'
-            : i18n.language === 'es'
-            ? 'El sol entra por la ventana. El ventilador de techo gira. El sueño de esta noche aún está fresco en tu mente. ¿Qué haces?'
-            : 'Sunlight streams through the window. The ceiling fan turns. Last night\'s dream is still fresh in your mind. What do you do?'}
-        </div>
-
-        {/* Interaction grid */}
-        <div className="grid grid-cols-2 gap-3">
-          {interactions.map((action) => (
+        {/* ── Sticky go outside button ── */}
+        <div className="shrink-0 px-4 py-3 bg-[#0d1220] border-t border-gray-800/80">
+          <div className="max-w-2xl mx-auto">
             <button
-              key={action.id}
-              onClick={() => {
-                if (action.id === 'goout') {
-                  onGoToMap();
-                } else {
-                  handleInteraction(action.effects, action.time, action.id);
-                }
-              }}
-              disabled={isUsed(action.id)}
-              className={`p-3 rounded-lg transition-all text-left ${
-                isUsed(action.id)
-                  ? 'bg-[#16213e]/40 border border-gray-800/50 opacity-50 cursor-not-allowed'
-                  : 'bg-[#16213e] border border-gray-700 hover:border-[#e94560] hover:bg-[#0f3460]/80'
-              }`}
+              onClick={onGoToMap}
+              className="w-full py-4 rounded-xl font-bold text-base text-white bg-gradient-to-r from-[#e94560] to-[#c73a50] shadow-lg shadow-[#e94560]/25 hover:brightness-110 active:scale-[0.98] transition-all"
             >
-              <div className="text-2xl mb-1">{action.icon}</div>
-              <div className="text-white font-semibold text-sm">{action.label}</div>
-              <div className="text-gray-400 text-xs mt-0.5">{action.desc}</div>
-              {action.time > 0 && (
-                <div className="text-[10px] text-gray-500 mt-1">⏳ {action.time}h</div>
-              )}
-              {isUsed(action.id) && (
-                <div className="text-[10px] text-green-500 mt-1">✓ Done</div>
-              )}
+              {interactions.find((a) => a.id === 'goout')?.icon} {interactions.find((a) => a.id === 'goout')?.label} →
             </button>
-          ))}
+          </div>
         </div>
+
       </div>
     </GameLayout>
   );

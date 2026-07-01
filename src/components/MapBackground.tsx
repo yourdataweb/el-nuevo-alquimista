@@ -7,6 +7,8 @@ import { elAlquimista } from '../data/story/el-alquimista';
 import { getLocationsForChapter } from '../engine/storyEngine';
 import type { LocationPOI } from '../store/types';
 
+const BASE = import.meta.env.BASE_URL;
+
 const LOCATION_EMOJIS: Record<string, string> = {
   home: '🏠', plaza: '🏛️', library: '📚', park: '🌳',
   market: '🛒', church: '⛪', monument: '🏛️', cafe: '☕',
@@ -96,6 +98,8 @@ export default function MapBackground({ onLocationSelect }: MapBackgroundProps) 
         maxZoom: 19,
       }).addTo(map);
 
+      L.control.zoom({ position: 'bottomright' }).addTo(map);
+
       leafletMapRef.current = map;
 
       (window as any).__mapInstance = map;
@@ -157,21 +161,41 @@ export default function MapBackground({ onLocationSelect }: MapBackgroundProps) 
         icon: createLocationIcon(loc.type, isRequired),
       });
 
+      const accentColor = isRequired ? '#e94560' : '#0e7490';
+      const accentGradient = isRequired
+        ? 'linear-gradient(to right,#e94560,#c73a50)'
+        : 'linear-gradient(to right,#0e7490,#0891b2)';
+      const accentShadow = isRequired
+        ? '0 2px 10px rgba(233,69,96,0.45)'
+        : '0 2px 10px rgba(14,116,144,0.45)';
+
       marker.bindPopup(`
-        <div style="font-family:system-ui;min-width:160px">
-          <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px">
-            <span style="font-size:18px">${LOCATION_EMOJIS[loc.type] ?? '📍'}</span>
-            <strong style="font-size:13px">${loc.name}</strong>
+        <div style="width:200px;background:#1a1a2e;border-radius:12px;overflow:hidden;font-family:system-ui;">
+          <div style="position:relative;height:120px;overflow:hidden;background:${accentColor}22;">
+            <img
+              src="${BASE}locations/${loc.id}.jpg"
+              style="width:100%;height:100%;object-fit:cover;display:block;"
+              onerror="this.style.display='none'"
+            />
+            <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.80) 0%,rgba(0,0,0,0.15) 55%,transparent 100%);"></div>
+            ${isRequired ? `<div style="position:absolute;top:8px;right:8px;background:#e94560;color:white;font-size:9px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;padding:2px 7px;border-radius:20px;">Story</div>` : ''}
+            <div style="position:absolute;bottom:0;left:0;right:0;padding:8px 10px;">
+              <div style="display:flex;align-items:center;gap:6px;">
+                <span style="font-size:17px;line-height:1;">${LOCATION_EMOJIS[loc.type] ?? '📍'}</span>
+                <span style="font-size:13px;font-weight:700;color:#fff;text-shadow:0 1px 4px rgba(0,0,0,0.9);line-height:1.2;">${loc.name}</span>
+              </div>
+            </div>
           </div>
-          <p style="font-size:11px;color:#666;margin:0 0 8px">${loc.type}</p>
-          <button
-            onclick="window.__selectLocation && window.__selectLocation('${loc.id}')"
-            style="width:100%;padding:6px 12px;background:${isRequired ? '#e94560' : '#333'};color:white;border:none;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer"
-          >
-            ${isRequired ? 'Investigate →' : 'Visit'}
-          </button>
+          <div style="padding:10px;">
+            <button
+              onclick="window.__selectLocation && window.__selectLocation('${loc.id}')"
+              style="width:100%;padding:9px 0;background:${accentGradient};color:white;border:none;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;box-shadow:${accentShadow};letter-spacing:0.02em;"
+            >
+              ${isRequired ? 'Investigate →' : 'Visit →'}
+            </button>
+          </div>
         </div>
-      `);
+      `, { className: 'loc-popup', maxWidth: 220 });
 
       marker.addTo(map);
     });

@@ -24,14 +24,17 @@ export default function CitySelectScreen() {
         {/* City card */}
         <div
           onClick={handleSelectCity}
-          className="w-full p-6 rounded-xl bg-[#16213e] border-2 border-[#e94560]/40 hover:border-[#e94560] cursor-pointer transition-all hover:shadow-lg hover:shadow-[#e94560]/20"
+          className="group w-full p-6 rounded-xl bg-[#16213e] border-2 border-[#e94560]/40 hover:border-[#e94560] cursor-pointer transition-all hover:shadow-lg hover:shadow-[#e94560]/20 active:scale-[0.98]"
         >
           <div className="text-4xl mb-3">🏛️</div>
-          <h3 className="text-white font-bold text-lg mb-1">Barcelona</h3>
-          <p className="text-gray-400 text-sm">Spain</p>
+          <div className="flex items-center justify-between mb-1">
+            <h3 className="text-white font-bold text-lg">Barcelona</h3>
+            <span className="text-[#e94560] text-lg group-hover:translate-x-1 transition-transform">→</span>
+          </div>
+          <p className="text-gray-300 text-sm">Spain</p>
           <div className="mt-4 flex items-center justify-center gap-2">
-            <span className="text-xs text-gray-500">🏘️ 20+ locations</span>
-            <span className="text-xs text-gray-500">📖 1 story</span>
+            <span className="text-xs text-gray-400">🏘️ 20+ locations</span>
+            <span className="text-xs text-gray-400">📖 1 story</span>
           </div>
         </div>
 

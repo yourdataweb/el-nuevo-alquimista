@@ -106,6 +106,29 @@ body {
   background: linear-gradient(90deg, #0f3460 0%, #16213e 100%);
 }
 
+/* Push zoom control above the stats bar footer */
+.leaflet-bottom.leaflet-right {
+  bottom: 56px;
+}
+
+/* Location popup — strip Leaflet's white wrapper */
+.loc-popup .leaflet-popup-content-wrapper {
+  background: transparent;
+  border: none;
+  box-shadow: 0 6px 24px rgba(0,0,0,0.55);
+  padding: 0;
+  border-radius: 12px;
+  overflow: hidden;
+}
+.loc-popup .leaflet-popup-content {
+  margin: 0;
+  line-height: 1;
+}
+.loc-popup .leaflet-popup-tip-container .leaflet-popup-tip {
+  background: #1a1a2e;
+  box-shadow: none;
+}
+
 /* Scrollbar styling */
 ::-webkit-scrollbar {
   width: 6px;

@@ -87,7 +87,7 @@ export default function DialogueScreen({ chapterIndex, onComplete }: DialogueScr
     const ml = chapter.momentLimit;
     return (
       <GameLayout>
-        <div className="p-4 max-w-2xl mx-auto">
+        <div className="h-full p-4 max-w-2xl mx-auto">
           <MomentLimite
             text={getLocalizedText(ml.text, ml.textEs, ml.textCa)}
             timeSeconds={ml.timeSeconds}
@@ -111,7 +111,7 @@ export default function DialogueScreen({ chapterIndex, onComplete }: DialogueScr
 
   return (
     <GameLayout>
-      <div className="p-4 max-w-2xl mx-auto">
+      <div className="h-full p-4">
         <DialogueBox
           speaker={getSpeakerName(currentNode.speaker)}
           text={getLocalizedText(currentNode.text, currentNode.textEs, currentNode.textCa)}
