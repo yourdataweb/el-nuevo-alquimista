@@ -209,6 +209,45 @@ The Leaflet map renders at `z-0` behind all UI. On the `map` phase, UI chrome (h
 
 ---
 
+## Side Activities & Mini Games
+
+Every location on the map offers **side activities** — optional mini-challenges that are unrelated to the main story but reward stat improvements and consume in-game time.
+
+### Activity buttons
+
+When you arrive at a location, activity buttons appear in the sticky bottom bar (above the main story/navigation actions). Each button shows:
+- An icon indicating the game type
+- The activity name
+- Duration in hours and stat effects
+- A ✓ badge once completed (greys out and disables the button)
+
+### Mini game types
+
+| Icon | Type | Mechanic | Good for |
+|---|---|---|---|
+| 🧠 | **Quick Quiz** | 3 questions, 8 s each — get ≥ 2 correct to win | Knowledge-heavy activities (reading, studying, contemplating) |
+| 🎯 | **Tap Challenge** | Stop a moving indicator inside a green zone — 5 rounds, win ≥ 3 | Timing/skill activities (exercise, haggling, photography) |
+
+### Activity data
+
+Activities are defined per location **type** (not per individual location) in `src/data/locationActivities.ts`. Each `ActivityDef` has:
+
+```typescript
+interface ActivityDef {
+  id: string;
+  i18nKey: string;          // key in activitiesSide namespace
+  miniGame: 'quick_quiz' | 'tap_challenge';
+  durationHours: number;
+  effects: Partial<Stats>;  // stat deltas applied on win
+  fluff: string;            // subtitle shown in the mini-game modal
+  quizData?: QuizQuestion[];// required for quick_quiz activities
+}
+```
+
+`quick_quiz` activities include contextual questions related to the location type (e.g. alchemical manuscripts at libraries, Gothic architecture at churches, meditation techniques at parks). `tap_challenge` activities reward timing skill (e.g. matching exercise rhythm, timing a market offer, capturing the perfect photo).
+
+---
+
 ## Location Images
 
 Travel photos are stored at `public/locations/{locationId}.jpg` (20 real Wikimedia Commons photos). The `LocationImage` component loads these with a gradient-initials fallback if missing.
@@ -254,7 +293,12 @@ src/
 │   ├── LocationHUD.tsx          Current location name overlay on map
 │   ├── LocationImage.tsx        Cached photo loader with gradient fallback
 │   ├── MomentLimite.tsx         Timed critical decisions UI
-│   └── LanguageSwitcher.tsx     CAT / ES / EN segmented toggle
+│   ├── LanguageSwitcher.tsx     CAT / ES / EN segmented toggle
+│   └── minigames/
+│       ├── MiniGameModal.tsx    Full-screen overlay wrapper for mini games
+│       ├── ResultSummary.tsx    Win/lose result card shown after a mini game
+│       ├── QuickQuiz.tsx        3-question contextual quiz, 8 s timer per question
+│       └── TapChallenge.tsx     Stop-the-indicator timing game, 5 rounds
 ├── screens/                     One component per game phase
 │   ├── TitleScreen.tsx          Animated title with starfield + start button
 │   ├── CitySelectScreen.tsx     City card selector
@@ -270,7 +314,8 @@ src/
 │   └── gameStore.ts             Zustand store: state + actions + resetGame()
 ├── data/
 │   ├── cities/barcelona.ts      20+ real Barcelona locations with coordinates + translations
-│   └── story/el-alquimista.ts   7 chapters: prologue + 5 chapters + epilogue, dialogue trees
+│   ├── story/el-alquimista.ts   7 chapters: prologue + 5 chapters + epilogue, dialogue trees
+│   └── locationActivities.ts    Side activities per location type (quick_quiz / tap_challenge)
 └── engine/
     ├── storyEngine.ts           Pure functions: chapter progression, auto-advance, criteria checking
     ├── timeEngine.ts            Calendar/clock: formatTime, day-of-week, time labels

@@ -106,9 +106,15 @@ body {
   background: linear-gradient(90deg, #0f3460 0%, #16213e 100%);
 }
 
-/* Push zoom control above the stats bar footer */
+/* Push zoom control above the stats bar footer.
+   Stats bar wraps to 2 rows below sm (640px), so needs extra clearance. */
 .leaflet-bottom.leaflet-right {
-  bottom: 56px;
+  bottom: 88px;
+}
+@media (min-width: 640px) {
+  .leaflet-bottom.leaflet-right {
+    bottom: 56px;
+  }
 }
 
 /* Location popup — strip Leaflet's white wrapper */

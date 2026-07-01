@@ -5,9 +5,9 @@ import GameLayout from '../components/GameLayout';
 import LocationImage from '../components/LocationImage';
 import MiniGameModal from '../components/minigames/MiniGameModal';
 import ResultSummary from '../components/minigames/ResultSummary';
-import MemoryMatch from '../components/minigames/MemoryMatch';
-import TimingBar from '../components/minigames/TimingBar';
-import { getActivitiesForType, type ActivityDef, type MiniGameKind } from '../data/locationActivities';
+import QuickQuiz from '../components/minigames/QuickQuiz';
+import TapChallenge from '../components/minigames/TapChallenge';
+import { getActivitiesForType, type ActivityDef } from '../data/locationActivities';
 import type { LocationPOI, Stats } from '../store/types';
 
 interface LocationScreenProps {
@@ -32,10 +32,9 @@ const TYPE_EMOJIS: Record<string, string> = {
   airport: '✈️',
 };
 
-/** Mini‑game icon and flavour colour per kind. */
-const MG_META: Record<MiniGameKind, { icon: string; color: string }> = {
-  memory_match: { icon: '🧠', color: 'from-purple-600/40 to-purple-800/20' },
-  timing_bar: { icon: '🎯', color: 'from-orange-600/40 to-orange-800/20' },
+const MG_ICON: Record<string, string> = {
+  quick_quiz: '🧠',
+  tap_challenge: '🎯',
 };
 
 /** Stat labels (short) for display. */
@@ -160,66 +159,50 @@ export default function LocationScreen({
               )}
             </div>
 
-            {/* ── Side‑quest activity buttons ── */}
-            {activities.length > 0 && (
-              <div className="mb-2">
-                <h3 className="text-gray-400 text-xs uppercase tracking-wider mb-2 px-1">
-                  {i18n.language === 'ca'
-                    ? 'Activitats del lloc'
-                    : i18n.language === 'es'
-                    ? 'Actividades del lugar'
-                    : 'Activities'}
-                </h3>
-                <div className="grid grid-cols-2 gap-2">
-                  {activities.map((act) => {
-                    const done = completedActivities.includes(act.id);
-                    const meta = MG_META[act.miniGame] ?? { icon: '🎮', color: '' };
-                    return (
-                      <button
-                        key={act.id}
-                        onClick={() => {
-                          if (done) return;
-                          setView({ kind: 'game', act });
-                        }}
-                        disabled={done}
-                        className={`relative p-3 rounded-xl text-left transition-all active:scale-[0.97] ${
-                          done
-                            ? 'bg-[#16213e] border border-gray-700 opacity-40 cursor-not-allowed'
-                            : 'bg-[#0f4c5c] border border-[#0e7490] hover:bg-[#155e75] hover:border-[#22d3ee] cursor-pointer shadow-md shadow-black/30'
-                        }`}
-                      >
-                        <div className="hidden" />
-                        <div className="relative z-10">
-                          <div className="flex items-center gap-1.5 mb-1">
-                            <span className="text-lg">{meta.icon}</span>
-                            <span className="text-white font-semibold text-sm truncate">
-                              {t(`activitiesSide.${act.i18nKey}` as any)}
-                            </span>
-                          </div>
-                          <div className="flex flex-wrap gap-x-2 gap-y-0.5 text-xs text-gray-300">
-                            <span>⏳ {act.durationHours}h</span>
-                            {Object.entries(act.effects).map(([k, v]) => (
-                              <span key={k} className={v && v > 0 ? 'text-green-400' : 'text-red-400'}>
-                                {STAT_LABELS[k] ?? k}{v && v > 0 ? '+' : ''}{v}
-                              </span>
-                            ))}
-                          </div>
-                          {done && (
-                            <div className="text-xs text-green-400 mt-0.5">✓ Done</div>
-                          )}
-                        </div>
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
-            )}
+            {/* activity buttons have moved to the pinned bar below */}
           </div>
         </div>
 
         {/* ── Sticky action bar ── */}
         <div className="shrink-0 px-4 py-3 bg-[#0d1220] border-t border-gray-800/80">
           <div className="max-w-2xl mx-auto flex flex-col gap-2">
+
+            {/* Activity buttons */}
+            {activities.length > 0 && (
+              <div className="grid grid-cols-2 gap-2 pb-1">
+                {activities.map((act) => {
+                  const done = completedActivities.includes(act.id);
+                  return (
+                    <button
+                      key={act.id}
+                      onClick={() => { if (!done) setView({ kind: 'game', act }); }}
+                      disabled={done}
+                      className={`p-3 rounded-xl text-left transition-all active:scale-[0.97] ${
+                        done
+                          ? 'bg-[#16213e] border border-gray-700 opacity-40 cursor-not-allowed'
+                          : 'bg-[#0f4c5c] border border-[#0e7490] hover:bg-[#155e75] hover:border-[#22d3ee] cursor-pointer shadow-md shadow-black/30'
+                      }`}
+                    >
+                      <div className="flex items-center gap-1.5 mb-1">
+                        <span className="text-base">{MG_ICON[act.miniGame] ?? '🎮'}</span>
+                        <span className="text-white font-semibold text-sm truncate">
+                          {t(`activitiesSide.${act.i18nKey}` as any)}
+                        </span>
+                        {done && <span className="ml-auto text-green-400 text-xs">✓</span>}
+                      </div>
+                      <div className="flex flex-wrap gap-x-2 text-xs text-gray-300">
+                        <span>⏳ {act.durationHours}h</span>
+                        {Object.entries(act.effects).map(([k, v]) => (
+                          <span key={k} className={v && v > 0 ? 'text-green-400' : 'text-red-400'}>
+                            {STAT_LABELS[k] ?? k}{v && v > 0 ? '+' : ''}{v}
+                          </span>
+                        ))}
+                      </div>
+                    </button>
+                  );
+                })}
+              </div>
+            )}
             {isCorrect && !otherRequiredVisited && (
               <button
                 onClick={() => {
@@ -262,25 +245,21 @@ export default function LocationScreen({
         </div>
       </div>
 
-      {/* ── Mini‑game modal (only while game is active) ── */}
+      {/* ── Mini‑game modal ── */}
       {view.kind === 'game' && (
         <MiniGameModal
-          title={
-            (i18n.language === 'ca'
-              ? (t as any)(`activitiesSide.${view.act.i18nKey}`, { defaultValue: view.act.i18nKey })
-              : i18n.language === 'es'
-              ? (t as any)(`activitiesSide.${view.act.i18nKey}`, { defaultValue: view.act.i18nKey })
-              : (t as any)(`activitiesSide.${view.act.i18nKey}`, { defaultValue: view.act.i18nKey })) ??
-            view.act.i18nKey
-          }
-          subtitle={`${MG_META[view.act.miniGame]?.icon ?? '🎮'} ${view.act.fluff}`}
+          title={(t as any)(`activitiesSide.${view.act.i18nKey}`, { defaultValue: view.act.i18nKey })}
+          subtitle={`${MG_ICON[view.act.miniGame] ?? '🎮'} ${view.act.fluff}`}
           onClose={() => setView({ kind: 'idle' })}
         >
-          {view.act.miniGame === 'memory_match' && (
-            <MemoryMatch onResult={handleGameResult(view.act)} />
+          {view.act.miniGame === 'quick_quiz' && (
+            <QuickQuiz
+              questions={view.act.quizData ?? []}
+              onResult={handleGameResult(view.act)}
+            />
           )}
-          {view.act.miniGame === 'timing_bar' && (
-            <TimingBar onResult={handleGameResult(view.act)} />
+          {view.act.miniGame === 'tap_challenge' && (
+            <TapChallenge onResult={handleGameResult(view.act)} />
           )}
         </MiniGameModal>
       )}
