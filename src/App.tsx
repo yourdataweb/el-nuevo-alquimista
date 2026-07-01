@@ -1,4 +1,5 @@
-import { useCallback, useEffect, type ReactNode } from 'react';
+import { useCallback, useEffect } from 'react';
+import type { ReactNode } from 'react';
 import { useGameStore } from './store/gameStore';
 import { elAlquimista } from './data/story/el-alquimista';
 import { flyToMap } from './components/MapBackground';
@@ -26,6 +27,22 @@ import LanguageSwitcher from './components/LanguageSwitcher';
 import StatsBar from './components/StatsBar';
 import { formatTime } from './engine/timeEngine';
 import { useTranslation } from 'react-i18next';
+
+function Overlay({ children }: { children: ReactNode }) {
+  return (
+    <div className="fixed inset-0 z-10 flex flex-col bg-[#1a1a2e]/20 backdrop-blur-[1px] overflow-y-auto">
+      {children}
+    </div>
+  );
+}
+
+function Cover({ children }: { children: ReactNode }) {
+  return (
+    <div className="fixed inset-0 z-10 flex flex-col bg-[#1a1a2e] overflow-y-auto">
+      {children}
+    </div>
+  );
+}
 
 export default function App() {
   const phase = useGameStore((s) => s.phase);
@@ -135,9 +152,6 @@ export default function App() {
   }, [setCurrentLocation, setPhase]);
 
   // ── Render helpers ──
-  // Hoisted OUTSIDE App to prevent React from treating them as new types
-  // on every render (which causes children to unmount/remount, losing state).
-
   const renderPhase = () => {
     switch (phase) {
       case 'title':

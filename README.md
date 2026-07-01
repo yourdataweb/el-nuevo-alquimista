@@ -18,8 +18,6 @@ Built with React 19, TypeScript (strict), Vite 8, Leaflet + OpenStreetMap, Zusta
 ### Install & Start
 
 ```bash
-cd projects/active/badass-quest-2
-
 # Use the right node version (if nvm is installed)
 nvm use
 
@@ -38,7 +36,13 @@ Open **http://localhost:5173** in your browser.
 npm run build
 ```
 
-Output goes to `dist/`. Deploy anywhere (Vercel, Netlify, Cloudflare Pages).
+Output goes to `dist/`.
+
+### Deployment
+
+The app is deployed to [GitHub Pages](https://yourdataweb.github.io/badass-quest-2/) automatically via GitHub Actions on every push to `master`. See `.github/workflows/deploy.yml`.
+
+To set this up in a new repo: go to **Settings → Pages** and set the source to **GitHub Actions**.
 
 ### TypeScript Check
 
