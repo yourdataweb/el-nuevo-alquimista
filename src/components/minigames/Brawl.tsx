@@ -158,7 +158,7 @@ export default function Brawl({ onResult }: BrawlProps) {
         {phase === 'parried' && (
           <div className="flex flex-col items-center gap-1">
             <span className="text-5xl">🛡️</span>
-            <span className="text-green-600 font-bold">Parried!</span>
+            <span className="text-green-400 font-bold">Parried!</span>
           </div>
         )}
 
@@ -172,7 +172,7 @@ export default function Brawl({ onResult }: BrawlProps) {
         {phase === 'done' && (
           <div className="flex flex-col items-center gap-1">
             <span className="text-5xl">{hits < MAX_HITS ? '🏆' : '💀'}</span>
-            <span className={`font-bold ${hits < MAX_HITS ? 'text-green-600' : 'text-red-500'}`}>
+            <span className={`font-bold ${hits < MAX_HITS ? 'text-green-400' : 'text-red-500'}`}>
               {hits < MAX_HITS ? 'You win!' : 'Knocked out!'}
             </span>
           </div>
@@ -195,7 +195,7 @@ export default function Brawl({ onResult }: BrawlProps) {
               onClick={() => handleParry(dir)}
               className={`py-5 rounded-xl text-2xl font-bold border transition-all active:scale-[0.93] ${
                 phase === 'attack'
-                  ? 'bg-[#252525] border-gray-700 hover:bg-[#e0dbd3] hover:border-[#22c55e] hover:text-green-600 cursor-pointer'
+                  ? 'bg-[#252525] border-gray-700 hover:bg-[#1a3a2a] hover:border-[#22c55e] hover:text-green-400 cursor-pointer'
                   : 'bg-[#252525] border-gray-700 text-gray-300 cursor-default'
               }`}
             >

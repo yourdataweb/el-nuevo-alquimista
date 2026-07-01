@@ -11,6 +11,7 @@ import Pickpocket from '../components/minigames/Pickpocket';
 import Brawl from '../components/minigames/Brawl';
 import Chase from '../components/minigames/Chase';
 import Lockpick from '../components/minigames/Lockpick';
+import Photograph from '../components/minigames/Photograph';
 import { getActivitiesForType, type ActivityDef } from '../data/locationActivities';
 import type { LocationPOI, Stats } from '../store/types';
 
@@ -43,6 +44,7 @@ const MG_ICON: Record<string, string> = {
   brawl: '🥊',
   chase: '🏃',
   lockpick: '🔓',
+  photograph: '📸',
 };
 
 const BASE = import.meta.env.BASE_URL;
@@ -51,6 +53,7 @@ const MG_BACKGROUND: Record<string, string> = {
   chase:         `${BASE}minigames/bg-chase.png`,
   brawl:         `${BASE}minigames/bg-brawl.png`,
   lockpick:      `${BASE}minigames/bg-lockpick.png`,
+  photograph:    `${BASE}minigames/bg-photograph.png`,
   pickpocket:    `${BASE}minigames/bg-pickpocket.png`,
   quick_quiz:    `${BASE}minigames/bg-quiz.png`,
   tap_challenge: `${BASE}minigames/bg-tap.png`,
@@ -186,42 +189,7 @@ export default function LocationScreen({
         <div className="shrink-0 px-4 py-3 bg-[#191919] border-t border-gray-700">
           <div className="max-w-2xl mx-auto flex flex-col gap-2">
 
-            {/* Activity buttons */}
-            {activities.length > 0 && (
-              <div className="grid grid-cols-2 gap-2 pb-1">
-                {activities.map((act) => {
-                  const done = completedActivities.includes(act.id);
-                  return (
-                    <button
-                      key={act.id}
-                      onClick={() => { if (!done) setView({ kind: 'game', act }); }}
-                      disabled={done}
-                      className={`p-3 rounded-xl text-left transition-all active:scale-[0.97] ${
-                        done
-                          ? 'bg-[#252525] border border-gray-700 opacity-50 cursor-not-allowed'
-                          : 'bg-[#0f4c5c] border border-[#7ec8e4] hover:bg-[#0c3d4d] hover:border-[#4ab4d8] cursor-pointer shadow-md shadow-black/10'
-                      }`}
-                    >
-                      <div className="flex items-center gap-1.5 mb-1">
-                        <span className="text-base">{MG_ICON[act.miniGame] ?? '🎮'}</span>
-                        <span className="text-white font-semibold text-sm truncate">
-                          {t(`activitiesSide.${act.i18nKey}` as any)}
-                        </span>
-                        {done && <span className="ml-auto text-green-400 text-xs">✓</span>}
-                      </div>
-                      <div className="flex flex-wrap gap-x-2 text-xs text-gray-400">
-                        <span>⏳ {act.durationHours}h</span>
-                        {Object.entries(act.effects).map(([k, v]) => (
-                          <span key={k} className={v && v > 0 ? 'text-green-400' : 'text-red-500'}>
-                            {STAT_LABELS[k] ?? k}{v && v > 0 ? '+' : ''}{v}
-                          </span>
-                        ))}
-                      </div>
-                    </button>
-                  );
-                })}
-              </div>
-            )}
+            {/* Investigate — always on top */}
             {isCorrect && !otherRequiredVisited && (
               <button
                 onClick={() => {
@@ -250,9 +218,47 @@ export default function LocationScreen({
               </button>
             )}
 
+            {/* Activity buttons — between Investigate and Back */}
+            {activities.length > 0 && (
+              <div className="grid grid-cols-2 gap-2">
+                {activities.map((act) => {
+                  const done = completedActivities.includes(act.id);
+                  return (
+                    <button
+                      key={act.id}
+                      onClick={() => { if (!done) setView({ kind: 'game', act }); }}
+                      disabled={done}
+                      className={`p-3 rounded-xl text-left transition-all active:scale-[0.97] ${
+                        done
+                          ? 'bg-[#252525] border border-gray-700 opacity-50 cursor-not-allowed'
+                          : 'bg-[#3d2200] border border-[#d97706] hover:bg-[#4d2e00] hover:border-[#f59e0b] cursor-pointer shadow-md shadow-black/10'
+                      }`}
+                    >
+                      <div className="flex items-center gap-1.5 mb-1">
+                        <span className="text-base">{MG_ICON[act.miniGame] ?? '🎮'}</span>
+                        <span className="text-white font-semibold text-sm truncate">
+                          {t(`activitiesSide.${act.i18nKey}` as any)}
+                        </span>
+                        {done && <span className="ml-auto text-green-400 text-xs">✓</span>}
+                      </div>
+                      <div className="flex flex-wrap gap-x-2 text-xs text-gray-400">
+                        <span>⏳ {act.durationHours}h</span>
+                        {Object.entries(act.effects).map(([k, v]) => (
+                          <span key={k} className={v && v > 0 ? 'text-green-400' : 'text-red-500'}>
+                            {STAT_LABELS[k] ?? k}{v && v > 0 ? '+' : ''}{v}
+                          </span>
+                        ))}
+                      </div>
+                    </button>
+                  );
+                })}
+              </div>
+            )}
+
+            {/* Back to map — always at bottom */}
             <button
               onClick={onBackToMap}
-              className="w-full py-2.5 rounded-xl font-medium text-sm text-gray-300 bg-[#252525] border border-gray-700 hover:bg-[#e0dbd3] hover:border-gray-400 active:scale-[0.98] transition-all"
+              className="w-full py-2.5 rounded-xl font-medium text-sm text-[#93c5fd] bg-[#1e3a5f] border border-[#3b82f6]/40 hover:bg-[#1d4ed8]/30 hover:border-[#3b82f6]/70 active:scale-[0.98] transition-all"
             >
               {i18n.language === 'ca'
                 ? '← Tornar al mapa'
@@ -292,6 +298,9 @@ export default function LocationScreen({
           )}
           {view.act.miniGame === 'lockpick' && (
             <Lockpick onResult={handleGameResult(view.act)} />
+          )}
+          {view.act.miniGame === 'photograph' && (
+            <Photograph onResult={handleGameResult(view.act)} />
           )}
         </MiniGameModal>
       )}

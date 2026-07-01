@@ -117,7 +117,7 @@ export default function QuickQuiz({ questions, onResult }: QuickQuizProps) {
       {/* Options */}
       <div className="grid grid-cols-1 gap-2">
         {current?.options.map((opt, i) => {
-          let style = 'bg-[#252525] border border-gray-700 text-gray-300 hover:border-[#e94560]/70 hover:bg-[#e0dbd3] cursor-pointer';
+          let style = 'bg-[#252525] border border-gray-700 text-gray-300 hover:border-[#e94560]/70 hover:bg-[#333] cursor-pointer';
           if (phase === 'feedback') {
             if (i === current.correct) {
               style = 'bg-[#22c55e]/10 border-2 border-[#22c55e] text-gray-100';
@@ -137,7 +137,7 @@ export default function QuickQuiz({ questions, onResult }: QuickQuizProps) {
               <span className="text-gray-500 mr-2">{String.fromCharCode(65 + i)}.</span>
               {opt}
               {phase === 'feedback' && i === current.correct && (
-                <span className="ml-2 text-green-600">✓</span>
+                <span className="ml-2 text-green-400">✓</span>
               )}
               {phase === 'feedback' && i === selected && i !== current.correct && (
                 <span className="ml-2 text-[#e94560]">✗</span>

@@ -149,7 +149,7 @@ export default function TapChallenge({ onResult }: TapChallengeProps) {
 
         {/* Feedback label */}
         {(phase === 'hit' || phase === 'miss') && (
-          <div className={`absolute inset-0 flex items-center justify-center text-lg font-bold ${phase === 'hit' ? 'text-green-600' : 'text-[#e94560]'}`}>
+          <div className={`absolute inset-0 flex items-center justify-center text-lg font-bold ${phase === 'hit' ? 'text-green-400' : 'text-[#e94560]'}`}>
             {phase === 'hit' ? '✓ Hit!' : '✗ Miss'}
           </div>
         )}

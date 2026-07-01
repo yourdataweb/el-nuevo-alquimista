@@ -1,6 +1,6 @@
 import type { Stats } from '../store/types';
 
-export type MiniGameKind = 'quick_quiz' | 'tap_challenge' | 'pickpocket' | 'brawl' | 'chase' | 'lockpick';
+export type MiniGameKind = 'quick_quiz' | 'tap_challenge' | 'pickpocket' | 'brawl' | 'chase' | 'lockpick' | 'photograph';
 
 export interface QuizQuestion {
   q: string;
@@ -537,10 +537,10 @@ const ACTIVITIES: Record<string, ActivityDef[]> = {
     {
       id: 'monument_photo',
       i18nKey: 'monumentPhoto',
-      miniGame: 'lockpick',
+      miniGame: 'photograph',
       durationHours: 1,
       effects: { fulfillment: 3, knowledge: 2 },
-      fluff: 'The best vantage point is behind a locked gate — pick it before the guard returns.',
+      fluff: 'The light is perfect right now — wait for the right moment and capture the shot.',
     },
     {
       id: 'monument_study',

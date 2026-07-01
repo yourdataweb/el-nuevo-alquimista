@@ -48,7 +48,7 @@ download_commons public/locations/bcn-library-central.jpg \
   "La Central del Raval.jpg" || true
 download_commons public/locations/bcn-library-catalunya.jpg \
   "Biblioteca de Catalunya.jpg" || true
-download_commons public/locations/bcn-park-ciutadella.jpg \
+download_commons public/locations/bcn-park-ciutadella.png \
   "Llac Parc Ciutadella.jpg" || true
 download_commons public/locations/bcn-park-guell.jpg \
   "Parc Güell dragon.jpg" || true
