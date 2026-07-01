@@ -3,9 +3,18 @@ import { useGameStore } from '../store/gameStore';
 import { getLocationById } from '../data/cities/barcelona';
 import { flyToPlayer } from './MapBackground';
 
+const BASE = import.meta.env.BASE_URL;
+const PROTAGONIST_FILES: Record<string, string> = {
+  trump: 'trump.png',
+  ramos: 'ramos.png',
+};
+
 export default function LocationHUD() {
   const { i18n } = useTranslation();
   const currentLocationId = useGameStore((s) => s.currentLocationId);
+  const chosenCharacter = useGameStore((s) => s.chosenCharacter);
+  const charFile = PROTAGONIST_FILES[chosenCharacter ?? ''] ?? 'protagonist.jpg';
+  const charImg = `${BASE}characters/${charFile}`;
 
   const location = currentLocationId ? getLocationById(currentLocationId) : null;
   if (!location) return null;
@@ -19,8 +28,8 @@ export default function LocationHUD() {
   return (
     <div className="fixed top-14 left-3 z-20 flex items-center gap-2 bg-[#1a1a2e]/80 backdrop-blur-md rounded-xl px-3 py-2 border border-white/10 shadow-lg pointer-events-auto max-w-[60vw]">
       {/* Character avatar */}
-      <div className="w-9 h-9 rounded-full bg-[#e94560] flex items-center justify-center text-lg shadow-lg shrink-0 border-2 border-white/20">
-        🧑
+      <div className="w-9 h-9 rounded-full overflow-hidden shrink-0 border-2 border-[#e94560] shadow-lg shadow-[#e94560]/40">
+        <img src={charImg} alt="You" className="w-full h-full object-cover object-top" />
       </div>
 
       {/* Location info */}

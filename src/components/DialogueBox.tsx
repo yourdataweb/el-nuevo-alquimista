@@ -1,4 +1,5 @@
 import { useTranslation } from 'react-i18next';
+import { useGameStore } from '../store/gameStore';
 
 const BASE = import.meta.env.BASE_URL;
 
@@ -15,13 +16,17 @@ interface DialogueBoxProps {
   speakerSprite?: string;
 }
 
-const CHARACTER_IMAGES: Record<string, string> = {
-  protagonist: `${BASE}characters/protagonist.jpg`,
-  melquisedec: `${BASE}characters/melquisedec.jpg`,
-  merce: `${BASE}characters/merce.png`,
-  englishman: `${BASE}characters/englishman.png`,
-  alchemist: `${BASE}characters/alchemist.png`,
-  narrator: `${BASE}characters/alchemist.png`, // reusing alchemist for narrator since no dedicated image
+const CHARACTER_FILES: Record<string, string> = {
+  melquisedec: 'gandalf.png',
+  merce: 'albanese.png',
+  englishman: 'rooney.png',
+  alchemist: 'alchemist.png',
+  narrator: 'chuck.jpg',
+};
+
+const CHARACTER_PROTAGONIST_FILE: Record<string, string> = {
+  trump: 'trump.png',
+  ramos: 'ramos.png',
 };
 
 const CHARACTER_EMOJIS: Record<string, string> = {
@@ -34,9 +39,19 @@ const CHARACTER_EMOJIS: Record<string, string> = {
 
 export default function DialogueBox({ speaker, text, options, speakerSprite }: DialogueBoxProps) {
   const { t } = useTranslation();
+  const chosenCharacter = useGameStore((s) => s.chosenCharacter);
 
-  const spriteKey = speakerSprite && CHARACTER_IMAGES[speakerSprite] ? speakerSprite : null;
-  const imgSrc = spriteKey ? CHARACTER_IMAGES[spriteKey] : null;
+  const getImgSrc = (): string | null => {
+    if (!speakerSprite) return null;
+    if (speakerSprite === 'protagonist') {
+      const file = CHARACTER_PROTAGONIST_FILE[chosenCharacter ?? ''] ?? 'protagonist.jpg';
+      return `${BASE}characters/${file}`;
+    }
+    const file = CHARACTER_FILES[speakerSprite];
+    return file ? `${BASE}characters/${file}` : null;
+  };
+
+  const imgSrc = getImgSrc();
   const emoji = speakerSprite ? CHARACTER_EMOJIS[speakerSprite] : null;
 
   return (
@@ -50,7 +65,7 @@ export default function DialogueBox({ speaker, text, options, speakerSprite }: D
               <div className="w-14 h-14 rounded-full overflow-hidden border-2 border-[#e94560]/40 shrink-0 bg-[#1a1a2e]">
                 <img src={imgSrc} alt={speaker} className="w-full h-full object-cover" loading="lazy" />
               </div>
-            ) : spriteKey || speakerSprite ? (
+            ) : speakerSprite ? (
               <div className="w-10 h-10 bg-[#1a1a2e] rounded-full flex items-center justify-center text-xl border border-[#e94560]/30 shrink-0">
                 {emoji || '❓'}
               </div>

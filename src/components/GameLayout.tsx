@@ -62,7 +62,7 @@ export default function GameLayout({ children, showStats = true, showMapButton =
         <div className="shrink-0 px-3 py-2 bg-[#16213e] border-t border-[#e94560]/20">
           <button
             onClick={onMapClick}
-            className="w-full py-2 px-4 bg-[#e94560] hover:bg-[#c73a50] text-white font-semibold rounded-lg transition-colors text-sm"
+            className="w-full py-2 px-4 bg-[#22c55e] hover:bg-[#16a34a] text-white font-semibold rounded-lg transition-colors text-sm"
           >
             {t('ui.goToMap')} 🗺️
           </button>

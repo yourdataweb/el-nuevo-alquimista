@@ -9,7 +9,6 @@ const LOCATIONS = [
   { id: 'bcn-plaza-espanya', file: 'Plaça Espanya, Barcelona - panoramio (36).jpg' },
   { id: 'bcn-library-central', file: 'Hospital de la Santa Creu, escala Caritat.jpg' },
   { id: 'bcn-library-catalunya', file: 'Biblioteca de Catalunya - Barcelona (Catalonia).jpg' },
-  { id: 'bcn-park-ciutadella', file: 'Parc de la Ciutadella (Barcelona) - 1.jpg' },
   { id: 'bcn-park-guell', file: 'Parc Güell Terrace.jpg' },
   { id: 'bcn-park-montjuic', file: 'Magic Fountain of Montjuïc - Barcelona, Spain -全景.jpg' },
   { id: 'bcn-market-boqueria', file: 'Mercado de la Boqueria, Barcelona, España, 2016-01-13, DD 24-27 HDR.jpg' },

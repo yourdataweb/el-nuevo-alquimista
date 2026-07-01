@@ -120,7 +120,7 @@ export default function HomeScreen({ onGoToMap }: HomeScreenProps) {
           <div className="max-w-2xl mx-auto">
             <button
               onClick={onGoToMap}
-              className="w-full py-4 rounded-xl font-bold text-base text-white bg-gradient-to-r from-[#e94560] to-[#c73a50] shadow-lg shadow-[#e94560]/25 hover:brightness-110 active:scale-[0.98] transition-all"
+              className="w-full py-4 rounded-xl font-bold text-base text-white bg-gradient-to-r from-[#22c55e] to-[#16a34a] shadow-lg shadow-[#22c55e]/25 hover:brightness-110 active:scale-[0.98] transition-all"
             >
               {interactions.find((a) => a.id === 'goout')?.icon} {interactions.find((a) => a.id === 'goout')?.label} →
             </button>

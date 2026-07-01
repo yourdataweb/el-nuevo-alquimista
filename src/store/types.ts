@@ -137,6 +137,7 @@ export interface GameState {
   flags: Record<string, boolean>;
   chosenCity: string | null;
   chosenBook: string | null;
+  chosenCharacter: string | null;
   selectedOptionIds: string[];
   visitedLocationIds: string[];
   completedChapterIds: string[];

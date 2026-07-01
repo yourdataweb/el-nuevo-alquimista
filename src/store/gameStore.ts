@@ -35,6 +35,7 @@ interface GameStore extends GameState {
   removeFlag: (flag: string) => void;
   setCity: (cityId: string) => void;
   setBook: (bookId: string) => void;
+  setCharacter: (characterId: string) => void;
   addVisitedLocation: (locationId: string) => void;
   addUsedHomeAction: (actionId: string) => void;
   recordDecision: (chapterId: string, nodeId: string, optionId: string) => void;
@@ -54,6 +55,7 @@ const initialState: GameState = {
   flags: {},
   chosenCity: null,
   chosenBook: null,
+  chosenCharacter: null,
   selectedOptionIds: [],
   visitedLocationIds: [],
   completedChapterIds: [],
@@ -147,6 +149,7 @@ export const useGameStore = create<GameStore>((set) => ({
 
   setCity: (cityId) => set({ chosenCity: cityId }),
   setBook: (bookId) => set({ chosenBook: bookId }),
+  setCharacter: (characterId) => set({ chosenCharacter: characterId }),
 
   addUsedHomeAction: (actionId) =>
     set((state) => {

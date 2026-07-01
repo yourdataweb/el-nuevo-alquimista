@@ -209,7 +209,7 @@ export default function LocationScreen({
                   addVisitedLocation(location.id);
                   onProceed();
                 }}
-                className="w-full py-3.5 rounded-xl font-bold text-sm text-white bg-gradient-to-r from-[#e94560] to-[#c73a50] shadow-lg shadow-[#e94560]/25 hover:brightness-110 active:scale-[0.98] transition-all"
+                className="w-full py-3.5 rounded-xl font-bold text-sm text-white bg-gradient-to-r from-[#22c55e]/80 to-[#16a34a]/80 shadow-lg shadow-[#22c55e]/20 hover:brightness-110 active:scale-[0.98] transition-all"
               >
                 {i18n.language === 'ca' ? 'Investigar' : i18n.language === 'es' ? 'Investigar' : 'Investigate'} →
               </button>

@@ -95,7 +95,7 @@ export default function RecapScreen({ chapterIndex, onNext, isLastChapter }: Rec
           <div className="max-w-2xl mx-auto">
             <button
               onClick={onNext}
-              className="w-full py-3.5 rounded-xl font-bold text-sm text-white bg-gradient-to-r from-[#e94560] to-[#c73a50] shadow-lg shadow-[#e94560]/25 hover:brightness-110 active:scale-[0.98] transition-all"
+              className="w-full py-3.5 rounded-xl font-bold text-sm text-white bg-gradient-to-r from-[#22c55e] to-[#16a34a] shadow-lg shadow-[#22c55e]/25 hover:brightness-110 active:scale-[0.98] transition-all"
             >
               {isLastChapter
                 ? (i18n.language === 'ca' ? "Veure l'Epíleg" : i18n.language === 'es' ? 'Ver el Epílogo' : 'View Epilogue')

@@ -122,7 +122,7 @@ export default function ResultSummary({ won, effects, onClose }: ResultSummaryPr
           {/* Continue button */}
           <button
             onClick={onClose}
-            className="w-full py-3 rounded-xl bg-[#e94560] hover:bg-[#c73a50] text-white font-bold transition-all text-base"
+            className="w-full py-3 rounded-xl bg-[#22c55e] hover:bg-[#16a34a] text-white font-bold transition-all text-base"
           >
             Continue
           </button>

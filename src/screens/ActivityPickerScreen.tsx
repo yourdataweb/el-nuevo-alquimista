@@ -140,7 +140,7 @@ export default function ActivityPickerScreen({ onComplete, maxActivities = 3 }: 
               disabled={selected.length === 0 || confirmed}
               className={`w-full py-3.5 rounded-xl font-bold transition-all text-sm active:scale-[0.98] ${
                 selected.length > 0 && !confirmed
-                  ? 'bg-gradient-to-r from-[#e94560] to-[#c73a50] text-white shadow-lg shadow-[#e94560]/25 hover:brightness-110'
+                  ? 'bg-gradient-to-r from-[#22c55e] to-[#16a34a] text-white shadow-lg shadow-[#22c55e]/25 hover:brightness-110'
                   : 'bg-gray-800 text-gray-500 cursor-not-allowed border border-gray-700'
               }`}
             >

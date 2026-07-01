@@ -35,7 +35,7 @@ export default function MiniGameModal({
           <button
             onClick={onClose}
             className="ml-3 shrink-0 w-8 h-8 flex items-center justify-center rounded-full
-              bg-gray-700 hover:bg-[#e94560] text-gray-300 hover:text-white
+              bg-gray-700 hover:bg-[#16a34a] text-gray-300 hover:text-white
               transition-colors text-lg font-bold"
             aria-label="Close"
           >

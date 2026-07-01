@@ -1,6 +1,8 @@
 import { useTranslation } from 'react-i18next';
 import GameLayout from '../components/GameLayout';
 import { elAlquimista } from '../data/story/el-alquimista';
+
+const BASE = import.meta.env.BASE_URL;
 import { barcelona } from '../data/cities/barcelona';
 
 interface IntroScreenProps {
@@ -30,8 +32,8 @@ export default function IntroScreen({ onContinue }: IntroScreenProps) {
 
             <div className="dialogue-box p-4 sm:p-6 fade-in">
               <div className="flex items-center gap-3 mb-4">
-                <div className="w-10 h-10 bg-[#1a1a2e] rounded-full flex items-center justify-center text-xl border border-[#e94560]/30">
-                  📖
+                <div className="w-14 h-14 rounded-full overflow-hidden border-2 border-[#e94560]/40 shrink-0 bg-[#1a1a2e]">
+                  <img src={`${BASE}characters/chuck.jpg`} alt="Narrator" className="w-full h-full object-cover" loading="lazy" />
                 </div>
                 <span className="text-[#e94560] font-bold text-sm">{t('characters.narrator')}</span>
               </div>
@@ -51,7 +53,7 @@ export default function IntroScreen({ onContinue }: IntroScreenProps) {
           <div className="max-w-2xl mx-auto">
             <button
               onClick={onContinue}
-              className="w-full py-3.5 px-6 rounded-xl font-bold text-sm text-white bg-gradient-to-r from-[#e94560] to-[#c73a50] shadow-lg shadow-[#e94560]/25 hover:brightness-110 active:scale-[0.98] transition-all"
+              className="w-full py-3.5 px-6 rounded-xl font-bold text-sm text-white bg-gradient-to-r from-[#22c55e] to-[#16a34a] shadow-lg shadow-[#22c55e]/25 hover:brightness-110 active:scale-[0.98] transition-all"
             >
               {t('ui.start')} →
             </button>

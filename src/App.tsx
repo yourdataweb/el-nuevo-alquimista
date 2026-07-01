@@ -233,8 +233,8 @@ export default function App() {
                 <button
                   onClick={handleEpilogueDone}
                   className="w-full py-3.5 px-6 rounded-xl font-bold text-sm
-                    bg-gradient-to-r from-[#e94560] to-[#d63450]
-                    hover:shadow-[0_0_30px_rgba(233,69,96,0.35)]
+                    bg-gradient-to-r from-[#22c55e] to-[#16a34a]
+                    hover:shadow-[0_0_30px_rgba(34,197,94,0.35)]
                     active:scale-[0.98] text-white transition-all"
                 >
                   Return to Title

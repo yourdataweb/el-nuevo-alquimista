@@ -44,20 +44,26 @@ function createLocationIcon(type: string, isRequired: boolean): L.DivIcon {
   });
 }
 
-function createPlayerIcon(): L.DivIcon {
+const PROTAGONIST_FILES: Record<string, string> = {
+  trump: 'trump.png',
+  ramos: 'ramos.png',
+};
+
+function createPlayerIcon(chosenCharacter: string | null): L.DivIcon {
+  const file = PROTAGONIST_FILES[chosenCharacter ?? ''] ?? 'protagonist.jpg';
+  const imgUrl = `${BASE}characters/${file}`;
   return L.divIcon({
     className: '',
     html: `<div style="
-      width: 32px; height: 32px;
-      background: #e94560;
+      width: 36px; height: 36px;
       border: 3px solid white;
       border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 16px;
-      box-shadow: 0 0 20px rgba(233,69,96,0.6), 0 2px 8px rgba(0,0,0,0.5);
-    ">🧑</div>`,
-    iconSize: [32, 32],
-    iconAnchor: [16, 16],
+      overflow: hidden;
+      box-shadow: 0 0 20px rgba(233,69,96,0.7), 0 2px 8px rgba(0,0,0,0.5);
+      background: #e94560;
+    "><img src="${imgUrl}" style="width:100%;height:100%;object-fit:cover;object-position:top" /></div>`,
+    iconSize: [36, 36],
+    iconAnchor: [18, 18],
   });
 }
 
@@ -72,6 +78,7 @@ export default function MapBackground({ onLocationSelect }: MapBackgroundProps) 
   const currentChapter = useGameStore((s) => s.currentChapter);
   const currentLocationId = useGameStore((s) => s.currentLocationId);
   const phase = useGameStore((s) => s.phase);
+  const chosenCharacter = useGameStore((s) => s.chosenCharacter);
 
   const chapter = elAlquimista.chapters[currentChapter];
   const available = chapter ? getLocationsForChapter(chapter, barcelona.locations) : [];
@@ -162,12 +169,8 @@ export default function MapBackground({ onLocationSelect }: MapBackgroundProps) 
       });
 
       const accentColor = isRequired ? '#e94560' : '#0e7490';
-      const accentGradient = isRequired
-        ? 'linear-gradient(to right,#e94560,#c73a50)'
-        : 'linear-gradient(to right,#0e7490,#0891b2)';
-      const accentShadow = isRequired
-        ? '0 2px 10px rgba(233,69,96,0.45)'
-        : '0 2px 10px rgba(14,116,144,0.45)';
+      const accentGradient = 'linear-gradient(to right,#22c55e,#16a34a)';
+      const accentShadow = '0 2px 10px rgba(34,197,94,0.45)';
 
       marker.bindPopup(`
         <div style="width:200px;background:#1a1a2e;border-radius:12px;overflow:hidden;font-family:system-ui;">
@@ -212,12 +215,12 @@ export default function MapBackground({ onLocationSelect }: MapBackgroundProps) 
 
     const playerMarker = L.marker(
       [playerLocation.position.lat, playerLocation.position.lng],
-      { icon: createPlayerIcon(), zIndexOffset: 1000 }
+      { icon: createPlayerIcon(chosenCharacter), zIndexOffset: 1000 }
     );
     playerMarker.bindTooltip('You are here', { direction: 'top', offset: [0, -18] });
     playerMarker.addTo(map);
     playerMarkerRef.current = playerMarker;
-  }, [currentLocationId]);
+  }, [currentLocationId, chosenCharacter]);
 
   return (
     <div
