@@ -7,6 +7,10 @@ import MiniGameModal from '../components/minigames/MiniGameModal';
 import ResultSummary from '../components/minigames/ResultSummary';
 import QuickQuiz from '../components/minigames/QuickQuiz';
 import TapChallenge from '../components/minigames/TapChallenge';
+import Pickpocket from '../components/minigames/Pickpocket';
+import Brawl from '../components/minigames/Brawl';
+import Chase from '../components/minigames/Chase';
+import Lockpick from '../components/minigames/Lockpick';
 import { getActivitiesForType, type ActivityDef } from '../data/locationActivities';
 import type { LocationPOI, Stats } from '../store/types';
 
@@ -35,6 +39,10 @@ const TYPE_EMOJIS: Record<string, string> = {
 const MG_ICON: Record<string, string> = {
   quick_quiz: '🧠',
   tap_challenge: '🎯',
+  pickpocket: '🥷',
+  brawl: '🥊',
+  chase: '🏃',
+  lockpick: '🔓',
 };
 
 /** Stat labels (short) for display. */
@@ -260,6 +268,18 @@ export default function LocationScreen({
           )}
           {view.act.miniGame === 'tap_challenge' && (
             <TapChallenge onResult={handleGameResult(view.act)} />
+          )}
+          {view.act.miniGame === 'pickpocket' && (
+            <Pickpocket onResult={handleGameResult(view.act)} />
+          )}
+          {view.act.miniGame === 'brawl' && (
+            <Brawl onResult={handleGameResult(view.act)} />
+          )}
+          {view.act.miniGame === 'chase' && (
+            <Chase onResult={handleGameResult(view.act)} />
+          )}
+          {view.act.miniGame === 'lockpick' && (
+            <Lockpick onResult={handleGameResult(view.act)} />
           )}
         </MiniGameModal>
       )}

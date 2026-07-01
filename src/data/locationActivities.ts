@@ -1,6 +1,6 @@
 import type { Stats } from '../store/types';
 
-export type MiniGameKind = 'quick_quiz' | 'tap_challenge';
+export type MiniGameKind = 'quick_quiz' | 'tap_challenge' | 'pickpocket' | 'brawl' | 'chase' | 'lockpick';
 
 export interface QuizQuestion {
   q: string;
@@ -116,10 +116,10 @@ const ACTIVITIES: Record<string, ActivityDef[]> = {
     {
       id: 'park_exercise',
       i18nKey: 'parkExercise',
-      miniGame: 'tap_challenge',
+      miniGame: 'chase',
       durationHours: 1,
       effects: { vitality: 5 },
-      fluff: 'Match your effort to the rhythm of the workout.',
+      fluff: 'Dodge joggers, pigeons and tourists on a full-tilt parkour sprint.',
     },
     {
       id: 'park_meditate',
@@ -172,10 +172,10 @@ const ACTIVITIES: Record<string, ActivityDef[]> = {
     {
       id: 'cafe_chat',
       i18nKey: 'cafeChat',
-      miniGame: 'tap_challenge',
+      miniGame: 'brawl',
       durationHours: 1,
       effects: { social: 4 },
-      fluff: 'Find the right moment to break the ice with a stranger.',
+      fluff: 'A heated debate turns physical — parry the blows to earn respect.',
     },
     {
       id: 'cafe_write',
@@ -228,10 +228,10 @@ const ACTIVITIES: Record<string, ActivityDef[]> = {
     {
       id: 'market_haggle',
       i18nKey: 'marketHaggle',
-      miniGame: 'tap_challenge',
+      miniGame: 'pickpocket',
       durationHours: 1,
       effects: { resources: 5, social: 2 },
-      fluff: 'Time your offer when the vendor hesitates.',
+      fluff: 'The crowd is thick — snatch the deal before the vendor turns around.',
     },
     {
       id: 'market_taste',
@@ -284,10 +284,10 @@ const ACTIVITIES: Record<string, ActivityDef[]> = {
     {
       id: 'plaza_street',
       i18nKey: 'plazaStreet',
-      miniGame: 'tap_challenge',
+      miniGame: 'pickpocket',
       durationHours: 1,
       effects: { social: 3, resources: 3 },
-      fluff: 'Hit the beat when the crowd is watching.',
+      fluff: 'Las Ramblas is famous for it — work the crowd while they watch the show.',
     },
     {
       id: 'plaza_people',
@@ -481,10 +481,10 @@ const ACTIVITIES: Record<string, ActivityDef[]> = {
     {
       id: 'office_network',
       i18nKey: 'officeNetwork',
-      miniGame: 'tap_challenge',
+      miniGame: 'brawl',
       durationHours: 1,
       effects: { career: 3, social: 2 },
-      fluff: 'Make your move when the conversation opens up.',
+      fluff: 'The pitch competition gets aggressive — block every objection they throw at you.',
     },
     {
       id: 'office_upskill',
@@ -537,10 +537,10 @@ const ACTIVITIES: Record<string, ActivityDef[]> = {
     {
       id: 'monument_photo',
       i18nKey: 'monumentPhoto',
-      miniGame: 'tap_challenge',
+      miniGame: 'lockpick',
       durationHours: 1,
       effects: { fulfillment: 3, knowledge: 2 },
-      fluff: 'Capture the shot at exactly the right moment.',
+      fluff: 'The best vantage point is behind a locked gate — pick it before the guard returns.',
     },
     {
       id: 'monument_study',
