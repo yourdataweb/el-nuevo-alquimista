@@ -24,7 +24,7 @@ export default function CitySelectScreen() {
         alt="Barcelona"
         className="absolute inset-0 w-full h-full object-cover"
       />
-      <div className="absolute inset-0 bg-gradient-to-b from-[#0d1220]/60 via-[#0d1220]/40 to-[#0d1220]/80" />
+      <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/15 to-black/55" />
 
       {/* Content */}
       <div className="relative z-10 fade-in text-center max-w-md w-full px-6">
@@ -55,10 +55,10 @@ export default function CitySelectScreen() {
               </div>
             </div>
           </div>
-          <div className="px-4 py-3 flex items-center justify-center gap-4 border-t border-white/10">
-            <span className="text-xs text-gray-300">🏘️ 40+ locations</span>
-            <span className="text-xs text-gray-500">·</span>
-            <span className="text-xs text-gray-300">📖 1 story</span>
+          <div className="px-4 py-3 flex items-center justify-center gap-4 border-t border-white/20 bg-black/20">
+            <span className="text-xs text-gray-200">🏘️ 40+ locations</span>
+            <span className="text-xs text-gray-400">·</span>
+            <span className="text-xs text-gray-200">📖 1 story</span>
           </div>
         </div>
 

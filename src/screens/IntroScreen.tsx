@@ -26,18 +26,18 @@ export default function IntroScreen({ onContinue }: IntroScreenProps) {
             <div className="fade-in text-center">
               <div className="text-5xl mb-4">📖</div>
               <h2 className="pixel-text text-lg text-[#e94560] mb-2">{bookTitle}</h2>
-              <p className="text-gray-300 text-sm mb-4">{city.name} · {new Date().getFullYear()}</p>
+              <p className="text-gray-400 text-sm mb-4">{city.name} · {new Date().getFullYear()}</p>
               <div className="w-16 h-0.5 bg-[#e94560]/50 mx-auto mb-6" />
             </div>
 
             <div className="dialogue-box p-4 sm:p-6 fade-in">
               <div className="flex items-center gap-3 mb-4">
-                <div className="w-14 h-14 rounded-full overflow-hidden border-2 border-[#e94560]/40 shrink-0 bg-[#1a1a2e]">
+                <div className="w-14 h-14 rounded-full overflow-hidden border-2 border-[#e94560]/40 shrink-0 bg-[#252525]">
                   <img src={`${BASE}characters/chuck.jpg`} alt="Narrator" className="w-full h-full object-cover" loading="lazy" />
                 </div>
                 <span className="text-[#e94560] font-bold text-sm">{t('characters.narrator')}</span>
               </div>
-              <p className="story-text text-gray-200 leading-relaxed whitespace-pre-line">
+              <p className="story-text text-gray-300 leading-relaxed whitespace-pre-line">
                 {i18n.language === 'ca'
                   ? "Barcelona, 2026. Tens 26 anys i una vida normal. Un pis a Gràcia. Una feina. Uns amics. Però fa dies que somies la mateixa escena cada nit: una plaça plena de coloms que s'alcen alhora, i una figura que assenyala al nord.\n\nCada matí et despertes amb la sensació que el somni vol dir alguna cosa. Avui, alguna cosa et diu que hauries de seguir-lo."
                   : i18n.language === 'es'
@@ -49,7 +49,7 @@ export default function IntroScreen({ onContinue }: IntroScreenProps) {
         </div>
 
         {/* ── Sticky continue button ── */}
-        <div className="shrink-0 px-4 py-3 bg-[#0d1220] border-t border-gray-800/80">
+        <div className="shrink-0 px-4 py-3 bg-[#191919] border-t border-gray-700">
           <div className="max-w-2xl mx-auto">
             <button
               onClick={onContinue}

@@ -94,12 +94,12 @@ export default function Pickpocket({ onResult }: PickpocketProps) {
       </div>
 
       {/* Scene */}
-      <div className="relative w-full h-52 bg-[#0f1730] rounded-xl overflow-hidden border border-gray-700 cursor-pointer">
+      <div className="relative w-full h-52 bg-[#1f1f1f] rounded-xl overflow-hidden border border-gray-700 cursor-pointer">
         {/* Background crowd silhouettes */}
         {[0.08, 0.28, 0.72, 0.88].map((x, i) => (
           <div key={i} className="absolute bottom-0 flex flex-col items-center" style={{ left: `${x * 100}%` }}>
-            <div className="w-5 h-5 rounded-full bg-gray-700/60" />
-            <div className="w-4 h-10 bg-gray-700/60 rounded-sm" />
+            <div className="w-5 h-5 rounded-full bg-gray-400/60" />
+            <div className="w-4 h-10 bg-gray-400/60 rounded-sm" />
           </div>
         ))}
 
@@ -127,7 +127,7 @@ export default function Pickpocket({ onResult }: PickpocketProps) {
         {phase === 'watching' && (
           <div className="absolute top-3 right-3 flex flex-col items-center gap-1">
             <span className="text-[10px] text-gray-500 uppercase tracking-wider">Alert</span>
-            <div className="w-3 h-20 bg-gray-800 rounded-full overflow-hidden border border-gray-700 flex flex-col-reverse">
+            <div className="w-3 h-20 bg-gray-700 rounded-full overflow-hidden border border-gray-700 flex flex-col-reverse">
               <div
                 className="w-full rounded-full transition-none"
                 style={{
@@ -143,7 +143,7 @@ export default function Pickpocket({ onResult }: PickpocketProps) {
         {/* Feedback overlay */}
         {phase === 'feedback' && feedback && (
           <div className="absolute inset-0 flex items-center justify-center bg-black/50">
-            <span className={`text-2xl font-bold ${feedback === 'stolen' ? 'text-yellow-400' : 'text-red-400'}`}>
+            <span className={`text-2xl font-bold ${feedback === 'stolen' ? 'text-yellow-600' : 'text-red-500'}`}>
               {feedback === 'stolen' ? '💰 Snatched!' : '🚨 Caught!'}
             </span>
           </div>
@@ -158,13 +158,13 @@ export default function Pickpocket({ onResult }: PickpocketProps) {
       {/* Instruction */}
       <div className="text-center min-h-[2.5rem] flex items-center justify-center">
         {phase === 'ready' && (
-          <div className="bg-[#16213e] border border-gray-700 rounded-xl px-5 py-3 w-full">
+          <div className="bg-[#252525] border border-gray-700 rounded-xl px-5 py-3 w-full">
             <p className="text-white font-semibold text-sm mb-0.5">Steal when the mark is distracted</p>
-            <p className="text-gray-400 text-xs">Tap when they look away · {WIN_ROUNDS}/{ROUNDS} steals to win</p>
+            <p className="text-gray-500 text-xs">Tap when they look away · {WIN_ROUNDS}/{ROUNDS} steals to win</p>
           </div>
         )}
         {phase === 'watching' && (
-          <p className={`text-sm font-bold transition-all ${isSafe ? 'text-yellow-400 animate-pulse scale-110' : 'text-gray-600'}`}>
+          <p className={`text-sm font-bold transition-all ${isSafe ? 'text-yellow-500 animate-pulse scale-110' : 'text-gray-500'}`}>
             {isSafe ? '👆 NOW — tap to steal!' : 'Wait for the right moment...'}
           </p>
         )}

@@ -136,7 +136,7 @@ export default function LocationScreen({
             <div className="text-center mb-4">
               <div className="text-5xl mb-2">{TYPE_EMOJIS[location.type] ?? '📍'}</div>
               <h2 className="text-white font-bold text-lg">{locName}</h2>
-              <p className="text-gray-400 text-xs">{location.address ?? ''}</p>
+              <p className="text-gray-500 text-xs">{location.address ?? ''}</p>
             </div>
 
             {/* Arrival description */}
@@ -151,11 +151,11 @@ export default function LocationScreen({
                     : 'You arrived at'}
                 </span>
               </div>
-              <p className="story-text text-gray-200 leading-relaxed">{locDesc}</p>
+              <p className="story-text text-gray-300 leading-relaxed">{locDesc}</p>
 
               {isCorrect && (
                 <div className="mt-4 p-3 bg-[#22c55e]/10 border border-[#22c55e]/30 rounded-lg">
-                  <p className="text-[#22c55e] text-sm font-semibold">
+                  <p className="text-green-400 text-sm font-semibold">
                     {i18n.language === 'ca'
                       ? '✨ Aquest lloc et ressona. Alguna cosa et diu que has vingut al lloc correcte.'
                       : i18n.language === 'es'
@@ -166,8 +166,8 @@ export default function LocationScreen({
               )}
 
               {!isCorrect && (
-                <div className="mt-4 p-3 bg-gray-800/30 border border-gray-600/30 rounded-lg">
-                  <p className="text-gray-400 text-sm">
+                <div className="mt-4 p-3 bg-gray-800 border border-gray-700 rounded-lg">
+                  <p className="text-gray-500 text-sm">
                     {i18n.language === 'ca'
                       ? 'Un lloc interesant, però no té res a veure amb el teu somni.'
                       : i18n.language === 'es'
@@ -183,7 +183,7 @@ export default function LocationScreen({
         </div>
 
         {/* ── Sticky action bar ── */}
-        <div className="shrink-0 px-4 py-3 bg-[#0d1220] border-t border-gray-800/80">
+        <div className="shrink-0 px-4 py-3 bg-[#191919] border-t border-gray-700">
           <div className="max-w-2xl mx-auto flex flex-col gap-2">
 
             {/* Activity buttons */}
@@ -198,8 +198,8 @@ export default function LocationScreen({
                       disabled={done}
                       className={`p-3 rounded-xl text-left transition-all active:scale-[0.97] ${
                         done
-                          ? 'bg-[#16213e] border border-gray-700 opacity-40 cursor-not-allowed'
-                          : 'bg-[#0f4c5c] border border-[#0e7490] hover:bg-[#155e75] hover:border-[#22d3ee] cursor-pointer shadow-md shadow-black/30'
+                          ? 'bg-[#252525] border border-gray-700 opacity-50 cursor-not-allowed'
+                          : 'bg-[#0f4c5c] border border-[#7ec8e4] hover:bg-[#0c3d4d] hover:border-[#4ab4d8] cursor-pointer shadow-md shadow-black/10'
                       }`}
                     >
                       <div className="flex items-center gap-1.5 mb-1">
@@ -209,10 +209,10 @@ export default function LocationScreen({
                         </span>
                         {done && <span className="ml-auto text-green-400 text-xs">✓</span>}
                       </div>
-                      <div className="flex flex-wrap gap-x-2 text-xs text-gray-300">
+                      <div className="flex flex-wrap gap-x-2 text-xs text-gray-400">
                         <span>⏳ {act.durationHours}h</span>
                         {Object.entries(act.effects).map(([k, v]) => (
-                          <span key={k} className={v && v > 0 ? 'text-green-400' : 'text-red-400'}>
+                          <span key={k} className={v && v > 0 ? 'text-green-400' : 'text-red-500'}>
                             {STAT_LABELS[k] ?? k}{v && v > 0 ? '+' : ''}{v}
                           </span>
                         ))}
@@ -252,7 +252,7 @@ export default function LocationScreen({
 
             <button
               onClick={onBackToMap}
-              className="w-full py-2.5 rounded-xl font-medium text-sm text-gray-200 bg-[#16213e] border border-gray-600 hover:bg-[#1e2d50] hover:border-gray-500 active:scale-[0.98] transition-all"
+              className="w-full py-2.5 rounded-xl font-medium text-sm text-gray-300 bg-[#252525] border border-gray-700 hover:bg-[#e0dbd3] hover:border-gray-400 active:scale-[0.98] transition-all"
             >
               {i18n.language === 'ca'
                 ? '← Tornar al mapa'

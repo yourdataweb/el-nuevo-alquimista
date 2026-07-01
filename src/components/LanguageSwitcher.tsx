@@ -21,7 +21,7 @@ export default function LanguageSwitcher() {
           className={`w-8 h-7 flex items-center justify-center rounded transition-colors overflow-hidden ${
             i18n.language === lang.code
               ? 'ring-2 ring-[#e94560]'
-              : 'bg-gray-700 hover:bg-gray-600'
+              : 'bg-gray-700 hover:bg-gray-700'
           }`}
         >
           <img

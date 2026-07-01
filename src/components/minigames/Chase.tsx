@@ -180,14 +180,14 @@ export default function Chase({ onResult }: ChaseProps) {
 
       {/* Track */}
       <div
-        className="relative w-full bg-[#0f1730] rounded-xl overflow-hidden border border-gray-700"
+        className="relative w-full bg-[#1f1f1f] rounded-xl overflow-hidden border border-gray-700"
         style={{ height: 180 }}
       >
         {/* Lane dividers */}
         {[1, 2].map((i) => (
           <div
             key={i}
-            className="absolute left-0 right-0 border-t border-dashed border-gray-700/40"
+            className="absolute left-0 right-0 border-t border-dashed border-gray-400/40"
             style={{ top: `${(i / LANES) * 100}%` }}
           />
         ))}
@@ -231,7 +231,7 @@ export default function Chase({ onResult }: ChaseProps) {
 
         {phase === 'ready' && (
           <div className="absolute inset-0 flex items-center justify-center bg-black/50">
-            <p className="text-white font-bold">Dodge the obstacles!</p>
+            <p className="text-gray-100 font-bold">Dodge the obstacles!</p>
           </div>
         )}
         {phase === 'done' && (
@@ -253,20 +253,20 @@ export default function Chase({ onResult }: ChaseProps) {
         <div className="grid grid-cols-2 gap-3">
           <button
             onClick={moveUp}
-            className="py-5 rounded-xl bg-[#0f1730] border border-gray-600 text-2xl font-bold hover:border-[#22c55e] active:scale-[0.93] transition-all"
+            className="py-5 rounded-xl bg-[#252525] border border-gray-700 text-2xl font-bold hover:border-[#22c55e] active:scale-[0.93] transition-all"
           >
             ↑
           </button>
           <button
             onClick={moveDown}
-            className="py-5 rounded-xl bg-[#0f1730] border border-gray-600 text-2xl font-bold hover:border-[#22c55e] active:scale-[0.93] transition-all"
+            className="py-5 rounded-xl bg-[#252525] border border-gray-700 text-2xl font-bold hover:border-[#22c55e] active:scale-[0.93] transition-all"
           >
             ↓
           </button>
         </div>
       )}
 
-      <p className="text-center text-xs text-gray-600">
+      <p className="text-center text-xs text-gray-400">
         Switch lanes to dodge obstacles · survive {TOTAL_OBSTACLES} obstacles to win
       </p>
     </div>

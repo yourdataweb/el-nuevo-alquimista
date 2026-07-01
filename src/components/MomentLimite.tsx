@@ -66,8 +66,8 @@ export default function MomentLimite({ text, timeSeconds, options, onTimeout }: 
       {/* Timer */}
       <div className="mb-4">
         <div className="flex items-center justify-between mb-1">
-          <span className="text-xs text-gray-400 uppercase tracking-wider">⏱️ {t('ui.choose')}</span>
-          <span className="text-sm font-mono text-gray-300">{timeLeft}s</span>
+          <span className="text-xs text-gray-500 uppercase tracking-wider">⏱️ {t('ui.choose')}</span>
+          <span className="text-sm font-mono text-gray-400">{timeLeft}s</span>
         </div>
         <div className="h-2 bg-gray-700 rounded-full overflow-hidden">
           <div
@@ -79,13 +79,13 @@ export default function MomentLimite({ text, timeSeconds, options, onTimeout }: 
 
       {/* Context text */}
       <div className="dialogue-box p-4 mb-4">
-        <p className="text-gray-200 leading-relaxed whitespace-pre-line">{text}</p>
+        <p className="text-gray-300 leading-relaxed whitespace-pre-line">{text}</p>
       </div>
 
       {resultText ? (
         /* Result after choosing */
-        <div className="dialogue-box p-4 bg-[#0f3460] border-[#22c55e] slide-up">
-          <p className="text-gray-200 leading-relaxed whitespace-pre-line">{resultText}</p>
+        <div className="dialogue-box p-4 bg-[#052e16] border-[#22c55e] slide-up">
+          <p className="text-gray-300 leading-relaxed whitespace-pre-line">{resultText}</p>
         </div>
       ) : (
         /* Options */
@@ -99,8 +99,8 @@ export default function MomentLimite({ text, timeSeconds, options, onTimeout }: 
                 disabled={!available || selected !== null}
                 className={`w-full text-left p-3 rounded-lg option-btn transition-all text-sm ${
                   !available
-                    ? 'bg-gray-800/50 text-gray-500 cursor-not-allowed'
-                    : 'bg-[#1a1a2e]/80 text-gray-200 hover:bg-[#0f3460]/80 hover:border-[#e94560]'
+                    ? 'bg-gray-800 text-gray-400 cursor-not-allowed'
+                    : 'bg-[#1a1a1a] text-gray-300 hover:bg-[#2a2a40]/50 hover:border-[#e94560]'
                 }`}
               >
                 <div className="flex items-center gap-2">

@@ -75,7 +75,7 @@ export default function HomeScreen({ onGoToMap }: HomeScreenProps) {
             <div className="fade-in mb-4">
               <div className="text-4xl mb-2">🏠</div>
               <h2 className="text-white font-bold text-lg">{homeName}</h2>
-              <p className="text-gray-400 text-sm">{homeDesc}</p>
+              <p className="text-gray-500 text-sm">{homeDesc}</p>
             </div>
 
             {/* Morning feeling */}
@@ -96,18 +96,18 @@ export default function HomeScreen({ onGoToMap }: HomeScreenProps) {
                   disabled={isUsed(action.id)}
                   className={`p-3 rounded-xl transition-all text-left active:scale-[0.98] ${
                     isUsed(action.id)
-                      ? 'bg-[#16213e]/40 border border-gray-800/50 opacity-40 cursor-not-allowed'
-                      : 'bg-[#16213e] border border-gray-600 hover:border-[#e94560]/70 hover:bg-[#1e2d50] cursor-pointer'
+                      ? 'bg-[#252525]/50 border border-gray-700 opacity-50 cursor-not-allowed'
+                      : 'bg-[#252525] border border-gray-700 hover:border-[#e94560]/70 hover:bg-[#e0dbd3] cursor-pointer'
                   }`}
                 >
                   <div className="text-2xl mb-1">{action.icon}</div>
                   <div className="text-white font-semibold text-sm">{action.label}</div>
-                  <div className="text-gray-300 text-xs mt-0.5">{action.desc}</div>
+                  <div className="text-gray-400 text-xs mt-0.5">{action.desc}</div>
                   {action.time > 0 && (
-                    <div className="text-xs text-gray-400 mt-1">⏳ {action.time}h</div>
+                    <div className="text-xs text-gray-500 mt-1">⏳ {action.time}h</div>
                   )}
                   {isUsed(action.id) && (
-                    <div className="text-xs text-green-400 mt-1">✓ Done</div>
+                    <div className="text-xs text-green-600 mt-1">✓ Done</div>
                   )}
                 </button>
               ))}
@@ -116,7 +116,7 @@ export default function HomeScreen({ onGoToMap }: HomeScreenProps) {
         </div>
 
         {/* ── Sticky go outside button ── */}
-        <div className="shrink-0 px-4 py-3 bg-[#0d1220] border-t border-gray-800/80">
+        <div className="shrink-0 px-4 py-3 bg-[#191919] border-t border-gray-700">
           <div className="max-w-2xl mx-auto">
             <button
               onClick={onGoToMap}

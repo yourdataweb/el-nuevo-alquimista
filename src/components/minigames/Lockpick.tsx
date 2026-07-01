@@ -138,14 +138,14 @@ export default function Lockpick({ onResult }: LockpickProps) {
                   ? 'bg-[#22c55e] border-[#22c55e]'
                   : i === pin && phase !== 'done'
                   ? 'border-yellow-400 bg-transparent animate-pulse'
-                  : 'border-gray-600 bg-transparent'
+                  : 'border-gray-700 bg-transparent'
               }`}
             />
           ))}
         </div>
         <div className="flex items-center gap-1">
           {Array.from({ length: MAX_MISSES }).map((_, i) => (
-            <span key={i} className={`text-sm ${i < misses ? 'text-red-400' : 'text-gray-700'}`}>🔩</span>
+            <span key={i} className={`text-sm ${i < misses ? 'text-red-400' : 'text-gray-300'}`}>🔩</span>
           ))}
         </div>
       </div>
@@ -154,7 +154,7 @@ export default function Lockpick({ onResult }: LockpickProps) {
       <div className="relative cursor-pointer" style={{ width: SIZE, height: SIZE }}>
         <svg width={SIZE} height={SIZE} viewBox={`0 0 ${SIZE} ${SIZE}`}>
           {/* Outer ring */}
-          <circle cx={CX} cy={CY} r={R} fill="none" stroke="#1e2d50" strokeWidth="14" />
+          <circle cx={CX} cy={CY} r={R} fill="none" stroke="#d0ccc4" strokeWidth="14" />
 
           {/* Sweet-spot arc fill */}
           <path
@@ -181,7 +181,7 @@ export default function Lockpick({ onResult }: LockpickProps) {
             strokeLinecap="round"
           />
           {/* Pivot */}
-          <circle cx={CX} cy={CY} r="5" fill="#0f1730" stroke={needleColor} strokeWidth="2" />
+          <circle cx={CX} cy={CY} r="5" fill="#1a1a1a" stroke={needleColor} strokeWidth="2" />
 
           {/* Lock body (centre icon) */}
           <text x={CX} y={CY - 14} textAnchor="middle" fontSize="20" dy=".35em">
@@ -214,13 +214,13 @@ export default function Lockpick({ onResult }: LockpickProps) {
       {/* Instruction */}
       <div className="text-center w-full">
         {phase === 'ready' && (
-          <div className="bg-[#16213e] border border-gray-700 rounded-xl px-5 py-3">
+          <div className="bg-[#252525] border border-gray-700 rounded-xl px-5 py-3">
             <p className="text-white font-semibold text-sm mb-0.5">Pick the lock</p>
-            <p className="text-gray-400 text-xs">Tap when the needle is in the green arc · {MAX_MISSES} misses allowed</p>
+            <p className="text-gray-500 text-xs">Tap when the needle is in the green arc · {MAX_MISSES} misses allowed</p>
           </div>
         )}
         {phase === 'picking' && (
-          <p className={`text-sm font-semibold transition-colors ${inSweetSpot(angle) ? 'text-yellow-400 animate-pulse' : 'text-gray-600'}`}>
+          <p className={`text-sm font-semibold transition-colors ${inSweetSpot(angle) ? 'text-yellow-500 animate-pulse' : 'text-gray-500'}`}>
             {inSweetSpot(angle) ? '👆 Now! Tap to pick!' : 'Tap or press Space...'}
           </p>
         )}

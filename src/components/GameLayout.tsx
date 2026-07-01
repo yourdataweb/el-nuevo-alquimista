@@ -20,13 +20,13 @@ export default function GameLayout({ children, showStats = true, showMapButton =
   return (
     <div className="flex flex-col h-full w-full">
       {/* Top bar */}
-      <header className="flex items-center justify-between px-3 py-2 bg-[#16213e] border-b border-[#e94560]/30 shrink-0">
+      <header className="flex items-center justify-between px-3 py-2 bg-[#252525] border-b border-[#e94560]/30 shrink-0">
         <div className="flex items-center gap-2 min-w-0">
           <span className="text-[#e94560] pixel-text text-[8px] sm:text-[10px] truncate">
             {t('app.title')}
           </span>
           {currentChapter > 0 && (
-            <span className="text-gray-400 text-xs hidden sm:inline">
+            <span className="text-gray-500 text-xs hidden sm:inline">
               | {t('ui.chapter')} {currentChapter}
             </span>
           )}
@@ -35,13 +35,13 @@ export default function GameLayout({ children, showStats = true, showMapButton =
           <LanguageSwitcher />
         </div>
         {/* Version badge */}
-        <span className="hidden sm:inline text-[10px] text-gray-600 ml-2 select-none" title={APP_VERSION.build}>
+        <span className="hidden sm:inline text-[10px] text-gray-400 ml-2 select-none" title={APP_VERSION.build}>
           v{APP_VERSION.build}
         </span>
       </header>
 
       {/* Time display */}
-      <div className="px-3 py-1 bg-[#0f3460]/50 text-center text-xs sm:text-sm text-gray-300 shrink-0">
+      <div className="px-3 py-1 bg-[#2a2a40]/50 text-center text-xs sm:text-sm text-gray-400 shrink-0">
         {formatTime(time, i18n.language)}
       </div>
 
@@ -59,7 +59,7 @@ export default function GameLayout({ children, showStats = true, showMapButton =
 
       {/* Map button (when applicable) */}
       {showMapButton && onMapClick && (
-        <div className="shrink-0 px-3 py-2 bg-[#16213e] border-t border-[#e94560]/20">
+        <div className="shrink-0 px-3 py-2 bg-[#252525] border-t border-[#e94560]/20">
           <button
             onClick={onMapClick}
             className="w-full py-2 px-4 bg-[#22c55e] hover:bg-[#16a34a] text-white font-semibold rounded-lg transition-colors text-sm"

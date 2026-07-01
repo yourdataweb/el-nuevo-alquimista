@@ -131,20 +131,20 @@ export default function Brawl({ onResult }: BrawlProps) {
 
       {/* Arena */}
       <div className={`relative w-full h-44 rounded-xl flex flex-col items-center justify-center border-2 transition-all duration-200 overflow-hidden ${
-        phase === 'parried' ? 'bg-[#052e16] border-[#22c55e] shadow-[0_0_20px_rgba(34,197,94,0.3)]' :
-        phase === 'hit'     ? 'bg-[#2d0a0a] border-[#e94560] shadow-[0_0_20px_rgba(233,69,96,0.3)]' :
-                              'bg-[#0f1730] border-gray-700'
+        phase === 'parried' ? 'bg-[#052e16] border-[#22c55e] shadow-[0_0_20px_rgba(34,197,94,0.2)]' :
+        phase === 'hit'     ? 'bg-[#fee2e2] border-[#e94560] shadow-[0_0_20px_rgba(233,69,96,0.2)]' :
+                              'bg-[#1f1f1f] border-gray-700'
       }`}>
 
         {phase === 'ready' && (
-          <p className="text-gray-400 text-sm">Brace yourself...</p>
+          <p className="text-gray-500 text-sm">Brace yourself...</p>
         )}
 
         {phase === 'attack' && (
           <div className="flex flex-col items-center gap-3 w-full px-6">
             {/* Opponent fist indicator */}
             <div className="text-5xl animate-bounce">{DIR_ARROW[currentDir]}</div>
-            <p className="text-gray-400 text-xs">Incoming attack!</p>
+            <p className="text-gray-500 text-xs">Incoming attack!</p>
             {/* Timer bar */}
             <div className="w-full h-2 bg-gray-700 rounded-full overflow-hidden">
               <div
@@ -158,21 +158,21 @@ export default function Brawl({ onResult }: BrawlProps) {
         {phase === 'parried' && (
           <div className="flex flex-col items-center gap-1">
             <span className="text-5xl">🛡️</span>
-            <span className="text-[#22c55e] font-bold">Parried!</span>
+            <span className="text-green-600 font-bold">Parried!</span>
           </div>
         )}
 
         {phase === 'hit' && (
           <div className="flex flex-col items-center gap-1">
             <span className="text-5xl">💥</span>
-            <span className="text-red-400 font-bold">{hits >= MAX_HITS ? 'Knocked out!' : 'Took a hit!'}</span>
+            <span className="text-red-500 font-bold">{hits >= MAX_HITS ? 'Knocked out!' : 'Took a hit!'}</span>
           </div>
         )}
 
         {phase === 'done' && (
           <div className="flex flex-col items-center gap-1">
             <span className="text-5xl">{hits < MAX_HITS ? '🏆' : '💀'}</span>
-            <span className={`font-bold ${hits < MAX_HITS ? 'text-[#22c55e]' : 'text-red-400'}`}>
+            <span className={`font-bold ${hits < MAX_HITS ? 'text-green-600' : 'text-red-500'}`}>
               {hits < MAX_HITS ? 'You win!' : 'Knocked out!'}
             </span>
           </div>
@@ -195,8 +195,8 @@ export default function Brawl({ onResult }: BrawlProps) {
               onClick={() => handleParry(dir)}
               className={`py-5 rounded-xl text-2xl font-bold border transition-all active:scale-[0.93] ${
                 phase === 'attack'
-                  ? 'bg-[#0f1730] border-gray-600 hover:bg-[#16213e] hover:border-[#22c55e] hover:text-[#22c55e] cursor-pointer'
-                  : 'bg-[#0f1730] border-gray-800 text-gray-700 cursor-default'
+                  ? 'bg-[#252525] border-gray-700 hover:bg-[#e0dbd3] hover:border-[#22c55e] hover:text-green-600 cursor-pointer'
+                  : 'bg-[#252525] border-gray-700 text-gray-300 cursor-default'
               }`}
             >
               {DIR_LABEL[dir]}
@@ -205,7 +205,7 @@ export default function Brawl({ onResult }: BrawlProps) {
         </div>
       )}
 
-      <p className="text-center text-xs text-gray-600">
+      <p className="text-center text-xs text-gray-400">
         Tap the matching direction to parry · survive {TOTAL_ATTACKS} attacks
       </p>
     </div>

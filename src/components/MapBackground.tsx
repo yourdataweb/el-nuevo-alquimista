@@ -173,7 +173,7 @@ export default function MapBackground({ onLocationSelect }: MapBackgroundProps) 
       const accentShadow = '0 2px 10px rgba(34,197,94,0.45)';
 
       marker.bindPopup(`
-        <div style="width:200px;background:#1a1a2e;border-radius:12px;overflow:hidden;font-family:system-ui;">
+        <div style="width:200px;background:#1a1a1a;border-radius:12px;overflow:hidden;font-family:system-ui;border:1px solid #e0dbd3;">
           <div style="position:relative;height:120px;overflow:hidden;background:${accentColor}22;">
             <img
               src="${BASE}locations/${loc.id}.jpg"
@@ -189,7 +189,7 @@ export default function MapBackground({ onLocationSelect }: MapBackgroundProps) 
               </div>
             </div>
           </div>
-          <div style="padding:10px;">
+          <div style="padding:10px;background:#252525;">
             <button
               onclick="window.__selectLocation && window.__selectLocation('${loc.id}')"
               style="width:100%;padding:9px 0;background:${accentGradient};color:white;border:none;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;box-shadow:${accentShadow};letter-spacing:0.02em;"

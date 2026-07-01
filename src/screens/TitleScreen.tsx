@@ -26,19 +26,19 @@ export default function TitleScreen() {
   return (
     <GameLayout>
       <div className="flex flex-col items-center justify-center min-h-full w-full p-6">
-        <div className="fade-in text-center max-w-md w-full bg-[#1a1a2e]/80 backdrop-blur-sm rounded-2xl p-8 border border-white/5 shadow-2xl">
+        <div className="fade-in text-center max-w-md w-full bg-[#1a1a1a] rounded-2xl p-8 border border-gray-700 shadow-2xl">
           {/* Title */}
-          <h1 className="pixel-text text-2xl sm:text-3xl text-[#e94560] mb-2" style={{ textShadow: '0 2px 12px rgba(0,0,0,0.6)' }}>
+          <h1 className="pixel-text text-2xl sm:text-3xl text-[#e94560] mb-2">
             {t('app.title')}
           </h1>
-          <p className="text-gray-300 text-sm mb-3 italic">
+          <p className="text-gray-400 text-sm mb-3 italic">
             {t('app.subtitle')}
           </p>
 
           <div className="w-24 h-0.5 bg-[#e94560]/50 mx-auto mb-6" />
 
           {/* Character picker */}
-          <p className="text-gray-400 text-xs uppercase tracking-wider mb-3">Choose your character</p>
+          <p className="text-gray-500 text-xs uppercase tracking-wider mb-3">Choose your character</p>
           <div className="grid grid-cols-2 gap-3 mb-6">
             {CHARACTERS.map((char) => {
               const isSelected = selected === char.id;
@@ -49,7 +49,7 @@ export default function TitleScreen() {
                   className={`relative rounded-xl overflow-hidden border-2 transition-all active:scale-[0.97] ${
                     isSelected
                       ? 'border-[#e94560] shadow-lg shadow-[#e94560]/30'
-                      : 'border-gray-700 hover:border-gray-500'
+                      : 'border-gray-700 hover:border-gray-400'
                   }`}
                 >
                   <img

@@ -34,7 +34,7 @@ export default function RecapScreen({ chapterIndex, onNext, isLastChapter }: Rec
               <h2 className="pixel-text text-sm text-[#e94560] mb-1">
                 {t('ui.chapter')} {chapterIndex + 1} — {title}
               </h2>
-              <p className="text-gray-400 text-sm">{desc}</p>
+              <p className="text-gray-500 text-sm">{desc}</p>
             </div>
 
             <div className="w-16 h-0.5 bg-[#e94560]/50 mx-auto" />
@@ -58,7 +58,7 @@ export default function RecapScreen({ chapterIndex, onNext, isLastChapter }: Rec
                     <div key={key} className="flex flex-col gap-1">
                       <div className="flex items-center justify-between text-xs">
                         <span>{icon}</span>
-                        <span className="text-gray-200 font-semibold">{val}</span>
+                        <span className="text-gray-300 font-semibold">{val}</span>
                       </div>
                       <div className="w-full h-1.5 bg-gray-700 rounded-full overflow-hidden">
                         <div
@@ -69,7 +69,7 @@ export default function RecapScreen({ chapterIndex, onNext, isLastChapter }: Rec
                           }}
                         />
                       </div>
-                      <span className="text-gray-300 text-[10px]">{t(`stats.${key}`)}</span>
+                      <span className="text-gray-500 text-[10px]">{t(`stats.${key}`)}</span>
                     </div>
                   );
                 })}
@@ -81,7 +81,7 @@ export default function RecapScreen({ chapterIndex, onNext, isLastChapter }: Rec
               <h3 className="text-white font-semibold text-sm mb-3">
                 {i18n.language === 'ca' ? 'El teu viatge' : i18n.language === 'es' ? 'Tu viaje' : 'Your journey'}
               </h3>
-              <div className="space-y-2 text-sm text-gray-300">
+              <div className="space-y-2 text-sm text-gray-400">
                 <p>📍 {visitedLocationIds.length} {i18n.language === 'ca' ? 'llocs visitats' : i18n.language === 'es' ? 'lugares visitados' : 'places visited'}</p>
                 <p>📅 {time.day}/{time.month}/{time.year}</p>
                 <p>💪 {i18n.language === 'ca' ? 'Puntuació total' : i18n.language === 'es' ? 'Puntuación total' : 'Total score'}: {totalStats}</p>
@@ -91,7 +91,7 @@ export default function RecapScreen({ chapterIndex, onNext, isLastChapter }: Rec
         </div>
 
         {/* ── Sticky next button ── */}
-        <div className="shrink-0 px-4 py-3 bg-[#0d1220] border-t border-gray-800/80">
+        <div className="shrink-0 px-4 py-3 bg-[#191919] border-t border-gray-700">
           <div className="max-w-2xl mx-auto">
             <button
               onClick={onNext}

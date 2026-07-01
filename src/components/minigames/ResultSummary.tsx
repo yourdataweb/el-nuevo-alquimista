@@ -36,7 +36,7 @@ export default function ResultSummary({ won, effects, onClose }: ResultSummaryPr
 
   return (
     <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/80 backdrop-blur-md animate-fadeIn">
-      <div className="w-full max-w-md mx-4 bg-[#1a1a2e] border border-gray-700 rounded-2xl shadow-2xl overflow-hidden">
+      <div className="w-full max-w-md mx-4 bg-[#1a1a1a] border border-gray-700 rounded-2xl shadow-2xl overflow-hidden">
         {/* Accent bar */}
         <div
           className={`h-2 ${
@@ -58,7 +58,7 @@ export default function ResultSummary({ won, effects, onClose }: ResultSummaryPr
             {won ? 'Success!' : 'Failed'}
           </h2>
 
-          <p className="text-gray-400 text-sm mb-6">
+          <p className="text-gray-500 text-sm mb-6">
             {won
               ? 'You completed the activity and earned stat points.'
               : 'You didn\'t succeed this time. No stat points earned.'}
@@ -79,11 +79,11 @@ export default function ResultSummary({ won, effects, onClose }: ResultSummaryPr
                   return (
                     <div
                       key={key}
-                      className="flex items-center gap-2 bg-[#16213e] border border-[#22c55e]/30 rounded-lg px-3 py-2"
+                      className="flex items-center gap-2 bg-[#252525] border border-green-800 rounded-lg px-3 py-2"
                     >
                       <span className="text-xl">{icon}</span>
                       <div className="text-left">
-                        <p className="text-xs text-gray-400">{label}</p>
+                        <p className="text-xs text-gray-500">{label}</p>
                         <p className="text-[#22c55e] font-bold text-sm">+{val}</p>
                       </div>
                     </div>
@@ -100,10 +100,10 @@ export default function ResultSummary({ won, effects, onClose }: ResultSummaryPr
                   {(Object.keys(currentStats) as (keyof Stats)[]).map((k) => (
                     <div
                       key={k}
-                      className="flex items-center gap-1.5 bg-gray-800/40 rounded-md px-2.5 py-1.5"
+                      className="flex items-center gap-1.5 bg-gray-800 rounded-md px-2.5 py-1.5"
                     >
                       <span className="text-sm">{STAT_ICONS[k]}</span>
-                      <span className="text-gray-300 text-xs">{currentStats[k]}</span>
+                      <span className="text-gray-400 text-xs">{currentStats[k]}</span>
                     </div>
                   ))}
                 </div>

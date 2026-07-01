@@ -62,23 +62,23 @@ export default function DialogueBox({ speaker, text, options, speakerSprite }: D
         <div className="dialogue-box p-4 sm:p-6 m-0 rounded-b-none border-b-0">
           <div className="flex items-center gap-3 mb-4">
             {imgSrc ? (
-              <div className="w-14 h-14 rounded-full overflow-hidden border-2 border-[#e94560]/40 shrink-0 bg-[#1a1a2e]">
+              <div className="w-14 h-14 rounded-full overflow-hidden border-2 border-[#e94560]/40 shrink-0 bg-[#252525]">
                 <img src={imgSrc} alt={speaker} className="w-full h-full object-cover" loading="lazy" />
               </div>
             ) : speakerSprite ? (
-              <div className="w-10 h-10 bg-[#1a1a2e] rounded-full flex items-center justify-center text-xl border border-[#e94560]/30 shrink-0">
+              <div className="w-10 h-10 bg-[#252525] rounded-full flex items-center justify-center text-xl border border-[#e94560]/30 shrink-0">
                 {emoji || '❓'}
               </div>
             ) : null}
             <p className="text-[#e94560] font-bold text-sm">{speaker}</p>
           </div>
-          <p className="story-text text-gray-200 leading-relaxed whitespace-pre-line">{text}</p>
+          <p className="story-text text-gray-300 leading-relaxed whitespace-pre-line">{text}</p>
         </div>
       </div>
 
       {/* ── Pinned options ── */}
-      <div className="shrink-0 bg-[#0d1220] border-t border-[#e94560]/30 px-4 pt-3 pb-4">
-        <p className="text-xs text-gray-300 uppercase tracking-wider mb-3">{t('ui.choose')}</p>
+      <div className="shrink-0 bg-[#191919] border-t border-[#e94560]/30 px-4 pt-3 pb-4">
+        <p className="text-xs text-gray-500 uppercase tracking-wider mb-3">{t('ui.choose')}</p>
         <div className="space-y-2">
           {options.map((opt) => (
             <button
@@ -87,16 +87,16 @@ export default function DialogueBox({ speaker, text, options, speakerSprite }: D
               disabled={opt.disabled}
               className={`w-full text-left p-3.5 rounded-xl transition-all text-sm active:scale-[0.99] ${
                 opt.disabled
-                  ? 'bg-gray-800/50 border border-gray-700 text-gray-500 cursor-not-allowed'
-                  : 'bg-[#1a1a2e]/80 border border-gray-600 text-gray-100 hover:border-[#e94560] hover:bg-[#0f3460]/80'
+                  ? 'bg-gray-800 border border-gray-700 text-gray-400 cursor-not-allowed'
+                  : 'bg-[#1a1a1a] border border-gray-700 text-gray-300 hover:border-[#e94560] hover:bg-[#2a2a40]/50'
               }`}
               title={opt.disabledReason}
             >
               <div className="flex items-center gap-2">
-                <span className={opt.disabled ? 'text-gray-600' : 'text-[#e94560]'}>▶</span>
+                <span className={opt.disabled ? 'text-gray-300' : 'text-[#e94560]'}>▶</span>
                 <span>{opt.text}</span>
                 {opt.disabled && (
-                  <span className="text-xs text-gray-500 ml-auto">🔒 {opt.disabledReason}</span>
+                  <span className="text-xs text-gray-400 ml-auto">🔒 {opt.disabledReason}</span>
                 )}
               </div>
             </button>

@@ -70,7 +70,7 @@ export default function ActivityPickerScreen({ onComplete, maxActivities = 3 }: 
         <div className="flex-1 overflow-y-auto min-h-0">
           <div className="p-4 max-w-2xl mx-auto fade-in">
             <h2 className="text-white font-bold text-lg mb-1">{t('ui.chooseActivity')}</h2>
-            <p className="text-gray-400 text-sm mb-3">
+            <p className="text-gray-500 text-sm mb-3">
               ⏳ {t('ui.timeRemaining')}: {hoursLeft}h · 📋 {selected.length}/{maxActivities} {t('ui.activitiesRemaining')}
             </p>
 
@@ -88,21 +88,21 @@ export default function ActivityPickerScreen({ onComplete, maxActivities = 3 }: 
                     disabled={disabled && !sel}
                     className={`p-3 rounded-xl text-left transition-all active:scale-[0.97] ${
                       sel
-                        ? 'bg-[#e94560]/15 border-2 border-[#e94560] shadow-md shadow-[#e94560]/20'
+                        ? 'bg-[#e94560]/10 border-2 border-[#e94560] shadow-md shadow-[#e94560]/10'
                         : disabled
-                        ? 'bg-gray-800/30 border border-gray-800 opacity-40 cursor-not-allowed'
-                        : 'bg-[#16213e] border border-gray-600 hover:border-[#e94560]/60 hover:bg-[#1e2d50] cursor-pointer'
+                        ? 'bg-gray-800 border border-gray-700 opacity-50 cursor-not-allowed'
+                        : 'bg-[#252525] border border-gray-700 hover:border-[#e94560]/60 hover:bg-[#e0dbd3] cursor-pointer'
                     }`}
                   >
                     <div className="flex items-center justify-between mb-1">
                       <span className="text-white font-semibold text-sm">{getTitle(act)}</span>
                       {sel && <span className="text-[#e94560] text-base">✓</span>}
                     </div>
-                    <p className="text-xs text-gray-300 mb-1.5">{getDesc(act)}</p>
+                    <p className="text-xs text-gray-400 mb-1.5">{getDesc(act)}</p>
                     <div className="flex flex-wrap gap-x-2 gap-y-0.5 text-xs">
-                      <span className="text-gray-400">⏳ {act.durationHours}h</span>
+                      <span className="text-gray-500">⏳ {act.durationHours}h</span>
                       {formatEffect(act.effects.vitality, '💪') && <span className="text-green-400">{formatEffect(act.effects.vitality, '💪')}</span>}
-                      {formatEffect(act.effects.resources, '💰') && <span className={act.effects.resources && act.effects.resources > 0 ? 'text-green-400' : 'text-red-400'}>{formatEffect(act.effects.resources, '💰')}</span>}
+                      {formatEffect(act.effects.resources, '💰') && <span className={act.effects.resources && act.effects.resources > 0 ? 'text-green-400' : 'text-red-500'}>{formatEffect(act.effects.resources, '💰')}</span>}
                       {formatEffect(act.effects.knowledge, '🧠') && <span className="text-green-400">{formatEffect(act.effects.knowledge, '🧠')}</span>}
                       {formatEffect(act.effects.social, '👥') && <span className="text-green-400">{formatEffect(act.effects.social, '👥')}</span>}
                       {formatEffect(act.effects.career, '💼') && <span className="text-green-400">{formatEffect(act.effects.career, '💼')}</span>}
@@ -116,7 +116,7 @@ export default function ActivityPickerScreen({ onComplete, maxActivities = 3 }: 
             {/* Selected summary */}
             {selected.length > 0 && (
               <div className="dialogue-box p-3">
-                <p className="text-xs text-gray-400 mb-2">
+                <p className="text-xs text-gray-500 mb-2">
                   {i18n.language === 'ca' ? 'Resum del dia:' : i18n.language === 'es' ? 'Resumen del día:' : "Today's plan:"}
                 </p>
                 <ul className="space-y-1 text-sm text-gray-300">
@@ -133,7 +133,7 @@ export default function ActivityPickerScreen({ onComplete, maxActivities = 3 }: 
         </div>
 
         {/* ── Sticky confirm button ── */}
-        <div className="shrink-0 px-4 py-3 bg-[#0d1220] border-t border-gray-800/80">
+        <div className="shrink-0 px-4 py-3 bg-[#191919] border-t border-gray-700">
           <div className="max-w-2xl mx-auto">
             <button
               onClick={handleConfirm}
@@ -141,7 +141,7 @@ export default function ActivityPickerScreen({ onComplete, maxActivities = 3 }: 
               className={`w-full py-3.5 rounded-xl font-bold transition-all text-sm active:scale-[0.98] ${
                 selected.length > 0 && !confirmed
                   ? 'bg-gradient-to-r from-[#22c55e] to-[#16a34a] text-white shadow-lg shadow-[#22c55e]/25 hover:brightness-110'
-                  : 'bg-gray-800 text-gray-500 cursor-not-allowed border border-gray-700'
+                  : 'bg-gray-700 text-gray-400 cursor-not-allowed border border-gray-700'
               }`}
             >
               {confirmed

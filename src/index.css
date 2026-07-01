@@ -25,7 +25,7 @@ html, body, #root {
 
 body {
   font-family: var(--ui-font);
-  background: #1a1a2e;
+  background: #1a1a1a;
   color: #e0e0e0;
 }
 
@@ -72,10 +72,10 @@ body {
 }
 
 .dialogue-box {
-  background: linear-gradient(180deg, #16213e 0%, #0f3460 100%);
+  background: linear-gradient(180deg, #1a1a1a 0%, #252525 100%);
   border: 2px solid #e94560;
   border-radius: 0.75rem;
-  box-shadow: 0 4px 20px rgba(233, 69, 96, 0.3);
+  box-shadow: 0 4px 20px rgba(233, 69, 96, 0.15);
 }
 
 .story-text {
@@ -103,7 +103,7 @@ body {
 }
 
 .stat-bar-bg {
-  background: linear-gradient(90deg, #0f3460 0%, #16213e 100%);
+  background: linear-gradient(90deg, #252525 0%, #1a1a1a 100%);
 }
 
 /* Push zoom control above the stats bar footer.
@@ -131,7 +131,7 @@ body {
   line-height: 1;
 }
 .loc-popup .leaflet-popup-tip-container .leaflet-popup-tip {
-  background: #1a1a2e;
+  background: #1a1a1a;
   box-shadow: none;
 }
 
@@ -140,7 +140,7 @@ body {
   width: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #1a1a2e;
+  background: #1a1a1a;
 }
 ::-webkit-scrollbar-thumb {
   background: #e94560;

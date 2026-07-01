@@ -111,7 +111,7 @@ export default function TapChallenge({ onResult }: TapChallengeProps) {
       onClick={handleTap}
     >
       {/* Round / score header */}
-      <div className="flex items-center justify-between text-xs text-gray-400">
+      <div className="flex items-center justify-between text-xs text-gray-500">
         <span>Round {Math.min(round + 1, ROUNDS_TOTAL)} / {ROUNDS_TOTAL}</span>
         <div className="flex gap-1">
           {Array.from({ length: ROUNDS_TOTAL }).map((_, i) => (
@@ -130,10 +130,10 @@ export default function TapChallenge({ onResult }: TapChallengeProps) {
       </div>
 
       {/* Track */}
-      <div className="relative w-full h-14 bg-[#0f1730] rounded-xl overflow-hidden cursor-pointer border border-gray-700">
+      <div className="relative w-full h-14 bg-[#1f1f1f] rounded-xl overflow-hidden cursor-pointer border border-gray-700">
         {/* Zone */}
         <div
-          className="absolute top-0 bottom-0 bg-[#22c55e]/25 border-x-2 border-[#22c55e] transition-none"
+          className="absolute top-0 bottom-0 bg-[#22c55e]/20 border-x-2 border-[#22c55e] transition-none"
           style={{ left: pct(zonePos), width: pct(ZONE_WIDTH) }}
         />
 
@@ -149,7 +149,7 @@ export default function TapChallenge({ onResult }: TapChallengeProps) {
 
         {/* Feedback label */}
         {(phase === 'hit' || phase === 'miss') && (
-          <div className={`absolute inset-0 flex items-center justify-center text-lg font-bold ${phase === 'hit' ? 'text-[#22c55e]' : 'text-[#e94560]'}`}>
+          <div className={`absolute inset-0 flex items-center justify-center text-lg font-bold ${phase === 'hit' ? 'text-green-600' : 'text-[#e94560]'}`}>
             {phase === 'hit' ? '✓ Hit!' : '✗ Miss'}
           </div>
         )}
@@ -158,13 +158,13 @@ export default function TapChallenge({ onResult }: TapChallengeProps) {
       {/* Instruction / CTA */}
       <div className="text-center">
         {phase === 'ready' && (
-          <div className="bg-[#16213e] border border-gray-700 rounded-xl px-6 py-4">
+          <div className="bg-[#252525] border border-gray-700 rounded-xl px-6 py-4">
             <p className="text-white font-semibold text-sm mb-1">Stop the marker inside the green zone</p>
-            <p className="text-gray-400 text-xs">Tap or press Space · {ROUNDS_TO_WIN}/{ROUNDS_TOTAL} hits to succeed</p>
+            <p className="text-gray-500 text-xs">Tap or press Space · {ROUNDS_TO_WIN}/{ROUNDS_TOTAL} hits to succeed</p>
           </div>
         )}
         {phase === 'playing' && (
-          <p className="text-gray-300 text-sm animate-pulse">Tap to stop!</p>
+          <p className="text-gray-400 text-sm animate-pulse">Tap to stop!</p>
         )}
         {(phase === 'hit' || phase === 'miss') && (
           <p className="text-gray-500 text-xs">{lastHit ? 'Nice timing' : 'Just outside the zone'}</p>
