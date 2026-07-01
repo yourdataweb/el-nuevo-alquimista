@@ -18,7 +18,7 @@ const SPRITE_YS = [0, 289, 579, 867, 1152, 1440, 1717, 1992, 2261, 2528, 2784] a
 // Ramos so both characters render at the same visual height (~65-66px).
 const PLAYER_DISPLAY = { trump: 80, ramos: 80 } as const;
 
-const LEVEL_SECS = 25;
+const DEFAULT_LEVEL_SECS = 20;
 const JUMP_VEL = -560;
 const GRAVITY = 1500;
 
@@ -63,6 +63,7 @@ interface SceneOpts {
   shootRef: React.MutableRefObject<boolean>;
   charKey: CharKey;
   maxLives: number;
+  levelSecs: number;
   setLives: (n: number) => void;
   setProgress: (n: number) => void;
   onDone: (won: boolean) => void;
@@ -73,7 +74,7 @@ interface SceneOpts {
 // Closes over opts so no module-level globals are needed.
 
 function makeSceneClass(opts: SceneOpts) {
-  const { jumpRef, shootRef, charKey, maxLives, setLives, setProgress, onDone } = opts;
+  const { jumpRef, shootRef, charKey, maxLives, levelSecs, setLives, setProgress, onDone } = opts;
 
   return class GameScene extends Phaser.Scene {
     // game objects
@@ -211,7 +212,7 @@ function makeSceneClass(opts: SceneOpts) {
 
       // Timers
       this.elapsed += dt;
-      const progress = Math.min(1, this.elapsed / LEVEL_SECS);
+      const progress = Math.min(1, this.elapsed / levelSecs);
       this.bulletCD = Math.max(0, this.bulletCD - dt);
       if (this.invTimer > 0) this.invTimer -= dt;
       if (this.shootTimer > 0) this.shootTimer -= dt;
@@ -376,17 +377,19 @@ function makeSceneClass(opts: SceneOpts) {
 // ─── React wrapper ────────────────────────────────────────────────────────
 
 interface Props {
-  onComplete: (vitDelta: number) => void;
+  travelSecs?: number;
+  onComplete: (deltas: { vitality: number; knowledge?: number }) => void;
 }
 
-export default function SideScroller({ onComplete }: Props) {
+export default function SideScroller({ travelSecs = DEFAULT_LEVEL_SECS, onComplete }: Props) {
   const containerRef = useRef<HTMLDivElement>(null);
   const gameRef = useRef<Phaser.Game | null>(null);
   const firedRef = useRef(false);
 
-  const [uiPhase, setUiPhase] = useState<'ready' | 'running' | 'win' | 'lose'>('ready');
+  const [uiPhase, setUiPhase] = useState<'running' | 'win' | 'lose'>('running');
   const [uiLives, setUiLives] = useState(3);
   const [uiProgress, setUiProgress] = useState(0);
+  const resultRef = useRef<{ vitality: number; knowledge?: number }>({ vitality: 0 });
 
   const vitality = useGameStore(s => s.stats.vitality);
   const chosenCharacter = useGameStore(s => s.chosenCharacter);
@@ -400,9 +403,9 @@ export default function SideScroller({ onComplete }: Props) {
   const handleDone = useCallback((won: boolean) => {
     if (firedRef.current) return;
     firedRef.current = true;
+    resultRef.current = won ? { vitality: 5, knowledge: 3 } : { vitality: -10 };
     setUiPhase(won ? 'win' : 'lose');
-    setTimeout(() => onComplete(won ? 5 : -10), 1200);
-  }, [onComplete]);
+  }, []);
 
   const startGame = useCallback(() => {
     const el = containerRef.current;
@@ -424,6 +427,7 @@ export default function SideScroller({ onComplete }: Props) {
       shootRef,
       charKey,
       maxLives,
+      levelSecs: travelSecs,
       setLives: setUiLives,
       setProgress: setUiProgress,
       onDone: handleDone,
@@ -449,14 +453,16 @@ export default function SideScroller({ onComplete }: Props) {
     });
 
     setUiPhase('running');
-  }, [charKey, maxLives, handleDone]);
+  }, [charKey, maxLives, travelSecs, handleDone]);
 
-  // Cleanup on unmount
+  // Auto-start on mount, cleanup on unmount
   useEffect(() => {
+    startGame();
     return () => {
       gameRef.current?.destroy(true);
       gameRef.current = null;
     };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Desktop keyboard support
@@ -504,38 +510,33 @@ export default function SideScroller({ onComplete }: Props) {
       {/* ── Phaser canvas container ── */}
       <div ref={containerRef} className="flex-1 min-h-0 relative overflow-hidden">
 
-        {/* Ready screen */}
-        {uiPhase === 'ready' && (
-          <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-[#1a1a3e] gap-4">
-            <p className="pixel-text text-white text-2xl tracking-widest">TRAVEL</p>
-            <p className="text-gray-400 text-sm text-center px-8 leading-relaxed">
-              Survive the journey to reach your destination.<br />
-              Jump over enemies or shoot them down!
-            </p>
-            <button
-              onClick={startGame}
-              className="mt-2 px-12 py-3 rounded-2xl bg-gradient-to-r from-[#22c55e] to-[#16a34a] text-white font-bold text-base active:scale-95 transition-all"
-            >
-              Let's go!
-            </button>
-          </div>
-        )}
-
         {/* Win overlay */}
         {uiPhase === 'win' && (
-          <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-black/70 gap-3 pointer-events-none">
+          <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-black/70 gap-4">
             <span className="text-6xl">🏆</span>
             <p className="pixel-text text-white text-2xl">ARRIVED!</p>
-            <p className="text-green-400 font-semibold">+5 Vitality</p>
+            <p className="text-green-400 font-semibold">+5 Vitality &nbsp; +3 Knowledge</p>
+            <button
+              onClick={() => onComplete(resultRef.current)}
+              className="mt-4 px-10 py-3 rounded-2xl bg-gradient-to-r from-[#22c55e] to-[#16a34a] text-white font-bold text-base active:scale-95 transition-all"
+            >
+              Continue
+            </button>
           </div>
         )}
 
         {/* Lose overlay */}
         {uiPhase === 'lose' && (
-          <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-black/70 gap-3 pointer-events-none">
+          <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-black/70 gap-4">
             <span className="text-6xl">💀</span>
             <p className="pixel-text text-white text-2xl">KNOCKED OUT</p>
             <p className="text-red-400 font-semibold">-10 Vitality</p>
+            <button
+              onClick={() => onComplete(resultRef.current)}
+              className="mt-4 px-10 py-3 rounded-2xl bg-gradient-to-r from-[#e94560] to-[#c0392b] text-white font-bold text-base active:scale-95 transition-all"
+            >
+              Continue
+            </button>
           </div>
         )}
       </div>
@@ -547,8 +548,8 @@ export default function SideScroller({ onComplete }: Props) {
           onPointerUp={() => { jumpRef.current = false; }}
           onPointerLeave={() => { jumpRef.current = false; }}
           onPointerCancel={() => { jumpRef.current = false; }}
-          className="py-7 rounded-2xl bg-[#1e3a5f] border-2 border-[#3b82f6]/60
-            text-white font-bold text-xl active:scale-95 active:bg-[#1d4ed8]/40
+          className="py-7 rounded-2xl bg-[#0f3460] border-2 border-[#e94560]/50
+            text-white font-bold text-xl active:scale-95 active:bg-[#e94560]/20
             transition-transform touch-none"
         >
           ↑ JUMP
@@ -558,8 +559,8 @@ export default function SideScroller({ onComplete }: Props) {
           onPointerUp={() => { shootRef.current = false; }}
           onPointerLeave={() => { shootRef.current = false; }}
           onPointerCancel={() => { shootRef.current = false; }}
-          className="py-7 rounded-2xl bg-[#3d1a00] border-2 border-[#e94560]/60
-            text-white font-bold text-xl active:scale-95 active:bg-[#e94560]/30
+          className="py-7 rounded-2xl bg-[#e94560]/15 border-2 border-[#e94560]
+            text-white font-bold text-xl active:scale-95 active:bg-[#e94560]/40
             transition-transform touch-none"
         >
           🔫 SHOOT

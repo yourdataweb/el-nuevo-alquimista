@@ -1,5 +1,4 @@
 import type { Stats } from '../../store/types';
-import { useGameStore } from '../../store/gameStore';
 
 const STAT_ICONS: Record<keyof Stats, string> = {
   vitality: '💪',
@@ -32,8 +31,6 @@ interface ResultSummaryProps {
  * Replaces the game modal entirely so the user gets a clear "result page".
  */
 export default function ResultSummary({ won, effects, onClose }: ResultSummaryProps) {
-  const currentStats = useGameStore((s) => s.stats);
-
   return (
     <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/80 backdrop-blur-md animate-fadeIn">
       <div className="w-full max-w-md mx-4 bg-[#1a1a1a] border border-gray-700 rounded-2xl shadow-2xl overflow-hidden">
@@ -91,23 +88,6 @@ export default function ResultSummary({ won, effects, onClose }: ResultSummaryPr
                 })}
               </div>
 
-              {/* ── Updated totals ── */}
-              <details className="mt-3 text-left">
-                <summary className="text-gray-500 text-xs cursor-pointer hover:text-gray-300 transition-colors">
-                  Show updated stats
-                </summary>
-                <div className="mt-2 grid grid-cols-2 gap-1.5">
-                  {(Object.keys(currentStats) as (keyof Stats)[]).map((k) => (
-                    <div
-                      key={k}
-                      className="flex items-center gap-1.5 bg-gray-800 rounded-md px-2.5 py-1.5"
-                    >
-                      <span className="text-sm">{STAT_ICONS[k]}</span>
-                      <span className="text-gray-400 text-xs">{currentStats[k]}</span>
-                    </div>
-                  ))}
-                </div>
-              </details>
             </div>
           )}
 

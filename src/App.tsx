@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import type { ReactNode } from 'react';
 import { useGameStore } from './store/gameStore';
 import { elAlquimista } from './data/story/el-alquimista';
@@ -10,7 +10,13 @@ import {
   handleRecapNext as engineRecapNext,
   checkAutoAdvance,
 } from './engine/storyEngine';
-import type { LocationPOI } from './store/types';
+import type { LocationPOI, Position } from './store/types';
+
+function distKm(a: Position, b: Position): number {
+  const dlat = (b.lat - a.lat) * 111.32;
+  const dlng = (b.lng - a.lng) * 111.32 * Math.cos(a.lat * Math.PI / 180);
+  return Math.sqrt(dlat * dlat + dlng * dlng);
+}
 
 import MapBackground from './components/MapBackground';
 import LocationHUD from './components/LocationHUD';
@@ -58,6 +64,7 @@ export default function App() {
   const advanceTime = useGameStore((s) => s.advanceTime);
   const markChapterComplete = useGameStore((s) => s.markChapterComplete);
   const time = useGameStore((s) => s.time);
+  const [travelSecs, setTravelSecs] = useState(25);
   const { i18n } = useTranslation();
 
   const allChapters = elAlquimista.chapters;
@@ -99,10 +106,13 @@ export default function App() {
 
   // ── Handlers ──
   const handleLocationSelect = useCallback((loc: LocationPOI) => {
+    const fromLoc = currentLocationId ? getLocationById(currentLocationId) : null;
+    const km = fromLoc ? distKm(fromLoc.position, loc.position) : 5;
+    setTravelSecs(Math.round(Math.max(6, Math.min(40, 6 + km * 3))));
     flyToMap(loc.position.lat, loc.position.lng, 16);
     setCurrentLocation(loc.id);
     setPhase('walking');
-  }, [setPhase, setCurrentLocation]);
+  }, [setPhase, setCurrentLocation, currentLocationId]);
 
   const handleLocationBack = useCallback(() => {
     setPhase('map');
@@ -167,8 +177,9 @@ export default function App() {
       case 'walking':
         return (
           <SideScroller
-            onComplete={(vitDelta) => {
-              updateStats({ vitality: vitDelta });
+            travelSecs={travelSecs}
+            onComplete={(deltas) => {
+              updateStats(deltas);
               setPhase('location');
             }}
           />
