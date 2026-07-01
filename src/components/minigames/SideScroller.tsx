@@ -6,12 +6,17 @@ const BASE = import.meta.env.BASE_URL;
 
 // ─── Sprite sheet constants ────────────────────────────────────────────────
 // Source image: 1536 × 2784 px, 5 cols × 10 rows
-const FRAME_W = 307; // Math.round(1536 / 5)
-const FRAME_H = 278; // Math.round(2784 / 10)
+// Rows alternate 278/279 px tall (2784/10 = 278.4), so a uniform frameHeight
+// drifts 0–4 px by row 9. Load as plain image and define exact frames instead.
+const FRAME_W = 307; // nominal — used only for body hitbox proportions
+const FRAME_H = 278; // nominal — used only for body hitbox proportions
+// Exact pixel boundaries from scripts/process_sprite.py
+const SPRITE_XS = [0, 307, 614, 922, 1229, 1536] as const;
+const SPRITE_YS = [0, 289, 579, 867, 1152, 1440, 1717, 1992, 2261, 2528, 2784] as const;
 // Trump has ~42px top margin in each frame; Ramos fills the full cell.
 // At 80px display Trump appears 65.6px tall, Ramos 79.7px. Use 66px for
 // Ramos so both characters render at the same visual height (~65-66px).
-const PLAYER_DISPLAY = { trump: 80, ramos: 66 } as const;
+const PLAYER_DISPLAY = { trump: 80, ramos: 80 } as const;
 
 const LEVEL_SECS = 25;
 const JUMP_VEL = -560;
@@ -96,13 +101,24 @@ function makeSceneClass(opts: SceneOpts) {
     }
 
     preload() {
-      this.load.spritesheet('spr', `${BASE}walking/player-sprite-tile.png`, {
-        frameWidth: FRAME_W,
-        frameHeight: FRAME_H,
-      });
+      // Plain image load — frames are defined manually in create() with exact boundaries.
+      this.load.image('spr', `${BASE}walking/player-sprite-tile.png`);
     }
 
     create() {
+      // ── Define exact sprite frames (avoids 0–4 px drift from non-integer cell sizes) ──
+      const tex = this.textures.get('spr');
+      for (let i = 0; i < 50; i++) {
+        const row = Math.floor(i / 5);
+        const col = i % 5;
+        tex.add(
+          i, 0,
+          SPRITE_XS[col], SPRITE_YS[row],
+          SPRITE_XS[col + 1] - SPRITE_XS[col],
+          SPRITE_YS[row + 1] - SPRITE_YS[row],
+        );
+      }
+
       this.GW = this.scale.width;
       this.GH = this.scale.height;
       this.GY = Math.round(this.GH * 0.77);

@@ -2,7 +2,7 @@
 """
 process_sprite.py  —  Remove the checkerboard background from the player sprite tile.
 
-The source image (public/walking/player-sprite-tile.png) was generated with a grey/white
+The source image (public/walking/player-sprite-tile-border.png) was generated with a grey/white
 checkerboard background around each character frame. This script uses a per-frame
 flood-fill from the cell corners to detect and remove that connected background region,
 setting those pixels to alpha=0. White/grey pixels inside the character (hair, teeth, etc.)
@@ -12,7 +12,7 @@ by the fill.
 Usage:
     python3 scripts/process_sprite.py
     # Reads:  public/walking/player-sprite-tile-border.png
-    # Writes: public/walking/player-sprite-tile-border.png.bak  (in-place, keeps original as .bak)
+    # Writes: public/walking/player-sprite-tile.png
 
 Frame layout: 5 cols × 10 rows
     Rows 0-4:  Trump  (run, jump, shoot, fall, standup)
@@ -27,6 +27,7 @@ from PIL import Image
 
 REPO_ROOT = Path(__file__).parent.parent
 SRC = REPO_ROOT / "public" / "walking" / "player-sprite-tile-border.png"
+DESTINATION = REPO_ROOT / "public" / "walking" / "player-sprite-tile.png"
 
 COLS = 5
 ROWS = 10
@@ -129,8 +130,8 @@ def main() -> None:
         print(f"Backup saved: {bak.name}")
 
     result_img = Image.fromarray(out, "RGBA")
-    result_img.save(SRC, optimize=False)
-    print(f"Saved: {SRC}")
+    result_img.save(DESTINATION, optimize=False)
+    print(f"Saved: {DESTINATION}")
 
 
 if __name__ == "__main__":
