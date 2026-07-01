@@ -3,17 +3,17 @@
 
 const LOCATIONS = [
   // Known Commons filenames for each location
-  { id: 'bcn-home', file: 'Passeig de Gràcia and Carrer de Provença.jpg' },
+  { id: 'bcn-home', file: 'Evening_light_over_Barcelona.jpg' },
   { id: 'bcn-plaza-catalunya', file: 'Placa Catalunya, Barcelona (P1170670).jpg' },
   { id: 'bcn-plaza-real', file: 'Barcelona - Nacht - Placa Reial 004.jpg' },
   { id: 'bcn-plaza-espanya', file: 'Plaça Espanya, Barcelona - panoramio (36).jpg' },
   { id: 'bcn-library-central', file: 'Hospital de la Santa Creu, escala Caritat.jpg' },
   { id: 'bcn-library-catalunya', file: 'Biblioteca de Catalunya - Barcelona (Catalonia).jpg' },
   { id: 'bcn-park-guell', file: 'Parc Güell Terrace.jpg' },
-  { id: 'bcn-park-montjuic', file: 'Magic Fountain of Montjuïc - Barcelona, Spain -全景.jpg' },
+  { id: 'bcn-park-montjuic', file: 'Barcelona_-_Montjuïc_-_Castell_de_Montjuïc_1799_-_Carretera_de_Montjuïc_-_View_SE_towards_Passenger_ship_terminals_in_Barcelona.jpg' },
   { id: 'bcn-market-boqueria', file: 'Mercado de la Boqueria, Barcelona, España, 2016-01-13, DD 24-27 HDR.jpg' },
-  { id: 'bcn-market-sant-antoni', file: 'Mercat de Sant Antoni, 2020.jpg' },
-  { id: 'bcn-church-santa-maria', file: 'Santa Maria del Mar - Barcelona (Catalonia).jpg' },
+  { id: 'bcn-market-sant-antoni', file: 'Mercat_de_Sant_Antoni,_Barcelona.jpg' },
+  { id: 'bcn-church-santa-maria', file: 'Santa_Maria_del_Mar,_Barcelona_05.jpg' },
   { id: 'bcn-church-sagrada', file: 'Sagrada Família - View East.jpg' },
   { id: 'bcn-monument-casa-batllo', file: 'Casa Batlló 003 - Barcelona - 2019-08-29.jpg' },
   { id: 'bcn-monument-pedrera', file: 'Casa Milà - Barcelona, Spain - Jan 2007.jpg' },
@@ -70,7 +70,7 @@ async function main() {
 
   for (const loc of LOCATIONS) {
     const dest = `${OUTPUT_DIR}/${loc.id}.jpg`;
-    if (fs.existsSync(dest) && fs.statSync(dest).size > 2000) {
+    if (fs.existsSync(dest) && fs.statSync(dest).size > 200) {
       console.log(`✓ ${loc.id} — already cached (${Math.round(fs.statSync(dest).size / 1024)}KB)`);
       success++;
       continue;
@@ -81,7 +81,7 @@ async function main() {
     try {
       await downloadCurl(url, dest);
       const stats = fs.statSync(dest);
-      if (stats.size > 2000) {
+      if (stats.size > 200) {
         console.log(`✓ ${loc.id} — ${Math.round(stats.size / 1024)}KB (${loc.file})`);
         success++;
       } else {
