@@ -123,7 +123,7 @@ const chapter1: StoryChapter = {
   title: 'The Signal',
   role: 'story',
   description: 'An old man on a bench. Two coins. A direction.',
-  locationsToShow: ['bcn-plaza-catalunya', 'bcn-plaza-real', 'bcn-cafe-federal', 'bcn-theatre-lliure', 'bcn-library-central'],
+  locationsToShow: ['bcn-plaza-catalunya', 'bcn-plaza-real', 'bcn-cafe-federal', 'bcn-theatre-lliure', 'bcn-library-central', 'bcn-monument-colom', 'bcn-church-pi', 'bcn-market-boqueria', 'bcn-monument-arc-triomf'],
   requiredLocationIds: ['bcn-plaza-catalunya'],
   dialogue: [
     {
@@ -245,7 +245,7 @@ const chapter2_sandbox: StoryChapter = {
   title: 'The Merchant of Glass',
   role: 'sandbox',
   description: 'You need to earn money and find your footing before pursuing the next clue. Merce needs help at the market.',
-  locationsToShow: ['bcn-library-central', 'bcn-cafe-federal', 'bcn-market-boqueria', 'bcn-market-sant-antoni', 'bcn-office-22', 'bcn-park-ciutadella'],
+  locationsToShow: ['bcn-library-central', 'bcn-cafe-federal', 'bcn-market-boqueria', 'bcn-market-sant-antoni', 'bcn-office-22', 'bcn-park-ciutadella', 'bcn-cafe-bar-marsella', 'bcn-market-galvany', 'bcn-plaza-sant-jaume', 'bcn-monument-palau-musica'],
   requiredLocationIds: ['bcn-library-central'],
   completionCriteria: { kind: 'visit_location', locationId: 'bcn-library-central' },
   dialogue: [
@@ -307,7 +307,7 @@ const chapter3: StoryChapter = {
   title: 'The Englishman',
   role: 'story',
   description: 'The Englishman studies symbols in the park. He has a map of Barcelona with a secret code.',
-  locationsToShow: ['bcn-park-ciutadella', 'bcn-park-guell', 'bcn-cafe-nomad', 'bcn-library-catalunya', 'bcn-plaza-espanya', 'bcn-church-santa-maria'],
+  locationsToShow: ['bcn-park-ciutadella', 'bcn-park-guell', 'bcn-cafe-nomad', 'bcn-library-catalunya', 'bcn-plaza-espanya', 'bcn-church-santa-maria', 'bcn-library-born', 'bcn-market-santa-caterina', 'bcn-plaza-gracia', 'bcn-cafe-el-nacional'],
   requiredLocationIds: ['bcn-park-ciutadella'],
   dialogue: [
     {
@@ -413,7 +413,7 @@ const chapter4_sandbox: StoryChapter = {
   title: 'The Desert Crossing',
   role: 'sandbox',
   description: 'Visit the three locations. Find the clues. Life keeps happening around you.',
-  locationsToShow: ['bcn-market-sant-antoni', 'bcn-church-santa-maria', 'bcn-monument-casa-batllo', 'bcn-cafe-federal', 'bcn-park-ciutadella', 'bcn-office-22', 'bcn-theatre-lliure'],
+  locationsToShow: ['bcn-market-sant-antoni', 'bcn-church-santa-maria', 'bcn-monument-casa-batllo', 'bcn-cafe-federal', 'bcn-park-ciutadella', 'bcn-office-22', 'bcn-theatre-lliure', 'bcn-theatre-liceu', 'bcn-monument-barceloneta', 'bcn-park-diagonal-mar', 'bcn-plaza-lesseps', 'bcn-cafe-bar-marsella'],
   completionCriteria: { kind: 'visit_all_locations', locationIds: ['bcn-market-sant-antoni', 'bcn-church-santa-maria', 'bcn-monument-casa-batllo'] },
   requiredLocationIds: ['bcn-market-sant-antoni', 'bcn-church-santa-maria', 'bcn-monument-casa-batllo'],
   dialogue: [
@@ -449,7 +449,7 @@ const chapter5: StoryChapter = {
   title: 'The Trial',
   role: 'story',
   description: 'The Magic Fountain awaits. Someone has been watching your journey.',
-  locationsToShow: ['bcn-plaza-espanya', 'bcn-park-montjuic', 'bcn-cafe-satan', 'bcn-library-catalunya', 'bcn-church-sagrada', 'bcn-monument-pedrera'],
+  locationsToShow: ['bcn-plaza-espanya', 'bcn-park-montjuic', 'bcn-cafe-satan', 'bcn-library-catalunya', 'bcn-church-sagrada', 'bcn-monument-pedrera', 'bcn-monument-palau-nacional', 'bcn-monument-tibidabo', 'bcn-office-poblenou', 'bcn-park-laberint'],
   requiredLocationIds: ['bcn-plaza-espanya'],
   dialogue: [
     {
@@ -582,7 +582,7 @@ const epilogue: StoryChapter = {
   title: 'The Return',
   role: 'story',
   description: 'A year later. A café in El Born. Someone looks lost with a map.',
-  locationsToShow: ['bcn-cafe-federal', 'bcn-cafe-nomad', 'bcn-park-ciutadella', 'bcn-theatre-lliure'],
+  locationsToShow: ['bcn-cafe-federal', 'bcn-cafe-nomad', 'bcn-park-ciutadella', 'bcn-theatre-lliure', 'bcn-cafe-el-nacional', 'bcn-theatre-liceu', 'bcn-plaza-real', 'bcn-monument-barceloneta'],
   requiredLocationIds: ['bcn-cafe-federal'],
   dialogue: [
     {
