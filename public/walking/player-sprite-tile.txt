@@ -30,18 +30,9 @@ You have a public/walking/player-sprite-tile.png sprite tile file with the two p
 
 I want you to create a new json file with the coordinates of each of the images structured by character at top level, then action and then the coordinates of the images that are part of that action. 
 
-----------------------------------------
-
-You are a web developer specialized in web online video games. We need a relatively sophisticated new 2d retro-style side-scroller video game for the transitions when the player moves from one location to another. This has nothing to do with the current mini games.
-
-The characters will run forward, jump, shoot a gun, fall to the ground and stand up from the ground. 
-
-Use the top 5 rows if the player selected the public/characters/trump.png character and the 5 rows at the bottom if the player selected the public/characters/ramos.png character.
-
-- We want the side-scroller video game to be integrated with what we have in the game so far so the vitality stat will be used for the platforms game
-- We want the player to be animated as an animated sprite (both trump and ramos characters, depending on the user selection)
-- Regarding the dynamics of the game, keep in mind that it must be mobile-friendly so only two buttons: "jump" and "shoot a gun"
 - We will talk later about the background image and the platform / NPCs in the game
 - Store any scripts you need to create to process the sprite tile in scripts/ If it results to be very challenging to process the sprite tile file inform me of how could I help you
 
 Can you come up with something playable with the sprite tile? 
+
+- rename config file from IQA to sdk

@@ -40,8 +40,8 @@ export interface StoryRole {
 }
 
 export type CompletionCriteria =
-  | { kind: 'visit_location'; locationId: string }
-  | { kind: 'visit_all_locations'; locationIds: string[] }
+  | { kind: 'visit_location'; locationType: LocationType }
+  | { kind: 'visit_all_locations'; locationTypes: LocationType[] }
   | { kind: 'none' };
 
 export interface StoryChapter {
@@ -49,9 +49,9 @@ export interface StoryChapter {
   title: string;
   role: 'story' | 'sandbox';
   description: string;
-  locationsToShow?: string[];
-  /** Location IDs that trigger the chapter dialogue when visited (story-critical locations). Can be one or many. */
-  requiredLocationIds?: string[];
+  locationsToShow?: LocationType[];
+  /** Location types that trigger the chapter dialogue when visited (story-critical location types). */
+  requiredLocationTypes?: LocationType[];
   completionCriteria?: CompletionCriteria;
   dialogue: DialogueNode[];
   momentLimit?: MomentLimit;
@@ -114,6 +114,9 @@ export interface BookArchetype {
   title: string;
   titleEs: string;
   titleCa: string;
+  intro: string;
+  introEs: string;
+  introCa: string;
   roles: StoryRole[];
   chapters: StoryChapter[];
 }

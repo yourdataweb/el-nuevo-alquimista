@@ -4,7 +4,7 @@ import { useGameStore } from '../store/gameStore';
 import GameLayout from '../components/GameLayout';
 import DialogueBox from '../components/DialogueBox';
 import MomentLimite from '../components/MomentLimite';
-import { elAlquimista } from '../data/story/el-alquimista';
+import { getStoryById } from '../data/story/index';
 import type { DialogueNode } from '../store/types';
 
 interface DialogueScreenProps {
@@ -17,14 +17,16 @@ export default function DialogueScreen({ chapterIndex, onComplete }: DialogueScr
   const updateStats = useGameStore((s) => s.updateStats);
   const recordDecision = useGameStore((s) => s.recordDecision);
   const stats = useGameStore((s) => s.stats);
+  const chosenBook = useGameStore((s) => s.chosenBook);
   const statsRecord: Record<string, number> = stats as unknown as Record<string, number>;
 
-  const chapter = elAlquimista.chapters[chapterIndex];
+  const story = chosenBook ? getStoryById(chosenBook) : null;
+  const chapter = story?.chapters[chapterIndex];
   const [currentNodeIndex, setCurrentNodeIndex] = useState(0);
   const [showMomentLimit, setShowMomentLimit] = useState(false);
 
-  const currentNode: DialogueNode | undefined = chapter.dialogue[currentNodeIndex];
-  const hasMomentLimit = chapter.momentLimit !== undefined;
+  const currentNode: DialogueNode | undefined = chapter?.dialogue[currentNodeIndex];
+  const hasMomentLimit = chapter?.momentLimit !== undefined;
 
   const getSpeakerName = (speaker: string): string => {
     const key = speaker.toLowerCase();
@@ -50,11 +52,11 @@ export default function DialogueScreen({ chapterIndex, onComplete }: DialogueScr
 
     // Apply effects
     updateStats(opt.effects);
-    recordDecision(chapter.id, currentNode?.id ?? '', optionId);
+    recordDecision(chapter?.id ?? '', currentNode?.id ?? '', optionId);
 
     // Check for next node
     if (opt.nextNodeId) {
-      const nextIdx = chapter.dialogue.findIndex((d) => d.id === opt.nextNodeId);
+      const nextIdx = chapter?.dialogue.findIndex((d) => d.id === opt.nextNodeId) ?? -1;
       if (nextIdx !== -1) {
         setCurrentNodeIndex(nextIdx);
         return;
@@ -70,10 +72,10 @@ export default function DialogueScreen({ chapterIndex, onComplete }: DialogueScr
   };
 
   const handleMomentOption = (optionId: string) => {
-    const opt = chapter.momentLimit?.options.find((o) => o.id === optionId);
+    const opt = chapter?.momentLimit?.options.find((o) => o.id === optionId);
     if (!opt) return;
     updateStats(opt.effects);
-    recordDecision(chapter.id, 'moment_limit', optionId);
+    recordDecision(chapter?.id ?? '', 'moment_limit', optionId);
   };
 
   const handleMomentComplete = () => {
@@ -83,7 +85,7 @@ export default function DialogueScreen({ chapterIndex, onComplete }: DialogueScr
 
   if (!currentNode) return null;
 
-  if (showMomentLimit && chapter.momentLimit) {
+  if (showMomentLimit && chapter?.momentLimit) {
     const ml = chapter.momentLimit;
     return (
       <GameLayout>

@@ -1,0 +1,202 @@
+[
+  {
+    "id": "nyc-home",
+    "name": "Your apartment",
+    "type": "home"
+  },
+  {
+    "id": "nyc-plaza-albee-square",
+    "name": "Albee Square",
+    "type": "plaza"
+  },
+  {
+    "id": "nyc-plaza-beastie-boys-square",
+    "name": "Beastie Boys Square",
+    "type": "plaza"
+  },
+  {
+    "id": "nyc-plaza-urban-plaza",
+    "name": "Urban Plaza",
+    "type": "plaza"
+  },
+  {
+    "id": "nyc-airport-john-f-kennedy-international",
+    "name": "John F. Kennedy International Airport",
+    "type": "airport"
+  },
+  {
+    "id": "nyc-airport-westchester-county-airport",
+    "name": "Westchester County Airport",
+    "type": "airport"
+  },
+  {
+    "id": "nyc-airport-somerset-airport",
+    "name": "Somerset Airport",
+    "type": "airport"
+  },
+  {
+    "id": "nyc-airport-newark-liberty-international",
+    "name": "Newark Liberty International Airport",
+    "type": "airport"
+  },
+  {
+    "id": "nyc-market-union-square-green-market",
+    "name": "Union Square Green Market",
+    "type": "market"
+  },
+  {
+    "id": "nyc-market-the-market-line",
+    "name": "The Market Line",
+    "type": "market"
+  },
+  {
+    "id": "nyc-market-ludlow-flea-market",
+    "name": "Ludlow Flea Market",
+    "type": "market"
+  },
+  {
+    "id": "nyc-market-canal-street-market",
+    "name": "Canal Street Market",
+    "type": "market"
+  },
+  {
+    "id": "nyc-library-ottendorfer-library",
+    "name": "Ottendorfer Library",
+    "type": "library"
+  },
+  {
+    "id": "nyc-library-elmer-holmes-bobst-library",
+    "name": "Elmer Holmes Bobst Library",
+    "type": "library"
+  },
+  {
+    "id": "nyc-library-jefferson-market-library",
+    "name": "Jefferson Market Library",
+    "type": "library"
+  },
+  {
+    "id": "nyc-library-chatham-square-library",
+    "name": "Chatham Square Library",
+    "type": "library"
+  },
+  {
+    "id": "nyc-monument-stonewall-inn",
+    "name": "Stonewall Inn",
+    "type": "monument"
+  },
+  {
+    "id": "nyc-monument-brooklyn-bridge",
+    "name": "Brooklyn Bridge",
+    "type": "monument"
+  },
+  {
+    "id": "nyc-monument-one-world-trade-center",
+    "name": "One World Trade Center",
+    "type": "monument"
+  },
+  {
+    "id": "nyc-monument-manhattan-bridge",
+    "name": "Manhattan Bridge",
+    "type": "monument"
+  },
+  {
+    "id": "nyc-church-brooklyn-friends-meetinghous",
+    "name": "Brooklyn Friends Meetinghouse",
+    "type": "church"
+  },
+  {
+    "id": "nyc-church-hare-krishna-temple",
+    "name": "Hare Krishna Temple",
+    "type": "church"
+  },
+  {
+    "id": "nyc-church-grace-church",
+    "name": "Grace Church",
+    "type": "church"
+  },
+  {
+    "id": "nyc-church-saint-mark-s-in-the-bowery",
+    "name": "Saint Mark's in-the-Bowery",
+    "type": "church"
+  },
+  {
+    "id": "nyc-park-union-square-park",
+    "name": "Union Square Park",
+    "type": "park"
+  },
+  {
+    "id": "nyc-park-brooklyn-bridge-park",
+    "name": "Brooklyn Bridge Park",
+    "type": "park"
+  },
+  {
+    "id": "nyc-park-john-v-lindsay-east-river-pa",
+    "name": "John V. Lindsay East River Park",
+    "type": "park"
+  },
+  {
+    "id": "nyc-park-the-queen-elizabeth-ii-septe",
+    "name": "The Queen Elizabeth II September 11th Garden",
+    "type": "park"
+  },
+  {
+    "id": "nyc-theatre-anthology-film-archives",
+    "name": "Anthology Film Archives",
+    "type": "theatre"
+  },
+  {
+    "id": "nyc-theatre-classic-stage-company",
+    "name": "Classic Stage Company",
+    "type": "theatre"
+  },
+  {
+    "id": "nyc-theatre-performance-space-122",
+    "name": "Performance Space 122",
+    "type": "theatre"
+  },
+  {
+    "id": "nyc-theatre-public-theater",
+    "name": "Public Theater",
+    "type": "theatre"
+  },
+  {
+    "id": "nyc-cafe-yonah-shimmel-knish-bakery",
+    "name": "Yonah Shimmel Knish Bakery",
+    "type": "cafe"
+  },
+  {
+    "id": "nyc-cafe-the-uncommons",
+    "name": "The Uncommons",
+    "type": "cafe"
+  },
+  {
+    "id": "nyc-cafe-caffe-reggio",
+    "name": "Caffe Reggio",
+    "type": "cafe"
+  },
+  {
+    "id": "nyc-cafe-ferrara",
+    "name": "Ferrara",
+    "type": "cafe"
+  },
+  {
+    "id": "nyc-office-ocme-dna-forensic-biology-la",
+    "name": "OCME DNA Forensic Biology Laboratory Building",
+    "type": "office"
+  },
+  {
+    "id": "nyc-office-28-liberty",
+    "name": "28 Liberty",
+    "type": "office"
+  },
+  {
+    "id": "nyc-office-one-new-york-plaza",
+    "name": "One New York Plaza",
+    "type": "office"
+  },
+  {
+    "id": "nyc-office-51-astor-place",
+    "name": "51 Astor Place",
+    "type": "office"
+  }
+]

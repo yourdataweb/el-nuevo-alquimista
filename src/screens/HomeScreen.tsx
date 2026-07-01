@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { useGameStore } from '../store/gameStore';
 import GameLayout from '../components/GameLayout';
-import { homeLocation } from '../data/cities/barcelona';
+import { getCityById, getHomeLocation } from '../data/cities/index';
 
 interface HomeScreenProps {
   onGoToMap: () => void;
@@ -22,10 +22,16 @@ export default function HomeScreen({ onGoToMap }: HomeScreenProps) {
   const advanceTime = useGameStore((s) => s.advanceTime);
   const usedActions = useGameStore((s) => s.usedHomeActions);
   const addUsedHomeAction = useGameStore((s) => s.addUsedHomeAction);
+  const chosenCity = useGameStore((s) => s.chosenCity);
 
-  const home = homeLocation();
-  const homeName = i18n.language === 'ca' ? home.nameCa : i18n.language === 'es' ? home.nameEs : home.name;
-  const homeDesc = i18n.language === 'ca' ? home.descriptionCa : i18n.language === 'es' ? home.descriptionEs : home.description;
+  const city = chosenCity ? getCityById(chosenCity) : null;
+  const home = city ? getHomeLocation(city) : null;
+  const homeName = home
+    ? (i18n.language === 'ca' ? home.nameCa : i18n.language === 'es' ? home.nameEs : home.name)
+    : '';
+  const homeDesc = home
+    ? (i18n.language === 'ca' ? home.descriptionCa : i18n.language === 'es' ? home.descriptionEs : home.description)
+    : '';
 
   const interactions: { id: string; icon: string; label: string; desc: string; effects: StatEffect; time: number }[] = [
     {
@@ -97,7 +103,7 @@ export default function HomeScreen({ onGoToMap }: HomeScreenProps) {
                   className={`p-3 rounded-xl transition-all text-left active:scale-[0.98] ${
                     isUsed(action.id)
                       ? 'bg-[#252525] border border-gray-700 opacity-75 cursor-not-allowed'
-                      : 'bg-[#252525] border border-gray-700 hover:border-[#e94560]/70 hover:bg-[#e0dbd3] cursor-pointer'
+                      : 'bg-[#252525] border border-gray-700 hover:border-[#e94560]/70 hover:bg-[#2e2e2e] cursor-pointer'
                   }`}
                 >
                   <div className="text-2xl mb-1">{action.icon}</div>

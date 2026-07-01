@@ -18,7 +18,7 @@ const SPRITE_YS = [0, 289, 579, 867, 1152, 1440, 1717, 1992, 2261, 2528, 2784] a
 // Ramos so both characters render at the same visual height (~65-66px).
 const PLAYER_DISPLAY = { trump: 80, ramos: 80 } as const;
 
-const DEFAULT_LEVEL_SECS = 10;
+const DEFAULT_LEVEL_SECS = 3;
 const JUMP_VEL = -560;
 const GRAVITY = 1500;
 

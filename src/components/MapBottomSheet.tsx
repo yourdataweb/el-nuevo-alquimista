@@ -1,5 +1,5 @@
 import { useGameStore } from '../store/gameStore';
-import { elAlquimista } from '../data/story/el-alquimista';
+import { getStoryById } from '../data/story/index';
 
 interface MapBottomSheetProps {
   onPlay: () => void;
@@ -7,8 +7,10 @@ interface MapBottomSheetProps {
 
 export default function MapBottomSheet({ onPlay }: MapBottomSheetProps) {
   const currentChapter = useGameStore((s) => s.currentChapter);
+  const chosenBook = useGameStore((s) => s.chosenBook);
 
-  const chapter = elAlquimista.chapters[currentChapter];
+  const story = chosenBook ? getStoryById(chosenBook) : null;
+  const chapter = story?.chapters[currentChapter];
 
   return (
     <div className="pointer-events-auto h-full flex flex-col justify-end">

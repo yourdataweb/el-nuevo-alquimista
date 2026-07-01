@@ -1,11 +1,12 @@
 import { useCallback, useEffect, useState } from 'react';
 import type { ReactNode } from 'react';
 import { useGameStore } from './store/gameStore';
-import { elAlquimista } from './data/story/el-alquimista';
+import { getCityById, getAllCities, getHomeLocationId, getLocationById } from './data/cities/index';
+import { getStoryById, getAllStories } from './data/story/index';
 import { flyToMap } from './components/MapBackground';
-import { getLocationById } from './data/cities/barcelona';
 import {
   isCorrectLocation,
+  resolveRequiredLocations,
   handleDialogueComplete as engineDialogueComplete,
   handleRecapNext as engineRecapNext,
   checkAutoAdvance,
@@ -33,7 +34,16 @@ import GameLayout from './components/GameLayout';
 import LanguageSwitcher from './components/LanguageSwitcher';
 import StatsBar from './components/StatsBar';
 import { formatTime } from './engine/timeEngine';
+import { assertStoryForCity } from './engine/validateStory';
 import { useTranslation } from 'react-i18next';
+
+if (import.meta.env.DEV) {
+  for (const story of getAllStories()) {
+    for (const city of getAllCities()) {
+      assertStoryForCity(story, city);
+    }
+  }
+}
 
 function Overlay({ children }: { children: ReactNode }) {
   return (
@@ -64,54 +74,52 @@ export default function App() {
   const advanceTime = useGameStore((s) => s.advanceTime);
   const markChapterComplete = useGameStore((s) => s.markChapterComplete);
   const time = useGameStore((s) => s.time);
+  const chosenCity = useGameStore((s) => s.chosenCity);
+  const chosenBook = useGameStore((s) => s.chosenBook);
   const [travelSecs, setTravelSecs] = useState(25);
   const { i18n } = useTranslation();
 
-  const allChapters = elAlquimista.chapters;
+  const city = chosenCity ? getCityById(chosenCity) : null;
+  const story = chosenBook ? getStoryById(chosenBook) : null;
+  const allChapters = story?.chapters ?? [];
   const chapter = allChapters[currentChapter];
   const isLastChapter = currentChapter >= allChapters.length - 1;
-  // Show map on all screens — title and city_select use a semi-transparent overlay
   const showMapBackground = true;
 
-  // ── Advance to next chapter (shared by all progression paths) ──
   const doAdvance = useCallback((advance: { phase: string; newChapterIndex: number }, markCurrentId: string) => {
     markChapterComplete(markCurrentId);
     setChapter(advance.newChapterIndex);
     setPhase(advance.phase as any);
   }, [markChapterComplete, setChapter, setPhase]);
 
-  // ── Auto-advance check: runs when entering map phase or when visited locations change ──
   useEffect(() => {
-    if (phase !== 'map') return;
+    if (phase !== 'map' || !city) return;
     if (chapter && completedChapterIds.includes(chapter.id)) return;
 
-    const advance = checkAutoAdvance(currentChapter, visitedLocationIds, completedChapterIds, allChapters);
+    const advance = checkAutoAdvance(currentChapter, visitedLocationIds, completedChapterIds, allChapters, city.locations);
     if (advance && chapter) {
       doAdvance(advance, chapter.id);
     }
-    // Intentionally runs on EVERY map phase entry — handles both visitedLocationIds changes
-    // and phase transitions (e.g. dialogue → map) where criteria was met during dialogue.
   }, [phase]);
-  // Separate effect: also check when visited locations change while already on map
+
   useEffect(() => {
-    if (phase !== 'map') return;
+    if (phase !== 'map' || !city) return;
     if (chapter && completedChapterIds.includes(chapter.id)) return;
 
-    const advance = checkAutoAdvance(currentChapter, visitedLocationIds, completedChapterIds, allChapters);
+    const advance = checkAutoAdvance(currentChapter, visitedLocationIds, completedChapterIds, allChapters, city.locations);
     if (advance && chapter) {
       doAdvance(advance, chapter.id);
     }
   }, [visitedLocationIds]);
 
-  // ── Handlers ──
   const handleLocationSelect = useCallback((loc: LocationPOI) => {
-    const fromLoc = currentLocationId ? getLocationById(currentLocationId) : null;
+    const fromLoc = (currentLocationId && city) ? getLocationById(city, currentLocationId) : null;
     const km = fromLoc ? distKm(fromLoc.position, loc.position) : 5;
-    setTravelSecs(Math.round(Math.max(6, Math.min(40, 6 + km * 3))));
+    setTravelSecs(Math.round(Math.max(2, Math.min(13, 2 + km))));
     flyToMap(loc.position.lat, loc.position.lng, 16);
     setCurrentLocation(loc.id);
     setPhase('walking');
-  }, [setPhase, setCurrentLocation, currentLocationId]);
+  }, [setPhase, setCurrentLocation, currentLocationId, city]);
 
   const handleLocationBack = useCallback(() => {
     setPhase('map');
@@ -122,13 +130,13 @@ export default function App() {
   }, [setPhase]);
 
   const handleDialogueComplete = useCallback(() => {
-    const result = engineDialogueComplete(chapter, currentChapter, visitedLocationIds, allChapters);
+    const result = engineDialogueComplete(chapter, currentChapter, visitedLocationIds, allChapters, city?.locations ?? []);
     if (result.newChapterIndex !== undefined && chapter) {
       doAdvance(result as any, chapter.id);
     } else {
       setPhase(result.phase as any);
     }
-  }, [chapter, currentChapter, visitedLocationIds, allChapters, setPhase, doAdvance]);
+  }, [chapter, currentChapter, visitedLocationIds, allChapters, city, setPhase, doAdvance]);
 
   const handleRecapNext = useCallback(() => {
     if (isLastChapter) {
@@ -142,7 +150,6 @@ export default function App() {
     }
   }, [currentChapter, isLastChapter, chapter, allChapters, setChapter, setPhase, markChapterComplete]);
 
-  // ── Epilogue handler: story is done, go to title ──
   const handleEpilogueDone = useCallback(() => {
     setPhase('title');
   }, [setPhase]);
@@ -153,16 +160,15 @@ export default function App() {
 
   const handleHomeGoToMap = useCallback(() => {
     advanceTime(0.5);
-    setCurrentLocation('bcn-home');
+    if (city) setCurrentLocation(getHomeLocationId(city));
     setPhase('map');
-  }, [setPhase, advanceTime, setCurrentLocation]);
+  }, [setPhase, advanceTime, setCurrentLocation, city]);
 
   const handleIntroDone = useCallback(() => {
-    setCurrentLocation('bcn-home');
+    if (city) setCurrentLocation(getHomeLocationId(city));
     setPhase('home');
-  }, [setCurrentLocation, setPhase]);
+  }, [setCurrentLocation, setPhase, city]);
 
-  // ── Render helpers ──
   const renderPhase = () => {
     switch (phase) {
       case 'title':
@@ -190,7 +196,6 @@ export default function App() {
       case 'map':
         return (
           <>
-            {/* Header bar — sits above the map */}
             <div className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-3 py-2 bg-[#16213e]/80 backdrop-blur-md border-b border-[#e94560]/30">
               <div className="flex items-center gap-2 min-w-0">
                 <span className="text-[#e94560] pixel-text text-[8px] sm:text-[10px] truncate">
@@ -199,32 +204,33 @@ export default function App() {
               </div>
               <LanguageSwitcher />
             </div>
-            {/* Time bar */}
             <div className="fixed top-[40px] left-0 right-0 z-50 px-3 py-1 bg-[#0f3460]/60 backdrop-blur-sm text-center text-xs text-gray-300">
               {formatTime(time, i18n.language)}
             </div>
-            {/* Bottom sheet — sits at the bottom */}
             <MapBottomSheet onPlay={() => {}} />
-            {/* Stats bar — footer */}
             <div className="fixed bottom-0 left-0 right-0 z-50">
               <StatsBar />
             </div>
           </>
         );
-      case 'location':
-        const currentLoc = currentLocationId ? getLocationById(currentLocationId) : null;
+      case 'location': {
+        const currentLoc = (currentLocationId && city) ? getLocationById(city, currentLocationId) ?? null : null;
         if (!currentLoc) return <MapBottomSheet onPlay={() => {}} />;
         return (
           <Overlay>
             <LocationScreen
               location={currentLoc}
-              isCorrect={isCorrectLocation(chapter, currentLoc.id)}
-              chapterRequiredIds={chapter?.requiredLocationIds ?? []}
+              isCorrect={isCorrectLocation(chapter, currentLoc, city?.locations ?? [])}
+              otherRequiredTypeVisited={resolveRequiredLocations(
+                chapter?.requiredLocationTypes ?? [],
+                city?.locations ?? []
+              ).some((l) => l.id !== currentLoc.id && visitedLocationIds.includes(l.id))}
               onBackToMap={handleLocationBack}
               onProceed={handleLocationProceed}
             />
           </Overlay>
         );
+      }
       case 'dialogue':
         if (currentChapter >= allChapters.length) return null;
         return (

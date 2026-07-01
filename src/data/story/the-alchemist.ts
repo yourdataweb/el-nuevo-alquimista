@@ -1,130 +1,24 @@
 import type { BookArchetype, StoryRole, StoryChapter } from '../../store/types';
 
 const roles: StoryRole[] = [
-  { role: 'plaza_inicio', requiredType: 'plaza', label: 'Starting Square', description: 'Where the dream leads you' },
-  { role: 'casa_inicio', requiredType: 'home', label: 'Home', description: 'Where you start your day' },
-  { role: 'libreria', requiredType: 'library', label: 'Library', description: 'Where the first clue awaits' },
-  { role: 'parque_sabio', requiredType: 'park', label: 'Park of the Sage', description: 'Where the Englishman studies' },
-  { role: 'mercado', requiredType: 'market', label: 'Market', description: 'Where Merce works' },
-  { role: 'iglesia_prueba', requiredType: 'church', label: 'Church of Trials', description: 'Where a secret lies' },
-  { role: 'monumento_tesoro', requiredType: 'monument', label: 'Monument of the Treasure', description: 'The final clue' },
-  { role: 'plaza_final', requiredType: 'plaza', label: 'Final Square', description: 'Where the treasure awaits' },
-  { role: 'cafeteria_epilogo', requiredType: 'cafe', label: 'Epilogue Café', description: 'Where the story closes' },
+  { role: 'starting_plaza', requiredType: 'plaza', label: 'Starting Square', description: 'Where the dream leads you' },
+  { role: 'start_home', requiredType: 'home', label: 'Home', description: 'Where you start your day' },
+  { role: 'library', requiredType: 'library', label: 'Library', description: 'Where the first clue awaits' },
+  { role: 'sage_park', requiredType: 'park', label: 'Park of the Sage', description: 'Where the Englishman studies' },
+  { role: 'market', requiredType: 'market', label: 'Market', description: 'Where Merce works' },
+  { role: 'trial_church', requiredType: 'church', label: 'Church of Trials', description: 'Where a secret lies' },
+  { role: 'treasure_monument', requiredType: 'monument', label: 'Monument of the Treasure', description: 'The final clue' },
+  { role: 'final_plaza', requiredType: 'plaza', label: 'Final Square', description: 'Where the treasure awaits' },
+  { role: 'epilogue_cafe', requiredType: 'cafe', label: 'Epilogue Café', description: 'Where the story closes' },
 ];
-
-// @ts-expect-error — prologue used elsewhere
-const _prologue: StoryChapter = {
-  id: 'prologue',
-  title: 'The Dream',
-  role: 'story',
-  description: 'You wake from another dream. A light. A square. A figure pointing north.',
-  locationsToShow: ['bcn-home', 'bcn-plaza-catalunya', 'bcn-plaza-real', 'bcn-cafe-federal', 'bcn-theatre-lliure', 'bcn-office-22'],
-  requiredLocationIds: ['bcn-plaza-catalunya'],
-  dialogue: [
-    {
-      id: 'prologue-wake',
-      speaker: 'Narrator',
-      text: 'You open your eyes. The ceiling fan spins lazily. The dream fades but leaves a trail: a square full of pigeons taking flight at once, and a figure in the distance pointing north.',
-      textEs: 'Abres los ojos. El ventilador de techo gira perezosamente. El sueño se desvanece pero deja un rastro: una plaza llena de palomas alzando el vuelo a la vez, y una figura en la distancia señalando al norte.',
-      textCa: 'Obrir els ulls. El ventilador de sosté gira peresosament. El somni s\'esvaeix però deixa un rastre: una plaça plena de coloms alçant el vol alhora, i una figura a la distància assenyalant al nord.',
-      sprite: 'narrator',
-      options: [
-        {
-          id: 'p1-go-out',
-          text: 'Get up. That dream again. Maybe I should go out and clear my head.',
-          textEs: 'Levantarme. Ese sueño otra vez. Igual debería salir a despejarme.',
-          textCa: 'Aixecar-me. Aquest somni un altre cop. Potser hauria de sortir a esbargir-me.',
-          effects: { fulfillment: 2 },
-          nextNodeId: 'prologue-street',
-        },
-        {
-          id: 'p1-work',
-          text: 'Just another dream. Time to get ready for work.',
-          textEs: 'Solo otro sueño. Hora de prepararme para trabajar.',
-          textCa: 'Només un altre somni. Hora de preparar-me per treballar.',
-          effects: { career: 2, resources: 30 },
-        },
-        {
-          id: 'p1-phone',
-          text: 'Check my phone. Maybe someone messaged.',
-          textEs: 'Mirar el móvil. Igual alguien ha escrito.',
-          textCa: 'Mirar el mòbil. Potser algú ha escrit.',
-          effects: { social: 1 },
-          nextNodeId: 'prologue-phone',
-        },
-      ],
-    },
-    {
-      id: 'prologue-phone',
-      speaker: 'Narrator',
-      text: 'Nothing special. A meme from a friend. An email from work. But then — a notification. A photo from last night\'s newsfeed: a familiar square. Pigeons. The same image from your dream.',
-      textEs: 'Nada especial. Un meme de un amigo. Un email del trabajo. Pero entonces — una notificación. Una foto del feed de anoche: una plaza familiar. Palomas. La misma imagen de tu sueño.',
-      textCa: 'Res especial. Un meme d\'un amic. Un email de la feina. Però llavors — una notificació. Una foto del feed d\'anit: una plaça familiar. Coloms. La mateixa imatge del teu somni.',
-      sprite: 'narrator',
-      options: [
-        {
-          id: 'p2-out',
-          text: 'That\'s it. I\'m going to that square.',
-          textEs: 'Ya está. Voy a esa plaza.',
-          textCa: 'Ja està. Vaig a aquella plaça.',
-          effects: { fulfillment: 3, knowledge: 1 },
-          nextNodeId: 'prologue-street',
-        },
-        {
-          id: 'p2-skip',
-          text: 'Coincidence. Shower and move on.',
-          textEs: 'Coincidencia. Ducha y a seguir.',
-          textCa: 'Coincidència. Dutxa i a seguir.',
-          effects: { vitality: 5 },
-          nextNodeId: 'prologue-again',
-        },
-      ],
-    },
-    {
-      id: 'prologue-again',
-      speaker: 'Narrator',
-      text: 'The day passes. Work. Lunch. More work. But throughout, the image itches at the back of your mind. That night, the dream returns — stronger this time.',
-      textEs: 'El día pasa. Trabajo. Comida. Más trabajo. Pero durante todo el día, la imagen pica en el fondo de tu mente. Esa noche, el sueño vuelve — más fuerte que antes.',
-      textCa: 'El dia passa. Feina. Dinar. Més feina. Però durant tot el dia, la imatge pica al fons de la teva ment. Aquella nit, el somni torna — més fort que abans.',
-      sprite: 'narrator',
-      options: [
-        {
-          id: 'p3-go',
-          text: 'Tomorrow. First thing. I\'m going.',
-          textEs: 'Mañana. A primera hora. Voy.',
-          textCa: 'Demà. Primer de tot. Vaig.',
-          effects: { fulfillment: 4 },
-          nextNodeId: 'prologue-street',
-        },
-      ],
-    },
-    {
-      id: 'prologue-street',
-      speaker: 'Narrator',
-      text: 'You step outside. The morning air is crisp. Barcelona stretches before you. The map shows several places you could visit today.',
-      textEs: 'Sales a la calle. El aire de la mañana es fresco. Barcelona se extiende ante ti. El mapa muestra varios lugares que podrías visitar hoy.',
-      textCa: 'Surts al carrer. L\'aire del matí és fresc. Barcelona s\'estén davant teu. El mapa mostra diversos llocs que podries visitar avui.',
-      sprite: 'narrator',
-      options: [
-        {
-          id: 'p4-map',
-          text: 'Open the map and choose where to go.',
-          textEs: 'Abrir el mapa y elegir adónde ir.',
-          textCa: 'Obrir el mapa i triar on anar.',
-          effects: {},
-        },
-      ],
-    },
-  ],
-};
 
 const chapter1: StoryChapter = {
   id: 'ch1',
   title: 'The Signal',
   role: 'story',
   description: 'An old man on a bench. Two coins. A direction.',
-  locationsToShow: ['bcn-plaza-catalunya', 'bcn-plaza-real', 'bcn-cafe-federal', 'bcn-theatre-lliure', 'bcn-library-central', 'bcn-monument-colom', 'bcn-church-pi', 'bcn-market-boqueria', 'bcn-monument-arc-triomf'],
-  requiredLocationIds: ['bcn-plaza-catalunya'],
+  locationsToShow: ['cafe', 'theatre', 'library', 'monument', 'church', 'market'],
+  requiredLocationTypes: ['plaza'],
   dialogue: [
     {
       id: 'ch1-arrive',
@@ -215,16 +109,16 @@ const chapter1: StoryChapter = {
     {
       id: 'ch1-first-clue',
       speaker: 'Melquisedec',
-      text: '"Go to the bookshop on Elisabets street. Look for a blue book. It will tell you where to go next. And keep the coins — when you don\'t know what to choose, toss them." He stands, brushes off his coat, and walks away into the crowd.',
-      textEs: '"Ve a la librería de la calle Elisabets. Busca un libro azul. Te dirá adónde ir después. Y guarda las monedas — cuando no sepas qué elegir, tíralas." Se levanta, se sacude el abrigo, y desaparece entre la multitud.',
-      textCa: '"Ves a la llibreria del carrer Elisabets. Busca un llibre blau. Et dirà on anar després. I guarda les monedes — quan no sàpigues què triar, llença-les." S\'aixeca, s\'espolta l\'abric, i desapareix entre la multitud.',
+      text: '"Go to a library nearby. Look for a blue book. It will tell you where to go next. And keep the coins — when you don\'t know what to choose, toss them." He stands, brushes off his coat, and walks away into the crowd.',
+      textEs: '"Ve a una librería cercana. Busca un libro azul. Te dirá adónde ir después. Y guarda las monedas — cuando no sepas qué elegir, tíralas." Se levanta, se sacude el abrigo, y desaparece entre la multitud.',
+      textCa: '"Ves a una llibreria propera. Busca un llibre blau. Et dirà on anar després. I guarda les monedes — quan no sàpigues què triar, llença-les." S\'aixeca, s\'espolta l\'abric, i desapareix entre la multitud.',
       sprite: 'melquisedec',
       options: [
         {
           id: 'ch1-go-library',
-          text: 'Go to La Central del Raval. Find that blue book.',
-          textEs: 'Ir a La Central del Raval. Encontrar ese libro azul.',
-          textCa: 'Anar a La Central del Raval. Trobar aquell llibre blau.',
+          text: 'Go to a library. Find that blue book.',
+          textEs: 'Ir a una librería. Encontrar ese libro azul.',
+          textCa: 'Anar a una llibreria. Trobar aquell llibre blau.',
           effects: { fulfillment: 1 },
         },
         {
@@ -245,16 +139,16 @@ const chapter2_sandbox: StoryChapter = {
   title: 'The Merchant of Glass',
   role: 'sandbox',
   description: 'You need to earn money and find your footing before pursuing the next clue. Merce needs help at the market.',
-  locationsToShow: ['bcn-library-central', 'bcn-cafe-federal', 'bcn-market-boqueria', 'bcn-market-sant-antoni', 'bcn-office-22', 'bcn-park-ciutadella', 'bcn-cafe-bar-marsella', 'bcn-market-galvany', 'bcn-plaza-sant-jaume', 'bcn-monument-palau-musica'],
-  requiredLocationIds: ['bcn-library-central'],
-  completionCriteria: { kind: 'visit_location', locationId: 'bcn-library-central' },
+  locationsToShow: ['cafe', 'market', 'office', 'park', 'plaza', 'monument'],
+  requiredLocationTypes: ['library'],
+  completionCriteria: { kind: 'visit_location', locationType: 'library' },
   dialogue: [
     {
       id: 'ch2-arrive-library',
       speaker: 'Narrator',
-      text: 'You enter La Central del Raval. The smell of old paper wraps around you. A woman at the counter — mid-50s, warm smile, hands stained with ink — looks up.',
-      textEs: 'Entras en La Central del Raval. El olor a papel viejo te envuelve. Una mujer en el mostrador — cincuentona, sonrisa cálida, manos manchadas de tinta — alza la vista.',
-      textCa: 'Entres a La Central del Raval. L\'olor a paper vell t\'envolta. Una dona al mostrador — cinquantona, somriure càlid, mans tacades de tinta — alça la mirada.',
+      text: 'You enter the library. The smell of old paper wraps around you. A woman at the counter — mid-50s, warm smile, hands stained with ink — looks up.',
+      textEs: 'Entras en la biblioteca. El olor a papel viejo te envuelve. Una mujer en el mostrador — cincuentona, sonrisa cálida, manos manchadas de tinta — alza la vista.',
+      textCa: 'Entres a la biblioteca. L\'olor a paper vell t\'envolta. Una dona al mostrador — cinquantona, somriure càlid, mans tacades de tinta — alça la mirada.',
       sprite: 'narrator',
       options: [
         {
@@ -278,9 +172,9 @@ const chapter2_sandbox: StoryChapter = {
     {
       id: 'ch2-merce',
       speaker: 'Mercè',
-      text: '"Ah, the blue book! Someone else was asking about it. An Englishman. He left in a hurry — said something about a park." She pauses. "But listen — I could use help at my shop. Glassware. El Born. I\'ll pay, and maybe I can tell you more about that Englishman."',
-      textEs: '"¡Ah, el libro azul! Alguien más preguntó por él. Un inglés. Se fue con prisa — dijo algo sobre un parque." Hace una pausa. "Pero escucha — me vendría bien ayuda en mi tienda. Cristalería. El Born. Te pago, y quizá pueda contarte más sobre ese inglés."',
-      textCa: '"Ah, el llibre blau! Algú més va preguntar per ell. Un anglès. Va marxar amb pressa — va dir alguna cosa sobre un parc." Fa una pausa. "Però escolta — em vindria bé ajuda a la meva botiga. Vidrieria. El Born. Et pago, i potser et pugui explicar més sobre aquell anglès."',
+      text: '"Ah, the blue book! Someone else was asking about it. An Englishman. He left in a hurry — said something about a park." She pauses. "But listen — I could use help at my shop. Glassware. Just nearby. I\'ll pay, and maybe I can tell you more about that Englishman."',
+      textEs: '"¡Ah, el libro azul! Alguien más preguntó por él. Un inglés. Se fue con prisa — dijo algo sobre un parque." Hace una pausa. "Pero escucha — me vendría bien ayuda en mi tienda. Cristalería. Aquí cerca. Te pago, y quizá pueda contarte más sobre ese inglés."',
+      textCa: '"Ah, el llibre blau! Algú més va preguntar per ell. Un anglès. Va marxar amb pressa — va dir alguna cosa sobre un parc." Fa una pausa. "Però escolta — em vindria bé ajuda a la meva botiga. Vidrieria. Aquí a prop. Et pago, i potser et pugui explicar més sobre aquell anglès."',
       sprite: 'merce',
       options: [
         {
@@ -306,16 +200,16 @@ const chapter3: StoryChapter = {
   id: 'ch3',
   title: 'The Englishman',
   role: 'story',
-  description: 'The Englishman studies symbols in the park. He has a map of Barcelona with a secret code.',
-  locationsToShow: ['bcn-park-ciutadella', 'bcn-park-guell', 'bcn-cafe-nomad', 'bcn-library-catalunya', 'bcn-plaza-espanya', 'bcn-church-santa-maria', 'bcn-library-born', 'bcn-market-santa-caterina', 'bcn-plaza-gracia', 'bcn-cafe-el-nacional'],
-  requiredLocationIds: ['bcn-park-ciutadella'],
+  description: 'The Englishman studies symbols in the park. He has a map of the city with a secret code.',
+  locationsToShow: ['cafe', 'library', 'plaza', 'church', 'market'],
+  requiredLocationTypes: ['park'],
   dialogue: [
     {
       id: 'ch3-find',
       speaker: 'Narrator',
-      text: 'You find him on a bench near the lake in Ciutadella park. He\'s younger than expected — late 30s, tweed jacket even in Barcelona, scribbling in a notebook. A map covered in symbols lies beside him.',
-      textEs: 'Lo encuentras en un banco cerca del lago del parque de la Ciutadella. Es más joven de lo esperado — treintañero, chaqueta de tweed incluso en Barcelona, garabateando en un bloc. Un mapa cubierto de símbolos yace a su lado.',
-      textCa: 'El trobes en un banc prop del llac del parc de la Ciutadella. És més jove del que esperaves — trenta anys, jaqueta de tweed fins i tot a Barcelona, gargotejant en un bloc. Un mapa cobert de símbols jeu al seu costat.',
+      text: 'You find him on a bench near the lake in the park. He\'s younger than expected — late 30s, tweed jacket, scribbling in a notebook. A map covered in symbols lies beside him.',
+      textEs: 'Lo encuentras en un banco cerca del lago en el parque. Es más joven de lo esperado — treintañero, chaqueta de tweed, garabateando en un bloc. Un mapa cubierto de símbolos yace a su lado.',
+      textCa: 'El trobes en un banc prop del llac al parc. És més jove del que esperaves — trenta anys, jaqueta de tweed, gargotejant en un bloc. Un mapa cobert de símbols jeu al seu costat.',
       sprite: 'narrator',
       options: [
         {
@@ -339,9 +233,9 @@ const chapter3: StoryChapter = {
     {
       id: 'ch3-symbols',
       speaker: 'Englishman',
-      text: '"Ah, you\'re the one from the bookshop. Merce sent me a message. I study alchemy — not turning lead into gold, but the symbolism hidden in places. Barcelona is covered in it. Gaudí knew. The medieval builders knew. And there\'s a pattern — three locations. Three symbols. I\'ve deciphered two, but the third..." He trails off, staring at the map.',
-      textEs: '"Ah, eres el de la librería. Mercè me envió un mensaje. Estudio alquimia — no la de convertir plomo en oro, sino el simbolismo oculto en los lugares. Barcelona está llena de ello. Gaudí lo sabía. Los constructores medievales lo sabían. Y hay un patrón — tres lugares. Tres símbolos. He descifrado dos, pero el tercero..." Se pierde, mirando el mapa.',
-      textCa: '"Ah, ets el de la llibreria. Mercè em va enviar un missatge. Estudio alquímia — no la de convertir plom en or, sinó el simbolisme ocult als llocs. Barcelona n\'és plena. Gaudí ho sabia. Els constructors medievals ho sabien. I hi ha un patró — tres llocs. Tres símbols. N\'he desxifrat dos, però el tercer..." Es perd, mirant el mapa.',
+      text: '"Ah, you\'re the one from the library. Merce sent me a message. I study alchemy — not turning lead into gold, but the symbolism hidden in places. This city is covered in it. The old masters knew. And there\'s a pattern — three locations. Three symbols. I\'ve deciphered two, but the third..." He trails off, staring at the map.',
+      textEs: '"Ah, eres el de la biblioteca. Mercè me envió un mensaje. Estudio alquimia — no la de convertir plomo en oro, sino el simbolismo oculto en los lugares. Esta ciudad está llena de ello. Los viejos maestros lo sabían. Y hay un patrón — tres lugares. Tres símbolos. He descifrado dos, pero el tercero..." Se pierde, mirando el mapa.',
+      textCa: '"Ah, ets el de la biblioteca. Mercè em va enviar un missatge. Estudio alquímia — no la de convertir plom en or, sinó el simbolisme ocult als llocs. Aquesta ciutat n\'és plena. Els vells mestres ho sabien. I hi ha un patró — tres llocs. Tres símbols. N\'he desxifrat dos, però el tercer..." Es perd, mirant el mapa.',
       sprite: 'englishman',
       options: [
         {
@@ -365,16 +259,16 @@ const chapter3: StoryChapter = {
     {
       id: 'ch3-map-clue',
       speaker: 'Englishman',
-      text: 'He shows you the map. "These three symbols correspond to places in Barcelona. I\'ve identified: the Market of Sant Antoni — Knowledge bought and sold. Santa Maria del Mar — Silence keeps secrets. But the third... it\'s a creature. A dragon. Something wounded."',
-      textEs: 'Te enseña el mapa. "Estos tres símbolos corresponden a lugares de Barcelona. He identificado: el Mercado de Sant Antoni — El conocimiento se compra y se vende. Santa Maria del Mar — El silencio guarda secretos. Pero el tercero... es una criatura. Un dragón. Algo herido."',
-      textCa: 'T\'ensenya el mapa. "Aquests tres símbols corresponen a llocs de Barcelona. He identificat: el Mercat de Sant Antoni — El coneixement es compra i es ven. Santa Maria del Mar — El silenci guarda secrets. Però el tercer... és una criatura. Un drac. Alguna cosa ferida."',
+      text: 'He shows you the map. "These three symbols correspond to places in this city. I\'ve identified: a market — Knowledge bought and sold. A church — Silence keeps secrets. But the third... it\'s a creature. A dragon. Something wounded."',
+      textEs: 'Te enseña el mapa. "Estos tres símbolos corresponden a lugares de esta ciudad. He identificado: un mercado — El conocimiento se compra y se vende. Una iglesia — El silencio guarda secretos. Pero el tercero... es una criatura. Un dragón. Algo herido."',
+      textCa: 'T\'ensenya el mapa. "Aquests tres símbols corresponen a llocs d\'aquesta ciutat. He identificat: un mercat — El coneixement es compra i es ven. Una església — El silenci guarda secrets. Però el tercer... és una criatura. Un drac. Alguna cosa ferida."',
       sprite: 'englishman',
       options: [
         {
           id: 'ch3-dragon',
-          text: '"A wounded dragon... Casa Batlló. Gaudí\'s dragon on the roof."',
-          textEs: '"Un dragón herido... Casa Batlló. El dragón de Gaudí en el tejado."',
-          textCa: '"Un drac ferit... Casa Batlló. El drac de Gaudí a la teulada."',
+          text: '"A wounded dragon... a monument. A dragon on its roof."',
+          textEs: '"Un dragón herido... un monumento. Un dragón en su tejado."',
+          textCa: '"Un drac ferit... un monument. Un drac a la seva teulada."',
           effects: { knowledge: 5, fulfillment: 3 },
           nextNodeId: 'ch3-ready',
         },
@@ -391,9 +285,9 @@ const chapter3: StoryChapter = {
     {
       id: 'ch3-ready',
       speaker: 'Englishman',
-      text: '"Yes! The dragon on the roof. That\'s it. Three locations — Sant Antoni, Santa Maria, Casa Batlló. Visit them. Find the clues. The answer lies at the end of the path."',
-      textEs: '"¡Sí! El dragón del tejado. Eso es. Tres lugares — Sant Antoni, Santa Maria, Casa Batlló. Visítalos. Encuentra las pistas. La respuesta está al final del camino."',
-      textCa: '"Sí! El drac de la teulada. Això és. Tres llocs — Sant Antoni, Santa Maria, Casa Batlló. Visita\'ls. Troba les pistes. La resposta és al final del camí."',
+      text: '"Yes! The dragon on the roof. That\'s it. Three locations — a market, a church, a monument. Visit them. Find the clues. The answer lies at the end of the path."',
+      textEs: '"¡Sí! El dragón del tejado. Eso es. Tres lugares — un mercado, una iglesia, un monumento. Visítalos. Encuentra las pistas. La respuesta está al final del camino."',
+      textCa: '"Sí! El drac de la teulada. Això és. Tres llocs — un mercat, una església, un monument. Visita\'ls. Troba les pistes. La resposta és al final del camí."',
       sprite: 'englishman',
       options: [
         {
@@ -413,9 +307,9 @@ const chapter4_sandbox: StoryChapter = {
   title: 'The Desert Crossing',
   role: 'sandbox',
   description: 'Visit the three locations. Find the clues. Life keeps happening around you.',
-  locationsToShow: ['bcn-market-sant-antoni', 'bcn-church-santa-maria', 'bcn-monument-casa-batllo', 'bcn-cafe-federal', 'bcn-park-ciutadella', 'bcn-office-22', 'bcn-theatre-lliure', 'bcn-theatre-liceu', 'bcn-monument-barceloneta', 'bcn-park-diagonal-mar', 'bcn-plaza-lesseps', 'bcn-cafe-bar-marsella'],
-  completionCriteria: { kind: 'visit_all_locations', locationIds: ['bcn-market-sant-antoni', 'bcn-church-santa-maria', 'bcn-monument-casa-batllo'] },
-  requiredLocationIds: ['bcn-market-sant-antoni', 'bcn-church-santa-maria', 'bcn-monument-casa-batllo'],
+  locationsToShow: ['cafe', 'park', 'office', 'theatre', 'plaza'],
+  requiredLocationTypes: ['market', 'church', 'monument'],
+  completionCriteria: { kind: 'visit_all_locations', locationTypes: ['market', 'church', 'monument'] },
   dialogue: [
     {
       id: 'ch4-intro',
@@ -427,9 +321,9 @@ const chapter4_sandbox: StoryChapter = {
       options: [
         {
           id: 'ch4-first',
-          text: 'Head to Sant Antoni market first.',
-          textEs: 'Ir al mercado de Sant Antoni primero.',
-          textCa: 'Anar al mercat de Sant Antoni primer.',
+          text: 'Head to a market first.',
+          textEs: 'Ir a un mercado primero.',
+          textCa: 'Anar a un mercat primer.',
           effects: {},
         },
         {
@@ -448,16 +342,16 @@ const chapter5: StoryChapter = {
   id: 'ch5',
   title: 'The Trial',
   role: 'story',
-  description: 'The Magic Fountain awaits. Someone has been watching your journey.',
-  locationsToShow: ['bcn-plaza-espanya', 'bcn-park-montjuic', 'bcn-cafe-satan', 'bcn-library-catalunya', 'bcn-church-sagrada', 'bcn-monument-pedrera', 'bcn-monument-palau-nacional', 'bcn-monument-tibidabo', 'bcn-office-poblenou', 'bcn-park-laberint'],
-  requiredLocationIds: ['bcn-plaza-espanya'],
+  description: 'A fountain in a square awaits. Someone has been watching your journey.',
+  locationsToShow: ['park', 'cafe', 'library', 'church', 'monument', 'office'],
+  requiredLocationTypes: ['plaza'],
   dialogue: [
     {
       id: 'ch5-arrive',
       speaker: 'Narrator',
-      text: 'The Magic Fountain is silent. Daytime. A figure stands at its edge — a woman, young, watching you approach with knowing eyes.',
-      textEs: 'La Fuente Mágica está en silencio. De día. Una figura está en su borde — una mujer, joven, mirándote acercarse con ojos que lo saben todo.',
-      textCa: 'La Font Màgica està en silenci. De dia. Una figura està a la seva vora — una dona, jove, mirant-te apropar amb ulls que ho saben tot.',
+      text: 'The fountain in the square is silent. Daytime. A figure stands at its edge — a woman, young, watching you approach with knowing eyes.',
+      textEs: 'La fuente de la plaza está en silencio. De día. Una figura está en su borde — una mujer, joven, mirándote acercarse con ojos que lo saben todo.',
+      textCa: 'La font de la plaça està en silenci. De dia. Una figura està a la seva vora — una dona, jove, mirant-te apropar amb ulls que ho saben tot.',
       sprite: 'narrator',
       options: [
         {
@@ -531,9 +425,9 @@ const chapter5: StoryChapter = {
       options: [
         {
           id: 'ch5-look',
-          text: 'Read the coordinates. "Plaça de Catalunya..."',
-          textEs: 'Leer las coordenadas. "Plaza de Cataluña..."',
-          textCa: 'Llegir les coordenades. "Plaça de Catalunya..."',
+          text: 'Read the coordinates. "The main square..."',
+          textEs: 'Leer las coordenadas. "La plaza principal..."',
+          textCa: 'Llegir les coordenades. "La plaça principal..."',
           effects: { fulfillment: 5 },
           nextNodeId: 'ch5-exit',
         },
@@ -581,16 +475,16 @@ const epilogue: StoryChapter = {
   id: 'epilogue',
   title: 'The Return',
   role: 'story',
-  description: 'A year later. A café in El Born. Someone looks lost with a map.',
-  locationsToShow: ['bcn-cafe-federal', 'bcn-cafe-nomad', 'bcn-park-ciutadella', 'bcn-theatre-lliure', 'bcn-cafe-el-nacional', 'bcn-theatre-liceu', 'bcn-plaza-real', 'bcn-monument-barceloneta'],
-  requiredLocationIds: ['bcn-cafe-federal'],
+  description: 'A year later. A café across the city. Someone looks lost with a map.',
+  locationsToShow: ['park', 'theatre', 'plaza', 'monument'],
+  requiredLocationTypes: ['cafe'],
   dialogue: [
     {
       id: 'epilogue-cafe',
       speaker: 'Narrator',
-      text: 'A year has passed. You\'re sitting at Federal Café in El Born. Your life has changed — not because you found treasure, but because you made the journey. A young person at the next table is staring at a map of Barcelona with the same look you once had.',
-      textEs: 'Ha pasado un año. Estás sentado en Federal Café, en El Born. Tu vida ha cambiado — no porque encontraras un tesoro, sino porque hiciste el viaje. Una persona joven en la mesa de al lado mira un mapa de Barcelona con la misma expresión que tú tuviste una vez.',
-      textCa: 'Ha passat un any. Ets assegut al Federal Café, al Born. La teva vida ha canviat — no perquè trobessis un tresor, sinó perquè vas fer el viatge. Una persona jove a la taula del costat mira un mapa de Barcelona amb la mateixa expressió que tu vas tenir una vegada.',
+      text: 'A year has passed. You\'re sitting at a café. Your life has changed — not because you found treasure, but because you made the journey. A young person at the next table is staring at a map of the city with the same look you once had.',
+      textEs: 'Ha pasado un año. Estás sentado en un café. Tu vida ha cambiado — no porque encontraras un tesoro, sino porque hiciste el viaje. Una persona joven en la mesa de al lado mira un mapa de la ciudad con la misma expresión que tú tuviste una vez.',
+      textCa: 'Ha passat un any. Ets assegut en un cafè. La teva vida ha canviat — no perquè trobessis un tresor, sinó perquè vas fer el viatge. Una persona jove a la taula del costat mira un mapa de la ciutat amb la mateixa expressió que tu vas tenir una vegada.',
       sprite: 'narrator',
       options: [
         {
@@ -639,11 +533,14 @@ const epilogue: StoryChapter = {
   ],
 };
 
-export const elAlquimista: BookArchetype = {
-  id: 'el-alquimista',
+export const theAlchemist: BookArchetype = {
+  id: 'the-alchemist',
   title: 'The Alchemist',
   titleEs: 'El Alquimista',
   titleCa: 'L\'Alquimista',
+  intro: 'You are 26 with a normal life. An apartment in the city. A job. Friends. But you keep dreaming the same scene every night: a square full of pigeons taking flight at once, and a figure pointing north.\n\nEvery morning you wake up feeling the dream means something. Today, something tells you to follow it.',
+  introEs: 'Tienes 26 años y una vida normal. Un piso en la ciudad. Un trabajo. Unos amigos. Pero llevas días soñando la misma escena cada noche: una plaza llena de palomas que se alzan a la vez, y una figura que señala al norte.\n\nCada mañana te despiertas con la sensación de que el sueño significa algo. Hoy, algo te dice que deberías seguirlo.',
+  introCa: 'Tens 26 anys i una vida normal. Un pis a la ciutat. Una feina. Uns amics. Però fa dies que somies la mateixa escena cada nit: una plaça plena de coloms que s\'alcen alhora, i una figura que assenyala al nord.\n\nCada matí et despertes amb la sensació que el somni vol dir alguna cosa. Avui, alguna cosa et diu que hauries de seguir-lo.',
   roles,
   chapters: [
     chapter1,

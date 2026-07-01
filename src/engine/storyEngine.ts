@@ -1,38 +1,80 @@
 import type {
   StoryChapter,
   LocationPOI,
+  LocationType,
   CompletionCriteria,
   GamePhase,
 } from '../store/types';
 
+function sortedLocations(locations: LocationPOI[]): LocationPOI[] {
+  return [...locations].sort((a, b) => a.id.localeCompare(b.id));
+}
+
+/**
+ * Resolves an ordered list of location type slots to specific LocationPOI instances.
+ * Duplicate types are resolved to successive occurrences in stable alphanumeric ID order.
+ * e.g. ['plaza', 'plaza'] → [firstPlaza, secondPlaza]
+ */
+export function resolveRequiredLocations(
+  requiredLocationTypes: LocationType[],
+  allLocations: LocationPOI[]
+): LocationPOI[] {
+  allLocations = sortedLocations(allLocations);
+  const countByType = new Map<LocationType, number>();
+  const result: LocationPOI[] = [];
+  for (const type of requiredLocationTypes) {
+    const idx = countByType.get(type) ?? 0;
+    const match = allLocations.filter((l) => l.type === type)[idx];
+    if (match) result.push(match);
+    countByType.set(type, idx + 1);
+  }
+  return result;
+}
+
 /**
  * Returns the locations that the player can see/interact with for a given chapter.
+ * Required locations are resolved to specific instances; locationsToShow adds all
+ * locations of those types. Required instances are always included.
  */
 export function getLocationsForChapter(
   chapter: StoryChapter,
   allLocations: LocationPOI[]
 ): LocationPOI[] {
-  if (chapter.locationsToShow && chapter.locationsToShow.length > 0) {
-    return chapter.locationsToShow
-      .map((id) => allLocations.find((l) => l.id === id))
-      .filter((l): l is LocationPOI => l !== undefined);
+  allLocations = sortedLocations(allLocations);
+  const required = resolveRequiredLocations(chapter.requiredLocationTypes ?? [], allLocations);
+  const showTypes = new Set<LocationType>(chapter.locationsToShow ?? []);
+  const byType = allLocations.filter((l) => showTypes.has(l.type));
+
+  const seen = new Set<string>();
+  const result: LocationPOI[] = [];
+  for (const loc of [...required, ...byType]) {
+    if (!seen.has(loc.id)) {
+      seen.add(loc.id);
+      result.push(loc);
+    }
   }
-  return allLocations;
+  return result.length > 0 ? result : allLocations;
 }
 
 /**
- * Checks whether a CompletionCriteria is satisfied by the player's current state.
+ * Checks whether a CompletionCriteria is satisfied.
+ * Types in criteria are resolved to specific instances and checked by ID.
  */
 export function isCriteriaMet(
   criteria: CompletionCriteria | undefined,
-  visitedLocationIds: string[]
+  visitedLocationIds: string[],
+  allLocations: LocationPOI[]
 ): boolean {
   if (!criteria) return false;
   switch (criteria.kind) {
-    case 'visit_location':
-      return visitedLocationIds.includes(criteria.locationId);
-    case 'visit_all_locations':
-      return criteria.locationIds.every((id) => visitedLocationIds.includes(id));
+    case 'visit_location': {
+      const resolved = resolveRequiredLocations([criteria.locationType], allLocations);
+      return resolved.length > 0 && visitedLocationIds.includes(resolved[0].id);
+    }
+    case 'visit_all_locations': {
+      const resolved = resolveRequiredLocations(criteria.locationTypes, allLocations);
+      return resolved.every((l) => visitedLocationIds.includes(l.id));
+    }
     case 'none':
       return false;
     default:
@@ -48,17 +90,16 @@ export function checkAutoAdvance(
   currentChapterIndex: number,
   visitedLocationIds: string[],
   completedChapterIds: string[],
-  allChapters: StoryChapter[]
+  allChapters: StoryChapter[],
+  allLocations: LocationPOI[]
 ): { phase: GamePhase; newChapterIndex: number } | null {
   const chapter = allChapters[currentChapterIndex];
   if (!chapter) return null;
   if (completedChapterIds.includes(chapter.id)) return null;
 
-  // Story chapters advance via recap flow, not auto-check
   if (chapter.role === 'story') return null;
 
-  // Sandbox chapters: check completion criteria
-  if (!isCriteriaMet(chapter.completionCriteria, visitedLocationIds)) return null;
+  if (!isCriteriaMet(chapter.completionCriteria, visitedLocationIds, allLocations)) return null;
 
   return advanceChapter(currentChapterIndex, allChapters);
 }
@@ -72,7 +113,8 @@ export function handleDialogueComplete(
   chapter: StoryChapter | undefined,
   currentChapterIndex: number,
   visitedLocationIds: string[],
-  allChapters: StoryChapter[]
+  allChapters: StoryChapter[],
+  allLocations: LocationPOI[]
 ): {
   phase: GamePhase;
   newChapterIndex?: number;
@@ -83,12 +125,10 @@ export function handleDialogueComplete(
     return { phase: 'recap' };
   }
 
-  // Sandbox: check if chapter is now complete
-  if (isCriteriaMet(chapter.completionCriteria, visitedLocationIds)) {
+  if (isCriteriaMet(chapter.completionCriteria, visitedLocationIds, allLocations)) {
     return advanceChapter(currentChapterIndex, allChapters);
   }
 
-  // Not complete yet — back to map
   return { phase: 'map' };
 }
 
@@ -105,10 +145,6 @@ export function handleRecapNext(
   return advanceChapter(currentChapterIndex, allChapters);
 }
 
-/**
- * Advances to the next chapter index and returns the new phase.
- * If it's the last chapter, goes to epilogue.
- */
 function advanceChapter(
   currentChapterIndex: number,
   allChapters: StoryChapter[]
@@ -127,20 +163,17 @@ function advanceChapter(
 }
 
 /**
- * Checks if a location is the "required" story-trigger location for a chapter.
+ * Checks if a specific location is one of the resolved required instances for the chapter.
  */
 export function isCorrectLocation(
   chapter: StoryChapter | undefined,
-  locationId: string
+  location: LocationPOI,
+  allLocations: LocationPOI[]
 ): boolean {
-  const ids = chapter?.requiredLocationIds;
-  if (!ids || ids.length === 0) return false;
-  return ids.includes(locationId);
+  const required = resolveRequiredLocations(chapter?.requiredLocationTypes ?? [], allLocations);
+  return required.some((l) => l.id === location.id);
 }
 
-/**
- * Returns the title of a chapter.
- */
 export function getChapterTitle(chapter: StoryChapter): string {
   return chapter.title;
 }

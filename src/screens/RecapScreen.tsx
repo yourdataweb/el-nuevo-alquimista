@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { useGameStore } from '../store/gameStore';
 import GameLayout from '../components/GameLayout';
-import { elAlquimista } from '../data/story/el-alquimista';
+import { getStoryById } from '../data/story/index';
 import { getChapterTitle } from '../engine/storyEngine';
 
 interface RecapScreenProps {
@@ -15,10 +15,12 @@ export default function RecapScreen({ chapterIndex, onNext, isLastChapter }: Rec
   const stats = useGameStore((s) => s.stats);
   const visitedLocationIds = useGameStore((s) => s.visitedLocationIds);
   const time = useGameStore((s) => s.time);
+  const chosenBook = useGameStore((s) => s.chosenBook);
 
-  const chapter = elAlquimista.chapters[chapterIndex];
-  const title = getChapterTitle(chapter);
-  const desc = chapter.description;
+  const story = chosenBook ? getStoryById(chosenBook) : null;
+  const chapter = story?.chapters[chapterIndex];
+  const title = chapter ? getChapterTitle(chapter) : '';
+  const desc = chapter?.description ?? '';
 
   const totalStats = Object.values(stats).reduce((a, b) => a + b, 0);
 

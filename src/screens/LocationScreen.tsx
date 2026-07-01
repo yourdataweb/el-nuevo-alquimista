@@ -18,7 +18,7 @@ import type { LocationPOI, Stats } from '../store/types';
 interface LocationScreenProps {
   location: LocationPOI;
   isCorrect: boolean;
-  chapterRequiredIds: string[];
+  otherRequiredTypeVisited: boolean;
   onBackToMap: () => void;
   onProceed: () => void;
 }
@@ -72,22 +72,17 @@ const STAT_LABELS: Record<string, string> = {
 export default function LocationScreen({
   location,
   isCorrect,
-  chapterRequiredIds,
+  otherRequiredTypeVisited,
   onBackToMap,
   onProceed,
 }: LocationScreenProps) {
   const { i18n, t } = useTranslation();
   const addVisitedLocation = useGameStore((s) => s.addVisitedLocation);
-  const visitedLocationIds = useGameStore((s) => s.visitedLocationIds);
   const updateStats = useGameStore((s) => s.updateStats);
   const advanceTime = useGameStore((s) => s.advanceTime);
   const completedActivitiesRaw = useGameStore((s) => s.completedLocationActivities[location.id]);
   const completedActivities = completedActivitiesRaw ?? [];
   const markLocationActivityComplete = useGameStore((s) => s.markLocationActivityComplete);
-
-  const otherRequiredVisited = chapterRequiredIds.some(
-    (id) => id !== location.id && visitedLocationIds.includes(id)
-  );
 
   const locName =
     (i18n.language === 'ca'
@@ -177,7 +172,7 @@ export default function LocationScreen({
           <div className="max-w-2xl mx-auto flex flex-col gap-2">
 
             {/* Investigate — always on top */}
-            {isCorrect && !otherRequiredVisited && (
+            {isCorrect && !otherRequiredTypeVisited && (
               <button
                 onClick={() => {
                   addVisitedLocation(location.id);
@@ -189,7 +184,7 @@ export default function LocationScreen({
               </button>
             )}
 
-            {isCorrect && otherRequiredVisited && (
+            {isCorrect && otherRequiredTypeVisited && (
               <button
                 onClick={() => {
                   addVisitedLocation(location.id);

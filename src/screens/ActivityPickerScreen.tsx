@@ -91,7 +91,7 @@ export default function ActivityPickerScreen({ onComplete, maxActivities = 3 }: 
                         ? 'bg-[#1e293b] border border-gray-500 opacity-75 cursor-not-allowed'
                         : disabled
                         ? 'bg-gray-800 border border-gray-700 opacity-75 cursor-not-allowed'
-                        : 'bg-[#252525] border border-gray-700 hover:border-[#e94560]/60 hover:bg-[#e0dbd3] cursor-pointer'
+                        : 'bg-[#252525] border border-gray-700 hover:border-[#e94560]/60 hover:bg-[#2e2e2e] cursor-pointer'
                     }`}
                   >
                     <div className="flex items-center justify-between mb-1">

@@ -2,9 +2,9 @@ import { useEffect, useRef } from 'react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { useGameStore } from '../store/gameStore';
-import { barcelona, getLocationById } from '../data/cities/barcelona';
-import { elAlquimista } from '../data/story/el-alquimista';
-import { getLocationsForChapter } from '../engine/storyEngine';
+import { getCityById, getHomeLocationId, getLocationById } from '../data/cities/index';
+import { getStoryById } from '../data/story/index';
+import { getLocationsForChapter, resolveRequiredLocations } from '../engine/storyEngine';
 import type { LocationPOI } from '../store/types';
 
 const BASE = import.meta.env.BASE_URL;
@@ -75,15 +75,28 @@ export default function MapBackground({ onLocationSelect }: MapBackgroundProps) 
   const mapRef = useRef<HTMLDivElement>(null);
   const leafletMapRef = useRef<L.Map | null>(null);
   const playerMarkerRef = useRef<L.Marker | null>(null);
+  const availableRef = useRef<LocationPOI[]>([]);
+  const cityRef = useRef<ReturnType<typeof getCityById> | null>(null);
   const currentChapter = useGameStore((s) => s.currentChapter);
   const currentLocationId = useGameStore((s) => s.currentLocationId);
   const phase = useGameStore((s) => s.phase);
   const chosenCharacter = useGameStore((s) => s.chosenCharacter);
+  const chosenCity = useGameStore((s) => s.chosenCity);
+  const chosenBook = useGameStore((s) => s.chosenBook);
 
-  const chapter = elAlquimista.chapters[currentChapter];
-  const available = chapter ? getLocationsForChapter(chapter, barcelona.locations) : [];
+  const city = chosenCity ? getCityById(chosenCity) : null;
+  const story = chosenBook ? getStoryById(chosenBook) : null;
+  const chapter = story?.chapters[currentChapter];
+  const available = (chapter && city) ? getLocationsForChapter(chapter, city.locations) : [];
 
-  const playerLocation = currentLocationId ? getLocationById(currentLocationId) : getLocationById('bcn-home');
+  const homeId = city ? getHomeLocationId(city) : null;
+  const playerLocation = city
+    ? getLocationById(city, currentLocationId ?? homeId ?? '')
+    : null;
+
+  // Keep refs current so __selectLocation closure always sees latest values
+  availableRef.current = available;
+  cityRef.current = city;
 
   // Init map once
   useEffect(() => {
@@ -91,8 +104,8 @@ export default function MapBackground({ onLocationSelect }: MapBackgroundProps) 
 
     try {
       const map = L.map(mapRef.current, {
-        center: [barcelona.position.lat, barcelona.position.lng],
-        zoom: 13,
+        center: [40.70831, -74.01176],
+        zoom: 12,
         zoomControl: false,
         attributionControl: false,
         dragging: false,
@@ -111,7 +124,7 @@ export default function MapBackground({ onLocationSelect }: MapBackgroundProps) 
 
       (window as any).__mapInstance = map;
       (window as any).__selectLocation = (id: string) => {
-        const loc = available.find((l) => l.id === id) ?? getLocationById(id);
+        const loc = availableRef.current.find((l) => l.id === id) ?? (cityRef.current ? getLocationById(cityRef.current, id) : undefined);
         if (loc) onLocationSelect(loc);
       };
     } catch (e) {
@@ -128,6 +141,13 @@ export default function MapBackground({ onLocationSelect }: MapBackgroundProps) 
       delete (window as any).__selectLocation;
     };
   }, []);
+
+  // Fly to city center when city is selected
+  useEffect(() => {
+    const map = leafletMapRef.current;
+    if (!map || !city) return;
+    map.setView([city.position.lat, city.position.lng], 13);
+  }, [chosenCity]);
 
   // Toggle interactivity based on phase
   useEffect(() => {
@@ -150,9 +170,8 @@ export default function MapBackground({ onLocationSelect }: MapBackgroundProps) 
   // Update location markers when chapter changes
   useEffect(() => {
     const map = leafletMapRef.current;
-    if (!map) return;
+    if (!map || !city) return;
 
-    // Remove old location markers (keep the player marker)
     const toRemove: L.Layer[] = [];
     map.eachLayer((layer) => {
       if (layer instanceof L.Marker && layer !== playerMarkerRef.current) {
@@ -161,9 +180,11 @@ export default function MapBackground({ onLocationSelect }: MapBackgroundProps) 
     });
     toRemove.forEach((l: L.Layer) => map.removeLayer(l));
 
-    // Add current chapter markers
+    const requiredIds = new Set(
+      resolveRequiredLocations(chapter?.requiredLocationTypes ?? [], city.locations).map((l) => l.id)
+    );
     available.forEach((loc) => {
-      const isRequired = chapter?.requiredLocationIds?.includes(loc.id) ?? false;
+      const isRequired = requiredIds.has(loc.id);
       const marker = L.marker([loc.position.lat, loc.position.lng], {
         icon: createLocationIcon(loc.type, isRequired),
       });
@@ -202,7 +223,7 @@ export default function MapBackground({ onLocationSelect }: MapBackgroundProps) 
 
       marker.addTo(map);
     });
-  }, [currentChapter, available.length]);
+  }, [currentChapter, available.length, chosenCity]);
 
   // Update player marker when location changes
   useEffect(() => {
@@ -220,7 +241,7 @@ export default function MapBackground({ onLocationSelect }: MapBackgroundProps) 
     playerMarker.bindTooltip('You are here', { direction: 'top', offset: [0, -18] });
     playerMarker.addTo(map);
     playerMarkerRef.current = playerMarker;
-  }, [currentLocationId, chosenCharacter]);
+  }, [currentLocationId, chosenCharacter, chosenCity]);
 
   return (
     <div
@@ -240,11 +261,9 @@ export function flyToMap(lat: number, lng: number, zoom: number = 15) {
 export function flyToPlayer() {
   const map = (window as any).__mapInstance as L.Map | undefined;
   if (!map) return;
-  // Find player marker or center on Barcelona
   map.eachLayer((layer) => {
     if (layer instanceof L.Marker) {
       const marker = layer;
-      // crude heuristic: find the player marker (no popup)
       if (!marker.getPopup()) {
         map.flyTo(marker.getLatLng(), 15, { duration: 1 });
       }
