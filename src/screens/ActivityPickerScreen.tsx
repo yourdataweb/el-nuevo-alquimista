@@ -88,15 +88,15 @@ export default function ActivityPickerScreen({ onComplete, maxActivities = 3 }: 
                     disabled={disabled && !sel}
                     className={`p-3 rounded-xl text-left transition-all active:scale-[0.97] ${
                       sel
-                        ? 'bg-[#e94560]/10 border-2 border-[#e94560] shadow-md shadow-[#e94560]/10'
+                        ? 'bg-[#1e293b] border border-gray-500 opacity-75 cursor-not-allowed'
                         : disabled
-                        ? 'bg-gray-800 border border-gray-700 opacity-50 cursor-not-allowed'
+                        ? 'bg-gray-800 border border-gray-700 opacity-75 cursor-not-allowed'
                         : 'bg-[#252525] border border-gray-700 hover:border-[#e94560]/60 hover:bg-[#e0dbd3] cursor-pointer'
                     }`}
                   >
                     <div className="flex items-center justify-between mb-1">
                       <span className="text-white font-semibold text-sm">{getTitle(act)}</span>
-                      {sel && <span className="text-[#e94560] text-base">✓</span>}
+                      {sel && <span className="text-gray-400 text-base">✓</span>}
                     </div>
                     <p className="text-xs text-gray-400 mb-1.5">{getDesc(act)}</p>
                     <div className="flex flex-wrap gap-x-2 gap-y-0.5 text-xs">

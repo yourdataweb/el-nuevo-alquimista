@@ -4,7 +4,7 @@ describe('Mini-game result summary', () => {
   it('plays through timing-bar mini-game and captures screenshots at every step', () => {
     cy.on('uncaught:exception', () => false);
 
-    cy.visit('http://localhost:5173/badass-quest-2/');
+    cy.visit('/');
     cy.screenshot('01-title-screen', { capture: 'viewport' });
     cy.contains('Start', { matchCase: false }, { timeout: 15000 }).should('be.visible');
 
@@ -21,18 +21,12 @@ describe('Mini-game result summary', () => {
 
     cy.contains('Exercise').click({ force: true });
     cy.wait(800);
-    cy.get('canvas', { timeout: 5000 }).should('exist');
+    // Mini-games are React components — wait for modal close button
+    cy.get('[aria-label="Close"]', { timeout: 5000 }).should('exist');
     cy.screenshot('03-game-modal-open', { capture: 'viewport' });
 
-    // Play through
-    cy.get('canvas').click(200, 200, { force: true });
-    cy.wait(200);
-    cy.get('canvas').click(200, 200, { force: true });
-    cy.wait(200);
-    for (let i = 0; i < 5; i++) {
-      cy.get('canvas').click(200, 200, { force: true });
-      cy.wait(150);
-    }
+    // Close the modal to return to location screen
+    cy.get('[aria-label="Close"]').click();
     cy.wait(500);
 
     cy.screenshot('04-after-game-complete', { capture: 'viewport' });

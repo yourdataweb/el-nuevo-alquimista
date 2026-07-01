@@ -18,7 +18,7 @@ const SPRITE_YS = [0, 289, 579, 867, 1152, 1440, 1717, 1992, 2261, 2528, 2784] a
 // Ramos so both characters render at the same visual height (~65-66px).
 const PLAYER_DISPLAY = { trump: 80, ramos: 80 } as const;
 
-const DEFAULT_LEVEL_SECS = 20;
+const DEFAULT_LEVEL_SECS = 10;
 const JUMP_VEL = -560;
 const GRAVITY = 1500;
 
@@ -484,7 +484,7 @@ export default function SideScroller({ travelSecs = DEFAULT_LEVEL_SECS, onComple
   }, []);
 
   return (
-    <div className="fixed inset-0 z-50 flex flex-col bg-[#1a1a2e] select-none touch-none">
+    <div className="flex flex-col h-full min-h-0 bg-[#1a1a2e] select-none touch-none">
 
       {/* ── HUD ── */}
       <div className="shrink-0 flex items-center gap-3 px-4 py-2 bg-[#16213e]/90 border-b border-[#e94560]/20">
@@ -504,7 +504,6 @@ export default function SideScroller({ travelSecs = DEFAULT_LEVEL_SECS, onComple
             style={{ width: `${uiProgress * 100}%`, transition: 'width 0.15s linear' }}
           />
         </div>
-        <span className="pixel-text text-[8px] text-gray-400 whitespace-nowrap">TRAVELING</span>
       </div>
 
       {/* ── Phaser canvas container ── */}
@@ -548,8 +547,8 @@ export default function SideScroller({ travelSecs = DEFAULT_LEVEL_SECS, onComple
           onPointerUp={() => { jumpRef.current = false; }}
           onPointerLeave={() => { jumpRef.current = false; }}
           onPointerCancel={() => { jumpRef.current = false; }}
-          className="py-7 rounded-2xl bg-[#0f3460] border-2 border-[#e94560]/50
-            text-white font-bold text-xl active:scale-95 active:bg-[#e94560]/20
+          className="py-7 rounded-2xl bg-[#0f3460] border-2 border-[#f59e0b]/60
+            text-white font-bold text-xl active:scale-95 active:bg-[#f59e0b]/20
             transition-transform touch-none"
         >
           ↑ JUMP

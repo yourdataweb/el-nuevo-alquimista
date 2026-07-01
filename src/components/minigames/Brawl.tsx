@@ -183,7 +183,7 @@ export default function Brawl({ onResult }: BrawlProps) {
       {phase === 'ready' ? (
         <button
           onClick={() => launchAttack(0, 0)}
-          className="w-full py-3 rounded-xl bg-gradient-to-r from-[#22c55e] to-[#16a34a] text-white font-bold text-sm"
+          className="w-full py-3 rounded-xl bg-gradient-to-r from-[#f59e0b] to-[#d97706] text-white font-bold text-sm shadow-lg shadow-[#f59e0b]/20"
         >
           Start Fight
         </button>
@@ -195,7 +195,7 @@ export default function Brawl({ onResult }: BrawlProps) {
               onClick={() => handleParry(dir)}
               className={`py-5 rounded-xl text-2xl font-bold border transition-all active:scale-[0.93] ${
                 phase === 'attack'
-                  ? 'bg-[#252525] border-gray-700 hover:bg-[#1a3a2a] hover:border-[#22c55e] hover:text-green-400 cursor-pointer'
+                  ? 'bg-[#0f3460] border-[#f59e0b]/40 hover:bg-[#0f3060] hover:border-[#f59e0b] hover:text-amber-400 cursor-pointer'
                   : 'bg-[#252525] border-gray-700 text-gray-300 cursor-default'
               }`}
             >

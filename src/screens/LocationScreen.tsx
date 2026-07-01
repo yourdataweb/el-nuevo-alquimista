@@ -126,62 +126,49 @@ export default function LocationScreen({
 
         {/* ── Scrollable content ── */}
         <div className="flex-1 overflow-y-auto min-h-0">
-          <div className="p-4 max-w-2xl mx-auto fade-in">
-            {/* Hero image */}
-            <LocationImage
-              locationId={location.id}
-              name={locName}
-              type={location.type}
-              className="w-full h-48 rounded-xl mb-4"
-            />
+          <div className="max-w-2xl mx-auto fade-in p-4">
 
-            {/* Location header */}
-            <div className="text-center mb-4">
-              <div className="text-5xl mb-2">{TYPE_EMOJIS[location.type] ?? '📍'}</div>
-              <h2 className="text-white font-bold text-lg">{locName}</h2>
-              <p className="text-gray-500 text-xs">{location.address ?? ''}</p>
-            </div>
-
-            {/* Arrival description */}
-            <div className="dialogue-box p-4 mb-4">
-              <div className="flex items-center gap-2 mb-3">
-                <span className="text-sm">{TYPE_EMOJIS[location.type] ?? '📍'}</span>
-                <span className="text-[#e94560] text-xs uppercase tracking-wider">
-                  {i18n.language === 'ca'
-                    ? 'Has arribat a'
-                    : i18n.language === 'es'
-                    ? 'Has llegado a'
-                    : 'You arrived at'}
+            {/* ── Hero image with identity overlay ── */}
+            <div className="relative w-full h-56 rounded-xl overflow-hidden">
+              <LocationImage
+                locationId={location.id}
+                name={locName}
+                type={location.type}
+                className="w-full h-full"
+              />
+              {/* gradient scrim */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/50 to-black/10" />
+              {/* identity anchored to bottom of image */}
+              <div className="absolute bottom-0 left-0 right-0 px-4 pb-4">
+                <span className="inline-flex items-center gap-1 text-[10px] px-2 py-0.5 rounded-full bg-white/10 backdrop-blur-sm text-white/60 border border-white/10 mb-1.5">
+                  {TYPE_EMOJIS[location.type] ?? '📍'} {location.type}
                 </span>
+                <h2 className="text-white font-bold text-xl leading-tight">{locName}</h2>
+                {location.address && (
+                  <p className="text-white/50 text-xs mt-0.5">{location.address}</p>
+                )}
               </div>
-              <p className="story-text text-gray-300 leading-relaxed">{locDesc}</p>
-
-              {isCorrect && (
-                <div className="mt-4 p-3 bg-[#22c55e]/10 border border-[#22c55e]/30 rounded-lg">
-                  <p className="text-green-400 text-sm font-semibold">
-                    {i18n.language === 'ca'
-                      ? '✨ Aquest lloc et ressona. Alguna cosa et diu que has vingut al lloc correcte.'
-                      : i18n.language === 'es'
-                      ? '✨ Este lugar te resuena. Algo te dice que has venido al sitio correcto.'
-                      : '✨ This place resonates with you. Something tells you this is the right place.'}
-                  </p>
-                </div>
-              )}
-
-              {!isCorrect && (
-                <div className="mt-4 p-3 bg-gray-800 border border-gray-700 rounded-lg">
-                  <p className="text-gray-500 text-sm">
-                    {i18n.language === 'ca'
-                      ? 'Un lloc interesant, però no té res a veure amb el teu somni.'
-                      : i18n.language === 'es'
-                      ? 'Un lugar interesante, pero no tiene nada que ver con tu sueño.'
-                      : 'An interesting place, but it has nothing to do with your dream.'}
-                  </p>
-                </div>
-              )}
             </div>
 
-            {/* activity buttons have moved to the pinned bar below */}
+            {/* ── Content below hero ── */}
+            <div className="mt-3 px-4 pt-4 pb-3 bg-black/75 backdrop-blur-sm rounded-xl">
+              {isCorrect && (
+                <div className="flex items-start gap-2 mb-4 px-3 py-2.5 rounded-lg bg-[#22c55e]/30 border border-[#22c55e]/70">
+                  <span className="text-base mt-px">✨</span>
+                  <p className="text-green-300 text-sm font-medium leading-relaxed">
+                    {i18n.language === 'ca'
+                      ? 'Aquest lloc et ressona. Alguna cosa et diu que has vingut al lloc correcte.'
+                      : i18n.language === 'es'
+                      ? 'Este lugar te resuena. Algo te dice que has venido al sitio correcto.'
+                      : 'This place resonates with you. Something tells you this is the right place.'}
+                  </p>
+                </div>
+              )}
+
+              <p className="story-text text-gray-300 text-sm leading-relaxed">{locDesc}</p>
+
+            </div>
+
           </div>
         </div>
 
@@ -196,7 +183,7 @@ export default function LocationScreen({
                   addVisitedLocation(location.id);
                   onProceed();
                 }}
-                className="w-full py-3.5 rounded-xl font-bold text-sm text-white bg-gradient-to-r from-[#22c55e]/80 to-[#16a34a]/80 shadow-lg shadow-[#22c55e]/20 hover:brightness-110 active:scale-[0.98] transition-all"
+                className="w-full py-3.5 rounded-xl font-bold text-sm text-white bg-gradient-to-r from-[#22c55e] to-[#16a34a] shadow-lg shadow-[#22c55e]/20 hover:brightness-110 active:scale-[0.98] transition-all"
               >
                 {i18n.language === 'ca' ? 'Investigar' : i18n.language === 'es' ? 'Investigar' : 'Investigate'} →
               </button>
@@ -208,7 +195,7 @@ export default function LocationScreen({
                   addVisitedLocation(location.id);
                   onBackToMap();
                 }}
-                className="w-full py-3.5 rounded-xl font-bold text-sm text-white bg-gradient-to-r from-[#22c55e]/80 to-[#16a34a]/80 shadow-lg shadow-[#22c55e]/20 hover:brightness-110 active:scale-[0.98] transition-all"
+                className="w-full py-3.5 rounded-xl font-bold text-sm text-white bg-gradient-to-r from-[#22c55e] to-[#16a34a] shadow-lg shadow-[#22c55e]/20 hover:brightness-110 active:scale-[0.98] transition-all"
               >
                 {i18n.language === 'ca'
                   ? 'Investigar → Tornar al mapa'
@@ -230,8 +217,8 @@ export default function LocationScreen({
                       disabled={done}
                       className={`p-3 rounded-xl text-left transition-all active:scale-[0.97] ${
                         done
-                          ? 'bg-[#252525] border border-gray-700 opacity-50 cursor-not-allowed'
-                          : 'bg-[#3d2200] border border-[#d97706] hover:bg-[#4d2e00] hover:border-[#f59e0b] cursor-pointer shadow-md shadow-black/10'
+                          ? 'bg-[#252525] border border-gray-700 opacity-75 cursor-not-allowed'
+                          : 'bg-[#0c3a38] border border-[#0d9488]/60 hover:bg-[#0f4a47] hover:border-[#0d9488] cursor-pointer shadow-md shadow-black/20'
                       }`}
                     >
                       <div className="flex items-center gap-1.5 mb-1">
@@ -241,7 +228,7 @@ export default function LocationScreen({
                         </span>
                         {done && <span className="ml-auto text-green-400 text-xs">✓</span>}
                       </div>
-                      <div className="flex flex-wrap gap-x-2 text-xs text-gray-400">
+                      <div className="flex flex-wrap gap-x-2 text-xs text-teal-200/70">
                         <span>⏳ {act.durationHours}h</span>
                         {Object.entries(act.effects).map(([k, v]) => (
                           <span key={k} className={v && v > 0 ? 'text-green-400' : 'text-red-500'}>
@@ -258,7 +245,7 @@ export default function LocationScreen({
             {/* Back to map — always at bottom */}
             <button
               onClick={onBackToMap}
-              className="w-full py-2.5 rounded-xl font-medium text-sm text-[#93c5fd] bg-[#1e3a5f] border border-[#3b82f6]/40 hover:bg-[#1d4ed8]/30 hover:border-[#3b82f6]/70 active:scale-[0.98] transition-all"
+              className="w-full py-2.5 rounded-xl font-medium text-sm text-slate-400 bg-[#1e293b] border border-[#334155] hover:bg-[#253347] hover:text-slate-300 active:scale-[0.98] transition-all"
             >
               {i18n.language === 'ca'
                 ? '← Tornar al mapa'

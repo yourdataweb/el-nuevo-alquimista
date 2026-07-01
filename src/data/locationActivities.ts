@@ -170,8 +170,8 @@ const ACTIVITIES: Record<string, ActivityDef[]> = {
 
   cafe: [
     {
-      id: 'cafe_chat',
-      i18nKey: 'cafeChat',
+      id: 'cafe_discussion',
+      i18nKey: 'cafeDiscussion',
       miniGame: 'brawl',
       durationHours: 1,
       effects: { social: 4 },

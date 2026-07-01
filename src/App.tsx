@@ -19,7 +19,6 @@ function distKm(a: Position, b: Position): number {
 }
 
 import MapBackground from './components/MapBackground';
-import LocationHUD from './components/LocationHUD';
 import MapBottomSheet from './components/MapBottomSheet';
 import TitleScreen from './screens/TitleScreen';
 import CitySelectScreen from './screens/CitySelectScreen';
@@ -30,6 +29,7 @@ import DialogueScreen from './screens/DialogueScreen';
 import ActivityPickerScreen from './screens/ActivityPickerScreen';
 import RecapScreen from './screens/RecapScreen';
 import SideScroller from './components/minigames/SideScroller';
+import GameLayout from './components/GameLayout';
 import LanguageSwitcher from './components/LanguageSwitcher';
 import StatsBar from './components/StatsBar';
 import { formatTime } from './engine/timeEngine';
@@ -72,7 +72,6 @@ export default function App() {
   const isLastChapter = currentChapter >= allChapters.length - 1;
   // Show map on all screens — title and city_select use a semi-transparent overlay
   const showMapBackground = true;
-  const showLocationHUD = phase !== 'title' && phase !== 'city_select';
 
   // ── Advance to next chapter (shared by all progression paths) ──
   const doAdvance = useCallback((advance: { phase: string; newChapterIndex: number }, markCurrentId: string) => {
@@ -176,13 +175,17 @@ export default function App() {
         return <Overlay><HomeScreen onGoToMap={handleHomeGoToMap} /></Overlay>;
       case 'walking':
         return (
-          <SideScroller
-            travelSecs={travelSecs}
-            onComplete={(deltas) => {
-              updateStats(deltas);
-              setPhase('location');
-            }}
-          />
+          <div className="fixed inset-0 z-10 flex flex-col bg-[#1a1a2e]">
+            <GameLayout>
+              <SideScroller
+                travelSecs={travelSecs}
+                onComplete={(deltas) => {
+                  updateStats(deltas);
+                  setPhase('location');
+                }}
+              />
+            </GameLayout>
+          </div>
         );
       case 'map':
         return (
@@ -275,7 +278,6 @@ export default function App() {
       {showMapBackground && (
         <MapBackground onLocationSelect={handleLocationSelect} />
       )}
-      {showLocationHUD && <LocationHUD />}
       {renderPhase()}
     </div>
   );

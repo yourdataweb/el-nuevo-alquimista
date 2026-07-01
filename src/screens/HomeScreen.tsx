@@ -96,7 +96,7 @@ export default function HomeScreen({ onGoToMap }: HomeScreenProps) {
                   disabled={isUsed(action.id)}
                   className={`p-3 rounded-xl transition-all text-left active:scale-[0.98] ${
                     isUsed(action.id)
-                      ? 'bg-[#252525]/50 border border-gray-700 opacity-50 cursor-not-allowed'
+                      ? 'bg-[#252525] border border-gray-700 opacity-75 cursor-not-allowed'
                       : 'bg-[#252525] border border-gray-700 hover:border-[#e94560]/70 hover:bg-[#e0dbd3] cursor-pointer'
                   }`}
                 >

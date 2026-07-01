@@ -188,7 +188,7 @@ describe('Badass Quest 2 — game flow', () => {
       s.getState().setPhase('location');
     });
     cy.contains('Federal Café', { timeout: 5000 }).should('be.visible');
-    cy.contains('Chat').should('be.visible');
+    cy.contains('Fight').should('be.visible');
     cy.contains('Write').should('be.visible');
   });
 
@@ -213,12 +213,10 @@ describe('Badass Quest 2 — game flow', () => {
     });
     cy.contains('La Central del Raval', { timeout: 5000 }).should('be.visible');
     cy.contains('Study Scrolls').click();
-    cy.get('canvas', { timeout: 3000 }).should('exist');
-    // Wait for game to finish (50s timeout in memory game, or interact)
-    // For test speed, just verify modal opens
+    // Mini-games are React components — modal header appears, no canvas
+    cy.get('[aria-label="Close"]', { timeout: 3000 }).should('exist');
     cy.wait(300);
-    // Close via escape or continue button
-    cy.get('body').type('{esc}');
+    cy.get('[aria-label="Close"]').click();
     cy.wait(300);
   });
 
@@ -233,11 +231,10 @@ describe('Badass Quest 2 — game flow', () => {
 
     // Open exercise mini-game
     cy.contains('Exercise').click();
-    cy.get('canvas', { timeout: 3000 }).should('exist');
+    cy.get('[aria-label="Close"]', { timeout: 3000 }).should('exist');
 
-    // Close modal via ESC
-    cy.wait(300);
-    cy.get('body').type('{esc}');
+    // Close modal via the ✕ button
+    cy.get('[aria-label="Close"]').click();
     cy.wait(300);
 
     // Game wasn't completed, so button should still be enabled
@@ -259,9 +256,9 @@ describe('Badass Quest 2 — game flow', () => {
     });
     cy.wait(300);
 
-    // Exercise should now be done and disabled
-    cy.contains('button', 'Exercise').should('contain', 'Done');
+    // Exercise should now be done (shows ✓) and disabled
     cy.contains('button', 'Exercise').should('have.attr', 'disabled');
+    cy.contains('button', 'Exercise').find('.text-green-400').should('exist');
     // Meditate should still be enabled
     cy.contains('button', 'Meditate').should('not.have.attr', 'disabled');
   });

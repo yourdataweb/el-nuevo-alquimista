@@ -85,7 +85,7 @@ export default function DialogueBox({ speaker, text, options, speakerSprite }: D
               key={opt.id}
               onClick={opt.onClick}
               disabled={opt.disabled}
-              className={`w-full text-left p-3.5 rounded-xl transition-all text-sm active:scale-[0.99] ${
+              className={`option-btn w-full text-left p-3.5 rounded-xl transition-all text-sm active:scale-[0.99] ${
                 opt.disabled
                   ? 'bg-gray-800 border border-gray-700 text-gray-400 cursor-not-allowed'
                   : 'bg-[#1a1a1a] border border-gray-700 text-gray-300 hover:border-[#e94560] hover:bg-[#2a2a40]/50'

@@ -245,7 +245,7 @@ export default function Chase({ onResult }: ChaseProps) {
       {phase === 'ready' ? (
         <button
           onClick={startGame}
-          className="w-full py-3 rounded-xl bg-gradient-to-r from-[#22c55e] to-[#16a34a] text-white font-bold text-sm"
+          className="w-full py-3 rounded-xl bg-gradient-to-r from-[#f59e0b] to-[#d97706] text-white font-bold text-sm shadow-lg shadow-[#f59e0b]/20"
         >
           Run!
         </button>
@@ -253,13 +253,13 @@ export default function Chase({ onResult }: ChaseProps) {
         <div className="grid grid-cols-2 gap-3">
           <button
             onClick={moveUp}
-            className="py-5 rounded-xl bg-[#252525] border border-gray-700 text-2xl font-bold hover:border-[#22c55e] active:scale-[0.93] transition-all"
+            className="py-5 rounded-xl bg-[#0f3460] border border-[#f59e0b]/40 text-2xl font-bold hover:border-[#f59e0b] active:scale-[0.93] transition-all"
           >
             ↑
           </button>
           <button
             onClick={moveDown}
-            className="py-5 rounded-xl bg-[#252525] border border-gray-700 text-2xl font-bold hover:border-[#22c55e] active:scale-[0.93] transition-all"
+            className="py-5 rounded-xl bg-[#0f3460] border border-[#f59e0b]/40 text-2xl font-bold hover:border-[#f59e0b] active:scale-[0.93] transition-all"
           >
             ↓
           </button>
