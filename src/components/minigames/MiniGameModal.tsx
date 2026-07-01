@@ -5,6 +5,7 @@ interface MiniGameModalProps {
   subtitle: string;
   children: React.ReactNode;
   onClose: () => void;
+  backgroundImage?: string;
 }
 
 /**
@@ -16,6 +17,7 @@ export default function MiniGameModal({
   subtitle,
   children,
   onClose,
+  backgroundImage,
 }: MiniGameModalProps) {
   const overlayRef = useRef<HTMLDivElement>(null);
 
@@ -44,7 +46,14 @@ export default function MiniGameModal({
         </div>
 
         {/* Game area */}
-        <div className="flex-1 flex items-center justify-center p-4 min-h-[400px]">
+        <div
+          className="flex-1 flex items-center justify-center p-4 min-h-[400px]"
+          style={backgroundImage ? {
+            backgroundImage: `linear-gradient(rgba(15,23,48,0.82), rgba(15,23,48,0.82)), url(${backgroundImage})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+          } : undefined}
+        >
           {children}
         </div>
       </div>

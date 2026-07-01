@@ -45,6 +45,17 @@ const MG_ICON: Record<string, string> = {
   lockpick: '🔓',
 };
 
+const BASE = import.meta.env.BASE_URL;
+
+const MG_BACKGROUND: Record<string, string> = {
+  chase:         `${BASE}minigames/bg-chase.png`,
+  brawl:         `${BASE}minigames/bg-brawl.png`,
+  lockpick:      `${BASE}minigames/bg-lockpick.png`,
+  pickpocket:    `${BASE}minigames/bg-pickpocket.png`,
+  quick_quiz:    `${BASE}minigames/bg-quiz.png`,
+  tap_challenge: `${BASE}minigames/bg-tap.png`,
+};
+
 /** Stat labels (short) for display. */
 const STAT_LABELS: Record<string, string> = {
   vitality: '💪',
@@ -259,6 +270,7 @@ export default function LocationScreen({
           title={(t as any)(`activitiesSide.${view.act.i18nKey}`, { defaultValue: view.act.i18nKey })}
           subtitle={`${MG_ICON[view.act.miniGame] ?? '🎮'} ${view.act.fluff}`}
           onClose={() => setView({ kind: 'idle' })}
+          backgroundImage={MG_BACKGROUND[view.act.miniGame]}
         >
           {view.act.miniGame === 'quick_quiz' && (
             <QuickQuiz
