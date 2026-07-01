@@ -152,6 +152,7 @@ export type GamePhase =
   | 'intro'
   | 'home'
   | 'map'
+  | 'walking'
   | 'location'
   | 'dialogue'
   | 'moment_limite'

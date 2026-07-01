@@ -1,0 +1,47 @@
+# Image generation prompt
+
+I need a sprite tiles for 2 player characters in a web video game, the game will be expanded with a 2d retro-style side-scroller cartoon mini game.
+1.1 I want the body to be the classic in retro 2d games, small body in comparison with big head and I want the character to be dressed in casual clothes: 
+1.2 The character 1 in the sprite tile should be a dye blonde overweight 70yo male, mid size hair with sunglasses and starched-back hair, no quiff, no beard, no mustache. Wearing jeans and a suit with a red tie 
+1.3 The character 2 in sprite tile file should be more athletic about 40yo, also sunglasses, starched-back hair, no quiff. However, this character will have beard and brown hair. Wearing jeans and a white sports t-shirt
+
+I want you to create an image strictly following these principles:
+2.1 Create a grid 10 rows and 5 columns of bounding boxes of the same size where the character images you will generate fit in and are centered in the middle
+2.2 Use the top 5 rows for character 1 and the bottom 5 rows for character 2
+2.3 For each character and each of the 5 following actions, fill a row in the grid: run, jump, shoot a gun, fall to the ground and stand up from the ground
+2.4 All the character images in the output image must be centered
+2.5 Transparent background
+
+-------------------------------------
+
+# Sprite images extraction
+
+You have a public/walking/player-sprite-tile.png sprite tile file with the two player characters. The image is a grid of 10 rows x 5 columns with the following contents:
+- Row 1 are the images to animate the "run" action of the public/characters/trump.png character
+- Row 2 are the images to animate the "jump" action of the public/characters/trump.png character
+- Row 3 are the images to animate the "shoot a gun" action of the public/characters/trump.png character
+- Row 4 are the images to animate the "fall to the ground" action of the public/characters/trump.png character
+- Row 5 are the images to animate the "stand up from the ground" action of the public/characters/trump.png character
+- Row 6 are the images to animate the "run" action of the public/characters/ramos.png character
+- Row 7 are the images to animate the "jump" action of the public/characters/ramos.png character
+- Row 8 are the images to animate the "shoot a gun" action of the public/characters/ramos.png character
+- Row 9 are the images to animate the "fall to the ground" action of the public/characters/ramos.png character
+- Row 10 are the images to animate the "stand up from the ground" action of the public/characters/ramos.png character
+
+I want you to create a new json file with the coordinates of each of the images structured by character at top level, then action and then the coordinates of the images that are part of that action. 
+
+----------------------------------------
+
+You are a web developer specialized in web online video games. We need a relatively sophisticated new 2d retro-style side-scroller video game for the transitions when the player moves from one location to another. This has nothing to do with the current mini games.
+
+The characters will run forward, jump, shoot a gun, fall to the ground and stand up from the ground. 
+
+Use the top 5 rows if the player selected the public/characters/trump.png character and the 5 rows at the bottom if the player selected the public/characters/ramos.png character.
+
+- We want the side-scroller video game to be integrated with what we have in the game so far so the vitality stat will be used for the platforms game
+- We want the player to be animated as an animated sprite (both trump and ramos characters, depending on the user selection)
+- Regarding the dynamics of the game, keep in mind that it must be mobile-friendly so only two buttons: "jump" and "shoot a gun"
+- We will talk later about the background image and the platform / NPCs in the game
+- Store any scripts you need to create to process the sprite tile in scripts/ If it results to be very challenging to process the sprite tile file inform me of how could I help you
+
+Can you come up with something playable with the sprite tile? 

@@ -6,8 +6,8 @@ import GameLayout from '../components/GameLayout';
 const BASE = import.meta.env.BASE_URL;
 
 const CHARACTERS = [
-  { id: 'trump', name: 'The Maverick', file: 'trump.png' },
-  { id: 'ramos', name: 'The Fighter', file: 'ramos.png' },
+  { id: 'trump', name: 'The businessman', file: 'trump.png' },
+  { id: 'ramos', name: 'The sportsman', file: 'ramos.png' },
 ];
 
 export default function TitleScreen() {

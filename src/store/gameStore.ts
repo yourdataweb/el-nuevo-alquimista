@@ -2,7 +2,7 @@ import { create } from 'zustand';
 import type { GameState, GamePhase, Stats, GameTime } from './types';
 
 const INITIAL_STATS: Stats = {
-  vitality: 50,
+  vitality: 100,
   resources: 200,
   knowledge: 10,
   social: 10,

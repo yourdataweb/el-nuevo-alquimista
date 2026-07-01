@@ -23,6 +23,7 @@ import LocationScreen from './screens/LocationScreen';
 import DialogueScreen from './screens/DialogueScreen';
 import ActivityPickerScreen from './screens/ActivityPickerScreen';
 import RecapScreen from './screens/RecapScreen';
+import SideScroller from './components/minigames/SideScroller';
 import LanguageSwitcher from './components/LanguageSwitcher';
 import StatsBar from './components/StatsBar';
 import { formatTime } from './engine/timeEngine';
@@ -50,6 +51,7 @@ export default function App() {
   const visitedLocationIds = useGameStore((s) => s.visitedLocationIds);
   const completedChapterIds = useGameStore((s) => s.completedChapterIds);
   const setPhase = useGameStore((s) => s.setPhase);
+  const updateStats = useGameStore((s) => s.updateStats);
   const setChapter = useGameStore((s) => s.setChapter);
   const currentLocationId = useGameStore((s) => s.currentLocationId);
   const setCurrentLocation = useGameStore((s) => s.setCurrentLocation);
@@ -99,7 +101,7 @@ export default function App() {
   const handleLocationSelect = useCallback((loc: LocationPOI) => {
     flyToMap(loc.position.lat, loc.position.lng, 16);
     setCurrentLocation(loc.id);
-    setPhase('location');
+    setPhase('walking');
   }, [setPhase, setCurrentLocation]);
 
   const handleLocationBack = useCallback(() => {
@@ -162,6 +164,15 @@ export default function App() {
         return <Overlay><IntroScreen onContinue={handleIntroDone} /></Overlay>;
       case 'home':
         return <Overlay><HomeScreen onGoToMap={handleHomeGoToMap} /></Overlay>;
+      case 'walking':
+        return (
+          <SideScroller
+            onComplete={(vitDelta) => {
+              updateStats({ vitality: vitDelta });
+              setPhase('location');
+            }}
+          />
+        );
       case 'map':
         return (
           <>
